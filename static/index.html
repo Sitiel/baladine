@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Partiel</title>
+        <link href="index.css" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+            <div class="loader-section section-left"></div>
+            <div class="loader-section section-right"></div>
+        </div>
+        <div id="content" class="center">
+            <h1>Partiel WEB</h1>
+            <div class="contour">
+                <form>
+                    <button type="button"
+                            class="btn btn-outline-success"
+                            onclick="new_game()">Rejouer
+                    </button>
+                    <div id="content_get_result" style="display: none;">
+                        <label for="get_result">Resultat GET :</label>
+                        <textarea class="form-control" rows="5" id="get_result" disabled></textarea>
+                    </div>
+                    <fieldset>
+                        <legend>GET Day info :</legend>
+                        <div style="margin-top:10px" class="form-group col-md-12">
+                            <label for="day">Jour :</label>
+                            <input disabled id="day" type="text">
+                            <label for="weather">Météo :</label>
+                            <input disabled id="weather" type="text">
+                            <label for="money">Vous avez :</label>
+                            <input disabled id="money" type="text">
+                            <label for="money">EUR</label>
+                        </div>
+                        <div style="margin-top:10px" class="form-group col-md-12">
+                            <button type="button"
+                                    class="btn btn-outline-success"
+                                    onclick="get_data()">Rafraîchir
+                            </button>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>POST Order :</legend>
+                        <div style="margin-top:10px" class="form-group col-md-12">
+                            <div id="data_post">
+                                <label for="prepare">Nombre de verres à préparer :</label>
+                                <input id="prepare">
+                            </div>
+                            <div id="button_prepare_area">
+                                <button type="button"
+                                        class="btn btn-outline-primary"
+                                        onclick="post_data('http://localhost:5000/order',$('#prepare').val());">
+                                    Envoyer
+                                </button>
+                            </div>
+                            <div style="margin-top:10px">
+                                <label for="sell">Nombre de verres vendus :</label>
+                                <input disabled id="sell">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>GET Last actions :</legend>
+                        <div style="margin-top:10px" class="form-group col-md-12">
+                            <div id="button_get_last_area">
+                                <button type="button"
+                                        class="btn btn-outline-primary"
+                                        onclick="get_last_days();">
+                                    Récuperer les dernières actions
+                                </button>
+                            </div>
+                            <div style="margin-top:10px" id="content_last_days">
+                                <table class="table" id="SQLTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Budget</th>
+                                            <th>Day</th>
+                                            <th>Weather</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div id="example">
+        </div>
+        <div style="margin-top:10px" class="form-group col-md-12 center">
+            <button type="button" class="btn btn-outline-success" onclick="play()">Play</button>
+        </div>
+        <canvas id="myCanvas" height="320"></canvas>
+        <script>
+			var obstacles = [];
+			var canvas    = document.getElementById("myCanvas");
+			var ctx       = canvas.getContext("2d");
+			var timer     = 1000;
+			function play() {
+
+				ctx.canvas.width  = window.innerWidth;
+				ctx.canvas.height = window.innerHeight;
+
+
+				setTimeout(addObstacle, timer);
+				setInterval(updateObstacles, 50);
+
+				window.addEventListener("keyup", releaseKey);
+				window.addEventListener("keydown", pressKey);
+			}
+
+			var posX  = 0;
+			var posY  = 0;
+			var up    = false;
+			var down  = false;
+			var left  = false;
+			var right = false;
+			//end table creation
+
+			function pressKey(e) {
+				var event = window.event ? window.event : e;
+				if (event.keyCode === 38) {
+					up = true;
+					e.preventDefault();
+					return false;
+				} else if (event.keyCode === 40) {
+					down = true;
+					e.preventDefault();
+					return false;
+				} else if (event.keyCode === 37) {
+					left = true;
+					e.preventDefault();
+					return false;
+				} else if (event.keyCode === 39) {
+					right = true;
+					e.preventDefault();
+					return false;
+				}
+			}
+
+
+			function releaseKey(e) {
+				var event = window.event ? window.event : e;
+				if (event.keyCode === 38) {
+					up = false;
+				} else if (event.keyCode === 40) {
+					down = false;
+				} else if (event.keyCode === 37) {
+					left = false;
+				} else if (event.keyCode === 39) {
+					right = false;
+				}
+			}
+
+			var score = 0;
+
+			function updateObstacles() {
+				ctx.clearRect(0, 0, 200, 50);
+				ctx.font = "30px Arial";
+				ctx.fillText("Score : " + score, 0, 30);
+
+				ctx.clearRect(posX, posY, 50, 50);
+				if (up) {
+					if (posY > 10) {
+						posY -= 10;
+					} else {
+						posY = 0;
+					}
+				}
+				if (down) {
+					if (posY < 320 - 10) {
+						posY += 10;
+					} else {
+						posY = 320;
+					}
+				}
+				if (left) {
+					if (posX > 10) {
+						posX -= 10;
+					} else {
+						posX = 0;
+					}
+				}
+				if (right) {
+					if (posX < window.innerWidth - (10 + 50)) {
+						posX += 10;
+					} else {
+						posX = window.innerWidth - 50;
+					}
+				}
+
+				ctx.beginPath();
+				ctx.rect(posX, posY, 50, 50);
+				ctx.fillStyle = "#FF0000";
+				ctx.fill();
+				ctx.closePath();
+
+
+				for (var i = 0; i < obstacles.length; i++) {
+					ctx.clearRect(obstacles[i].x, obstacles[i].y, 10, 10);
+					obstacles[i].x -= 10;
+					if (obstacles[i].x < 0) {
+						obstacles.splice(i, 1);
+						score++;
+					} else {
+						if (posX < obstacles[i].x + 10 && posX + 50 > obstacles[i].x &&
+							posY < obstacles[i].y + 10 && posY + 50 > obstacles[i].y) {
+							ctx.clearRect(0, 0, 10000, 10000);
+							alert("Vous avez perdu, votre score : " + score);
+							score     = 0;
+							timer     = 1000;
+							obstacles = [];
+							posX      = 0;
+							posY      = 0;
+							up        = false;
+							right     = false;
+							down      = false;
+							up        = false;
+							return;
+						}
+						else {
+							ctx.beginPath();
+							ctx.rect(obstacles[i].x, obstacles[i].y, 10, 10);
+							ctx.fillStyle = "#FFFFFF";
+							ctx.fill();
+							ctx.closePath();
+						}
+					}
+
+				}
+			}
+
+			function addObstacle() {
+				var obstacle = {
+					x: window.innerWidth,
+					y: Math.floor(Math.random() * 320)
+				};
+				obstacles.push(obstacle);
+				if (timer > 200) {
+					timer -= 10;
+				}
+
+				setTimeout(addObstacle, timer);
+			}
+        </script>
+    </body>
+</html>
