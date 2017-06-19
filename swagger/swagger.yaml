@@ -1,0 +1,271 @@
+---
+swagger: "2.0"
+info:
+  description: "This is the API for the Balady Integration Project"
+  version: "1.0.0"
+  title: "LEMONADE/BALADY API"
+  contact:
+    email: "florent.courouble@imerir.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "virtserver.swaggerhub.com"
+basePath: "/ValerianKang/Balady_API/1.0.0"
+tags:
+- name: "client"
+  description: "Clients API calls to update their informations"
+- name: "master"
+  description: "Arduino API calls to control the current time and weather"
+schemes:
+- "https"
+paths:
+  /getdescription:
+    get:
+      tags:
+      - "client"
+      summary: "Get actual state"
+      description: "Allow you to get the current state of the game\n"
+      operationId: "controllers.client_controller.get_description"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "current state of the game"
+          schema:
+            $ref: "#/definitions/description"
+        400:
+          description: "bad input parameter"
+      x-tags:
+      - tag: "client"
+  /updateaction:
+    post:
+      tags:
+      - "client"
+      summary: "Update actions"
+      description: "Update actions that the player will to the next day"
+      operationId: "controllers.client_controller.update_action"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "action"
+        description: "Action to do"
+        required: false
+        schema:
+          $ref: "#/definitions/action"
+      responses:
+        201:
+          description: "action updated"
+        400:
+          description: "invalid input, object invalid"
+      x-tags:
+      - tag: "client"
+  /joingame:
+    post:
+      tags:
+      - "client"
+      summary: "Join current game"
+      description: "Join the current game"
+      operationId: "controllers.client_controller.join_game"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "playerInformations"
+        description: "Players informations required to join a game"
+        required: false
+        schema:
+          $ref: "#/definitions/playerInformations"
+      responses:
+        201:
+          description: "userToken"
+          schema:
+            $ref: "#/definitions/userToken"
+        400:
+          description: "invalid input"
+      x-tags:
+      - tag: "client"
+  /updatetime:
+    post:
+      tags:
+      - "master"
+      summary: "Update current time"
+      description: "Update the current time"
+      operationId: "controllers.master_controller.update_time"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "time"
+        description: "Current time"
+        required: false
+        schema:
+          $ref: "#/definitions/time"
+      responses:
+        200:
+          description: "success"
+        400:
+          description: "invalid input"
+      x-tags:
+      - tag: "master"
+  /updatenextweather:
+    post:
+      tags:
+      - "master"
+      summary: "Update next weather"
+      description: "Update the next weather (tomorrow)"
+      operationId: "controllers.master_controller.update_weather"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "weather"
+        description: "Next weather"
+        required: false
+        schema:
+          $ref: "#/definitions/weather"
+      responses:
+        200:
+          description: "success"
+        400:
+          description: "invalid input"
+      x-tags:
+      - tag: "master"
+definitions:
+  time:
+    type: "string"
+    example: "\"12:03\""
+  weather:
+    type: "string"
+    example: "\"SUNNY\""
+  description:
+    type: "object"
+    required:
+    - "day"
+    - "money"
+    - "peoples"
+    - "playerPosition"
+    - "publicity"
+    - "time"
+    - "tomorrowWeather"
+    - "weather"
+    properties:
+      time:
+        type: "string"
+        example: "12:03"
+      weather:
+        $ref: "#/definitions/weather"
+      day:
+        type: "integer"
+        format: "int32"
+        example: 3
+      publicity:
+        type: "array"
+        items:
+          $ref: "#/definitions/pos"
+      peoples:
+        type: "array"
+        items:
+          $ref: "#/definitions/people"
+      tomorrowWeather:
+        type: "string"
+        example: "CLOUDY"
+      money:
+        type: "integer"
+        format: "int32"
+      playerPosition:
+        $ref: "#/definitions/pos"
+  action:
+    type: "object"
+    required:
+    - "productions"
+    - "userToken"
+    properties:
+      productions:
+        type: "array"
+        items:
+          $ref: "#/definitions/production"
+      userToken:
+        $ref: "#/definitions/userToken"
+  userToken:
+    type: "string"
+    example: "\"F32AB7786221C44\""
+  playerInformations:
+    type: "object"
+    required:
+    - "pseudo"
+    properties:
+      pseudo:
+        type: "string"
+        example: "DarkSasuke69"
+  production:
+    type: "object"
+    required:
+    - "ingredients"
+    - "number"
+    - "price"
+    properties:
+      ingredients:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+          example: 1
+      number:
+        type: "integer"
+        format: "int32"
+        example: 10
+      price:
+        type: "integer"
+        format: "int32"
+        example: 10
+  pos:
+    required:
+    - "radius"
+    - "x"
+    - "y"
+    properties:
+      x:
+        type: "integer"
+        format: "int32"
+        example: 1208
+      y:
+        type: "integer"
+        format: "int32"
+        example: 117
+      radius:
+        type: "integer"
+        format: "int32"
+        example: 50
+  people:
+    required:
+    - "gotoX"
+    - "gotoY"
+    - "x"
+    - "y"
+    properties:
+      x:
+        type: "integer"
+        format: "int32"
+        example: 1208
+      y:
+        type: "integer"
+        format: "int32"
+        example: 117
+      gotoX:
+        type: "integer"
+        format: "int32"
+        example: 50
+      gotoY:
+        type: "integer"
+        format: "int32"
+        example: 50
