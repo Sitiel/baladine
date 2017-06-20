@@ -1,6 +1,33 @@
+from flask import jsonify
 
-def update_time(time = None):
+from database import db_session
+from models import ingredient, recette
+
+
+def map_get():
     return 'do some magic!'
 
-def update_weather(weather = None):
+
+def post_sales(sales=None):
     return 'do some magic!'
+
+
+def reset_game():
+    # Example of recette creation with ingredients
+    u = ingredient('Citron', 0.1, False, True)
+
+    a = ingredient('Eau', 0, False, True)
+
+    db_session.add(u)
+    db_session.add(a)
+
+    db_session.commit()
+
+    x = recette("Limonade")
+    x.ingredients.append(u)
+    x.ingredients.append(a)
+
+    db_session.add(x)
+    db_session.commit()
+
+    return jsonify(ingredients_of_recette=[i.toJson() for i in x.ingredients])

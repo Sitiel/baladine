@@ -13,57 +13,33 @@ host: "virtserver.swaggerhub.com"
 basePath: "/ValerianKang/Balady_API/1.0.0"
 tags:
 - name: "client"
-  description: "Clients API calls to update their informations"
-- name: "master"
+  description: "Clients API (players, Javascript)"
+- name: "controller"
   description: "Arduino API calls to control the current time and weather"
+- name: "master"
+  description: "Java API calls to control the simulation"
 schemes:
 - "https"
+- "http"
 paths:
-  /getdescription:
+  /reset:
     get:
       tags:
-      - "client"
-      summary: "Get actual state"
-      description: "Allow you to get the current state of the game\n"
-      operationId: "controllers.client_controller.get_description"
+      - "master"
+      summary: "Reset a game"
+      description: "Reset the current game\n"
+      operationId: "controllers.master_controller.reset_game"
       produces:
       - "application/json"
       parameters: []
       responses:
         200:
-          description: "current state of the game"
-          schema:
-            $ref: "#/definitions/description"
+          description: "Success, game just got reset"
         400:
           description: "bad input parameter"
       x-tags:
-      - tag: "client"
-  /updateaction:
-    post:
-      tags:
-      - "client"
-      summary: "Update actions"
-      description: "Update actions that the player will to the next day"
-      operationId: "controllers.client_controller.update_action"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "action"
-        description: "Action to do"
-        required: false
-        schema:
-          $ref: "#/definitions/action"
-      responses:
-        201:
-          description: "action updated"
-        400:
-          description: "invalid input, object invalid"
-      x-tags:
-      - tag: "client"
-  /joingame:
+      - tag: "master"
+  /players:
     post:
       tags:
       - "client"
@@ -76,196 +52,471 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "playerInformations"
+        name: "playerJoinUsername"
         description: "Players informations required to join a game"
         required: false
         schema:
-          $ref: "#/definitions/playerInformations"
+          $ref: "#/definitions/playerUsername"
       responses:
         201:
-          description: "userToken"
+          description: "user"
           schema:
-            $ref: "#/definitions/userToken"
+            $ref: "#/definitions/playerJoinResponse"
         400:
           description: "invalid input"
       x-tags:
       - tag: "client"
-  /updatetime:
+  /players/{playerName}:
+    delete:
+      tags:
+      - "client"
+      summary: "Quit a game"
+      description: "Quit the current game"
+      operationId: "controllers.client_controller.quit_game"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "playerName"
+        in: "path"
+        description: "Player name to disconnect"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User removed from the current game"
+        400:
+          description: "invalid input"
+      x-tags:
+      - tag: "client"
+  /metrology:
+    get:
+      tags:
+      - "client"
+      summary: "Get the metrology"
+      description: "Return a json object containing current time, current weather\
+        \ and next weather"
+      operationId: "controllers.client_controller.get_metrology"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Metrology ( temps )"
+          schema:
+            $ref: "#/definitions/temps"
+      x-tags:
+      - tag: "client"
     post:
       tags:
-      - "master"
-      summary: "Update current time"
-      description: "Update the current time"
-      operationId: "controllers.master_controller.update_time"
+      - "controller"
+      summary: "Set the metrology"
+      description: "Set the json object containing the time, weather and next weather"
+      operationId: "controllers.controller_controller.post_metrology"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: "body"
-        name: "time"
-        description: "Current time"
+        name: "Metrology"
+        description: "Metrology information to set"
         required: false
         schema:
-          $ref: "#/definitions/time"
+          $ref: "#/definitions/temps"
       responses:
         200:
-          description: "success"
+          description: "Sucess"
         400:
-          description: "invalid input"
+          description: "Bad input"
       x-tags:
-      - tag: "master"
-  /updatenextweather:
+      - tag: "controller"
+  /sales:
     post:
       tags:
       - "master"
-      summary: "Update next weather"
-      description: "Update the next weather (tomorrow)"
-      operationId: "controllers.master_controller.update_weather"
+      summary: "A customer buy a product"
+      description: "Use this route to set the user sales"
+      operationId: "controllers.master_controller.post_sales"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: "body"
-        name: "weather"
-        description: "Next weather"
+        name: "sales"
+        description: "Metrology information to set"
         required: false
         schema:
-          $ref: "#/definitions/weather"
+          $ref: "#/definitions/sale"
       responses:
         200:
-          description: "success"
+          description: "Sucess"
         400:
-          description: "invalid input"
+          description: "Bad input"
       x-tags:
       - tag: "master"
+  /actions/{playerName}:
+    post:
+      tags:
+      - "client"
+      summary: "Post some actions"
+      description: "Post actions that the player will do the next day could be a new\
+        \ recipe, make an advertissement or prepare some drinks, be careful add actions\
+        \ will remove others player actions"
+      operationId: "controllers.client_controller.post_action"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "playerName"
+        in: "path"
+        description: "Player name to disconnect"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "actions"
+        description: "Actions (could be an array) that the player will do the next\
+          \ day"
+        required: false
+        schema:
+          $ref: "#/definitions/addActions"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/addActionsResponse"
+        400:
+          description: "Error bad input"
+      x-tags:
+      - tag: "client"
+  /map:
+    get:
+      tags:
+      - "master"
+      summary: "Get the current game"
+      description: "Get the current map with all informations about the current game"
+      operationId: "controllers.master_controller.map_get"
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/map"
+      x-tags:
+      - tag: "master"
+  /map/{playerName}:
+    get:
+      tags:
+      - "client"
+      summary: "Get the current game for a player"
+      description: "Get the current game for a player"
+      operationId: "controllers.client_controller.map_player_name_get"
+      parameters:
+      - name: "playerName"
+        in: "path"
+        description: "Player name required to get the state of the game"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/mapForPlayer"
+        400:
+          description: "Bad input"
+      x-tags:
+      - tag: "client"
+  /ingredients:
+    get:
+      tags:
+      - "client"
+      summary: "Get all ingredients"
+      description: "Get all the ingredients"
+      operationId: "controllers.client_controller.ingredients_get"
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ingredients"
+        400:
+          description: "Bad input"
+      x-tags:
+      - tag: "client"
 definitions:
-  time:
-    type: "string"
-    example: "\"12:03\""
-  weather:
-    type: "string"
-    example: "\"SUNNY\""
-  description:
+  playerUsername:
     type: "object"
     required:
-    - "day"
-    - "money"
-    - "peoples"
-    - "playerPosition"
-    - "publicity"
-    - "time"
-    - "tomorrowWeather"
-    - "weather"
+    - "name"
     properties:
-      time:
-        type: "string"
-        example: "12:03"
-      weather:
-        $ref: "#/definitions/weather"
-      day:
-        type: "integer"
-        format: "int32"
-        example: 3
-      publicity:
-        type: "array"
-        items:
-          $ref: "#/definitions/pos"
-      peoples:
-        type: "array"
-        items:
-          $ref: "#/definitions/people"
-      tomorrowWeather:
-        type: "string"
-        example: "CLOUDY"
-      money:
-        type: "integer"
-        format: "int32"
-      playerPosition:
-        $ref: "#/definitions/pos"
-  action:
-    type: "object"
-    required:
-    - "productions"
-    - "userToken"
-    properties:
-      productions:
-        type: "array"
-        items:
-          $ref: "#/definitions/production"
-      userToken:
-        $ref: "#/definitions/userToken"
-  userToken:
-    type: "string"
-    example: "\"F32AB7786221C44\""
-  playerInformations:
-    type: "object"
-    required:
-    - "pseudo"
-    properties:
-      pseudo:
+      name:
         type: "string"
         example: "DarkSasuke69"
-  production:
+  mapForPlayer:
+    type: "object"
+    required:
+    - "availableIngredients"
+    - "map"
+    - "playerInfo"
+    properties:
+      availableIngredients:
+        type: "array"
+        items:
+          $ref: "#/definitions/ingredient"
+      map:
+        $ref: "#/definitions/map"
+      playerInfo:
+        $ref: "#/definitions/playerInfo"
+  addActions:
+    type: "object"
+    required:
+    - "actions"
+    properties:
+      actions:
+        type: "array"
+        items:
+          $ref: "#/definitions/playerAction"
+      simulated:
+        type: "boolean"
+        example: false
+  addActionsResponse:
+    type: "object"
+    required:
+    - "sufficientFunds"
+    properties:
+      sufficientFunds:
+        type: "boolean"
+        example: true
+      totalCost:
+        type: "number"
+        example: 145.8700000000000045474735088646411895751953125
+  playerJoinResponse:
+    type: "object"
+    required:
+    - "info"
+    - "location"
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "DarkSasuke6969"
+      location:
+        $ref: "#/definitions/coordinates"
+      info:
+        $ref: "#/definitions/playerInfo"
+  weather:
+    type: "string"
+    example: "\"sunny\""
+  forecast:
+    type: "object"
+    required:
+    - "dfn"
+    - "weather"
+    properties:
+      dfn:
+        type: "integer"
+        example: 1
+      weather:
+        $ref: "#/definitions/weather"
+  temps:
+    type: "object"
+    required:
+    - "timestamp"
+    - "weather"
+    properties:
+      timestamp:
+        type: "integer"
+        example: 2203
+      weather:
+        $ref: "#/definitions/forecast"
+  coordinates:
+    type: "object"
+    required:
+    - "latitude"
+    - "longitude"
+    properties:
+      latitude:
+        type: "number"
+      longitude:
+        type: "number"
+  coordinatesSpan:
+    type: "object"
+    required:
+    - "latitudeSpan"
+    - "longitudeSpan"
+    properties:
+      latitudeSpan:
+        type: "number"
+      longitudeSpan:
+        type: "number"
+  region:
+    type: "object"
+    required:
+    - "center"
+    - "span"
+    properties:
+      center:
+        $ref: "#/definitions/coordinates"
+      span:
+        $ref: "#/definitions/coordinatesSpan"
+  mapItem:
+    type: "object"
+    required:
+    - "influence"
+    - "kind"
+    - "owner"
+    properties:
+      kind:
+        type: "string"
+        example: "stand"
+      owner:
+        type: "string"
+        example: "DarkSasuke69"
+      influence:
+        type: "number"
+        example: 15.339999999999999857891452847979962825775146484375
+  playerInfo:
+    type: "object"
+    required:
+    - "cash"
+    - "profit"
+    - "sales"
+    properties:
+      cash:
+        type: "number"
+        example: 15.4199999999999999289457264239899814128875732421875
+      sales:
+        type: "integer"
+        example: 12
+      profit:
+        type: "number"
+        example: 8.019999999999999573674358543939888477325439453125
+  drinkInfo:
+    type: "object"
+    required:
+    - "name"
+    - "price"
+    properties:
+      name:
+        type: "string"
+        example: "Limonade"
+      price:
+        type: "number"
+        example: 0.450000000000000011102230246251565404236316680908203125
+  itemsByPlayer:
+    type: "object"
+    additionalProperties:
+      type: "array"
+      items:
+        $ref: "#/definitions/mapItem"
+  drinksByPlayer:
+    type: "object"
+    additionalProperties:
+      type: "array"
+      items:
+        $ref: "#/definitions/drinkInfo"
+  playerInfoByPlayer:
+    type: "object"
+    additionalProperties:
+      type: "string"
+  map:
+    type: "object"
+    required:
+    - "itemsByPlayer"
+    - "ranking"
+    - "region"
+    properties:
+      region:
+        $ref: "#/definitions/region"
+      ranking:
+        type: "array"
+        items:
+          type: "string"
+          example: "DarkSasuke69"
+      itemsByPlayer:
+        $ref: "#/definitions/itemsByPlayer"
+      playerInfo:
+        $ref: "#/definitions/playerInfoByPlayer"
+      drinksByPlayer:
+        $ref: "#/definitions/drinksByPlayer"
+  sale:
+    type: "object"
+    required:
+    - "item"
+    - "player"
+    - "quantity"
+    properties:
+      item:
+        type: "string"
+        example: "Limonade"
+      quantity:
+        type: "integer"
+        example: 12
+      player:
+        type: "string"
+        example: "DarkSasuke69"
+  ingredient:
+    type: "object"
+    required:
+    - "cost"
+    - "hasAlcohol"
+    - "isCold"
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "Eau"
+      cost:
+        type: "number"
+        example: 1.3400000000000000799360577730112709105014801025390625
+      hasAlcohol:
+        type: "boolean"
+        example: false
+      isCold:
+        type: "boolean"
+        example: false
+  ingredients:
     type: "object"
     required:
     - "ingredients"
-    - "number"
-    - "price"
     properties:
       ingredients:
         type: "array"
         items:
-          type: "integer"
-          format: "int32"
-          example: 1
-      number:
-        type: "integer"
-        format: "int32"
-        example: 10
-      price:
-        type: "integer"
-        format: "int32"
-        example: 10
-  pos:
+          $ref: "#/definitions/ingredient"
+  recipe:
+    type: "object"
     required:
-    - "radius"
-    - "x"
-    - "y"
+    - "hasAlcohol"
+    - "ingredients"
+    - "isCold"
+    - "name"
     properties:
-      x:
-        type: "integer"
-        format: "int32"
-        example: 1208
-      y:
-        type: "integer"
-        format: "int32"
-        example: 117
-      radius:
-        type: "integer"
-        format: "int32"
-        example: 50
-  people:
+      name:
+        type: "string"
+        example: "Limonade"
+      ingredients:
+        type: "object"
+        properties: {}
+      hasAlcohol:
+        type: "boolean"
+        example: false
+      isCold:
+        type: "boolean"
+        example: false
+  playerAction:
+    type: "object"
     required:
-    - "gotoX"
-    - "gotoY"
-    - "x"
-    - "y"
+    - "kind"
     properties:
-      x:
-        type: "integer"
-        format: "int32"
-        example: 1208
-      y:
-        type: "integer"
-        format: "int32"
-        example: 117
-      gotoX:
-        type: "integer"
-        format: "int32"
-        example: 50
-      gotoY:
-        type: "integer"
-        format: "int32"
-        example: 50
+      kind:
+        type: "string"
+        example: "stand"
+      recipe:
+        $ref: "#/definitions/recipe"
+      location:
+        $ref: "#/definitions/coordinates"
+      prepare:
+        type: "object"
+        properties: {}
