@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-import os
 
 print "Load : " + 'postgresql://localhost/balady'
 engine = create_engine('postgresql://postgres:imerir@localhost/balady', echo = True)
@@ -14,4 +13,5 @@ Base.query = db_session.query_property()
 
 
 def init_db():
+    import models
     Base.metadata.create_all(bind=engine)
