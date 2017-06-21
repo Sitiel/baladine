@@ -44,7 +44,7 @@ produit = Table('produit', Base.metadata,
 # Relation eentre le joueur et ses zones
 #----- Tables -----#
 
-class Ingredient(Base, JsonModel):
+class ingredient(Base, JsonModel):
     __tablename__ = "ingredient"
     ing_id = Column(Integer, primary_key=True)
     ing_nom = Column(String(255))
@@ -64,7 +64,7 @@ class Recette(Base, JsonModel):
     recette_id = Column(Integer, primary_key=True)
     recette_nom = Column(String(255))
     #relation vers ingredient
-    ingredients = relationship('Ingredient', secondary=compose) 
+    ingredients = relationship('ingredient', secondary=compose) 
 
     def __init__(self, nom):
         self.recette_nom = nom
