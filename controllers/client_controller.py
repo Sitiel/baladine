@@ -1,31 +1,20 @@
-from models import ingredient
+#from models import ingredient
 from database import db_session
 from flask import jsonify
+#from models import JsonModel
+from models import *
+from json_model import *
 
-
-# - Class JSON - #
-class MetrologyJson(JsonModel):
-    metro_timestamp
-    metro_weather
-
-    def __init__(self, timestamp, weather):
-        self.metro_timestamp = timestamp
-        self.metro_weather = weather
-
-
-class WeatherJson(JsonModel):
-    weather_dfn
-    weather_type
-
-    def __init__(self, dfn, wtype):
-        self.weather_dfn = dfn
-        self.weather_type = wtype
 
 # - Fonction Flask - #
 
 def get_metrology():
-    timestamp
-    return 'do some magic!'
+    #jour = carte.journees[-1]
+    #jour.meteo.meteo_libelle
+    meteo = WeatherJson(0,'Sunny')
+    metrology = MetrologyJson(0,meteo)
+    
+    return metrology.toJson()
 
 
 def ingredients_get():

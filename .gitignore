@@ -1,4 +1,6 @@
 env/
 venv/
-java/bin
 config.py
+java/clientJava/bin
+java/clientJava/build
+./bin
