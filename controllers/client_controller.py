@@ -1,12 +1,12 @@
 from models import ingredient
 from database import db_session
 from flask import jsonify
-
+from models import JsonModel
 
 # - Class JSON - #
 class MetrologyJson(JsonModel):
-    metro_timestamp
-    metro_weather
+    metro_timestamp = 0
+    metro_weather = 0
 
     def __init__(self, timestamp, weather):
         self.metro_timestamp = timestamp
@@ -14,8 +14,8 @@ class MetrologyJson(JsonModel):
 
 
 class WeatherJson(JsonModel):
-    weather_dfn
-    weather_type
+    weather_dfn = 0
+    weather_type = 0
 
     def __init__(self, dfn, wtype):
         self.weather_dfn = dfn

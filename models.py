@@ -21,7 +21,7 @@ compose = Table('compose', Base.metadata,
 
 # Relation entre recette et joueur
 possede = Table('possede', Base.metadata,
-                Column('recette_id', Integer, ForeignKey('ingredient.ing_id')),
+                Column('recette_id', Integer, ForeignKey('recette.recette_id')),
                 Column('joueur_id', Integer, ForeignKey('joueur.joueur_id'))
                 )
 
@@ -59,7 +59,7 @@ class ingredient(Base, JsonModel):
         self.ing_froid = froid
 
 
-class Recette(Base, JsonModel):
+class recette(Base, JsonModel):
     __tablename__ = "recette"
     recette_id = Column(Integer, primary_key=True)
     recette_nom = Column(String(255))
@@ -70,24 +70,24 @@ class Recette(Base, JsonModel):
         self.recette_nom = nom
 
 
-class Joueur(Base, JsonModel):
+class joueur(Base, JsonModel):
     __tablename__ = "joueur"
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
     joueur_budget = Column(Integer)
-    recettes = relationship('Recette', secondary=possede) #relation vers recette
+    recettes = relationship('recette', secondary=possede) #relation vers recette
     #represente la carte sur laquelle se trouve le joueur
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
-    carte = relationship("Carte", back_populates="joueurs")
+    carte = relationship("carte", back_populates="joueurs")
     #represente les zones du joueur
-    zones = relationship("Zone", back_populates="joueur")
+    zones = relationship("zone", back_populates="joueur")
 
     def __init__(self, pseudo, budget):
         self.joueur_pseudo = pseudo
         self.joueur_budget = budget
 
 
-class Zone(Base, JsonModel):
+class zone(Base, JsonModel):
     __tablename__ = "zone"
     zone_id = Column(Integer, primary_key=True)
     zone_posX = Column(Float)
@@ -95,7 +95,7 @@ class Zone(Base, JsonModel):
     zone_rayon = Column(Float)
     #represente la carte sur laquelle se trouve le joueur
     joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'))
-    joueur = relationship("Zone", back_populates="zones")
+    joueur = relationship("joueur", back_populates="zones")
 
     def __init__(self, posX, posY, rayon):
         self.zone_posX = posX
@@ -103,55 +103,55 @@ class Zone(Base, JsonModel):
         self.zone_rayon = rayon
 
 
-class Carte(Base, JsonModel):
+class carte(Base, JsonModel):
     __tablename__ = "carte"
     carte_id = Column(Integer, primary_key=True)
     carte_largeur = Column(Float)
     carte_longueur = Column(Float)
     #represente les journees par carte
-    journees = relationship("Journee", back_populates="carte")
+    journees = relationship("journee", back_populates="carte")
     #represente les joueurs par carte
-    joueurs = relationship("Joueurs", back_populates="carte")
+    joueurs = relationship("joueur", back_populates="carte")
 
     def __init__(self, largeur, longueur):
         self.carte_largeur = largeur
         self.carte_longueur = longueur
 
 
-class Transaction(Base, JsonModel):
+class transaction(Base, JsonModel):
     __tablename__ = "transaction"
     transaction_id = Column(Integer, primary_key=True)
     transaction_prix = Column(Float)
     #represente la journee pendant laquelle a lieu la transaction
     journee_id = Column(Integer, ForeignKey('journee.jour_id'))
-    journee = relationship("Journee", back_populates="transactions")
+    journee = relationship("journee", back_populates="transactions")
 
     def __init__(self, prix):
         self.transaction_prix = prix
 
 
-class Journee(Base, JsonModel):
+class journee(Base, JsonModel):
     __tablename__ = "journee"
     jour_id = Column(Integer, primary_key=True)
     jour_date = Column(Date)
     #represente les transactions de la journee
-    transactions = relationship("Transaction", back_populates="journee")
+    transactions = relationship("transaction", back_populates="journee")
     #represente le lien entre la carte et les journees
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
-    carte = relationship("Carte", back_populates="journees")
+    carte = relationship("carte", back_populates="journees")
     #represente le lien entre la meteo et les journees
     meteo_id = Column(Integer, ForeignKey('meteo.meteo_id'))
-    meteo = relationship("Meteo", back_populates="journees")
+    meteo = relationship("meteo", back_populates="journees")
 
     def __init__(self, date):
         self.jour_date = date
 
-class Meteo(Base, JsonModel):
+class meteo(Base, JsonModel):
     __tablename__ = "meteo"
     meteo_id = Column(Integer, primary_key=True)
     meteo_libelle = Column(String(255))
     #represente les journees ayant cette meteo
-    journees = relationship("Journees", back_populates="meteo")
+    journees = relationship("journee", back_populates="meteo")
 
     def __init__(self, libelle):
         self.meteo_libelle = libelle
