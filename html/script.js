@@ -1,4 +1,12 @@
-
+/*
+$.ajax("http://127.0.0.1:5000/dayinfo")
+   .done(function(data){
+    $("#day").html(data['day']);
+    $("#weather").html(data['weather']);
+    $("#money").html(data['budget'].toFixed(2));
+    $("#gameover").html(data['game']);  
+   });
+*/
 $("#day").html(
  Math.floor((Math.random() * 29) + 1)+"/"
  +Math.floor((Math.random() * 12) + 1)+"/2017"

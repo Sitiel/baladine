@@ -1,26 +1,25 @@
-.row{
-	border-style : solid;
-}
 
-[class*="col-"]{
-	border-style : double;
-}
 
 #info_bar{
-	margin-left: 0.01vw;
+	border-style : solid;
 	height : 10vh;
+	width : 99%;
+	margin-left:1px;
 }
 #map{
 	width : 75vw;
 	height : 85vh;
 	background-image : url("map.jpg");
-	 background-repeat: no-repeat;
+	background-repeat: no-repeat;
     background-attachment: fixed;
-	 background-size: 75vw 100vh;
+	background-size: 75vw 100vh;
 }
 
+#menu_droite{
+	width : 20%;
+}
 #ventes_actuelles{
 	border-style : solid;
-	height : 80vh;
+	height : 75vh;
 	overflow:auto;
 }
