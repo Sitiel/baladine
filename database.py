@@ -1,9 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from config import SQLALCHEMY_DATABASE_URI
+import os
 
-print "Load : " + 'postgresql://localhost/balady'
-engine = create_engine('postgresql://postgres:imerir@localhost/balady', echo = True)
+print "Load : " + os.getenv('DATABASE_URL', SQLALCHEMY_DATABASE_URI)
+
+engine = create_engine(os.getenv('DATABASE_URL', SQLALCHEMY_DATABASE_URI), echo = True)
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
