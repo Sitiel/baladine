@@ -3,8 +3,28 @@ from database import db_session
 from flask import jsonify
 
 
+# - Class JSON - #
+class MetrologyJson(JsonModel):
+    metro_timestamp
+    metro_weather
+
+    def __init__(self, timestamp, weather):
+        self.metro_timestamp = timestamp
+        self.metro_weather = weather
+
+
+class WeatherJson(JsonModel):
+    weather_dfn
+    weather_type
+
+    def __init__(self, dfn, wtype):
+        self.weather_dfn = dfn
+        self.weather_type = wtype
+
+# - Fonction Flask - #
+
 def get_metrology():
-    #
+    timestamp
     return 'do some magic!'
 
 
