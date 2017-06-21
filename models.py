@@ -64,7 +64,7 @@ class Recette(Base, JsonModel):
     recette_id = Column(Integer, primary_key=True)
     recette_nom = Column(String(255))
     #relation vers ingredient
-    ingredients = relationship('ingredient', secondary=compose) 
+    ingredients = relationship('Ingredient', secondary=compose) 
 
     def __init__(self, nom):
         self.recette_nom = nom
@@ -75,7 +75,7 @@ class Joueur(Base, JsonModel):
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
     joueur_budget = Column(Integer)
-    recettes = relationship('recette', secondary=possede) #relation vers recette
+    recettes = relationship('Recette', secondary=possede) #relation vers recette
     #represente la carte sur laquelle se trouve le joueur
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
     carte = relationship("Carte", back_populates="joueurs")
