@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from database import Base
 
 
-class SQLToJsonModel():
+class JsonModel():
     def toJson(self):
         dict = self.__dict__
         invalid_keys = {"_sa_instance_state"}
@@ -44,7 +44,7 @@ produit = Table('produit', Base.metadata,
 # Relation eentre le joueur et ses zones
 #----- Tables -----#
 
-class Ingredient(Base, SQLToJsonModel):
+class Ingredient(Base, JsonModel):
     __tablename__ = "ingredient"
     ing_id = Column(Integer, primary_key=True)
     ing_nom = Column(String(255))
@@ -59,7 +59,7 @@ class Ingredient(Base, SQLToJsonModel):
         self.ing_froid = froid
 
 
-class Recette(Base, SQLToJsonModel):
+class Recette(Base, JsonModel):
     __tablename__ = "recette"
     recette_id = Column(Integer, primary_key=True)
     recette_nom = Column(String(255))
@@ -70,7 +70,7 @@ class Recette(Base, SQLToJsonModel):
         self.recette_nom = nom
 
 
-class Joueur(Base, SQLToJsonModel):
+class Joueur(Base, JsonModel):
     __tablename__ = "joueur"
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
@@ -87,7 +87,7 @@ class Joueur(Base, SQLToJsonModel):
         self.joueur_budget = budget
 
 
-class Zone(Base, SQLToJsonModel):
+class Zone(Base, JsonModel):
     __tablename__ = "zone"
     zone_id = Column(Integer, primary_key=True)
     zone_posX = Column(Float)
@@ -103,7 +103,7 @@ class Zone(Base, SQLToJsonModel):
         self.zone_rayon = rayon
 
 
-class Carte(Base, SQLToJsonModel):
+class Carte(Base, JsonModel):
     __tablename__ = "carte"
     carte_id = Column(Integer, primary_key=True)
     carte_largeur = Column(Float)
@@ -118,7 +118,7 @@ class Carte(Base, SQLToJsonModel):
         self.carte_longueur = longueur
 
 
-class Transaction(Base, SQLToJsonModel):
+class Transaction(Base, JsonModel):
     __tablename__ = "transaction"
     transaction_id = Column(Integer, primary_key=True)
     transaction_prix = Column(Float)
@@ -130,7 +130,7 @@ class Transaction(Base, SQLToJsonModel):
         self.transaction_prix = prix
 
 
-class Journee(Base, SQLToJsonModel):
+class Journee(Base, JsonModel):
     __tablename__ = "journee"
     jour_id = Column(Integer, primary_key=True)
     jour_date = Column(Date)
@@ -146,7 +146,7 @@ class Journee(Base, SQLToJsonModel):
     def __init__(self, date):
         self.jour_date = date
 
-class Meteo(Base, SQLToJsonModel):
+class Meteo(Base, JsonModel):
     __tablename__ = "meteo"
     meteo_id = Column(Integer, primary_key=True)
     meteo_libelle = Column(String(255))
