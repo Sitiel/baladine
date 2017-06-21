@@ -3,7 +3,20 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <regex.h>
 
+
+regex_t regex;
+
+
+struct _arduino_data{
+    int hour;
+    int currentWeatherId;
+    int nextWeatherId;
+};
+
+typedef struct _arduino_data arduino_data;
 
 int
 set_interface_attribs (int fd, int speed, int parity)
@@ -64,8 +77,13 @@ set_blocking (int fd, int should_block)
 }
 
 int main(){
+    int reti = regcomp(&regex, "@[0-9]{1,9};[0-9]{1,9};[0-9]{1,9};", REG_EXTENDED);
+    if (reti) {
+        printf("Could not compile regex\n");
+        exit(1);
+    }
     
-    char *portname = "/dev/ttyUSB1";
+    char *portname = "/dev/cu.usbmodem1411";
     
     int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
     if (fd < 0)
@@ -74,13 +92,29 @@ int main(){
         return 0;
     }
     
-    set_interface_attribs (fd, B115200, 0);  // set speed to 115,200 bps, 8n1 (no parity)
-    set_blocking (fd, 0);                // set no blocking
-    
-    write (fd, "hello!\n", 7);           // send 7 character greeting
-    
-    usleep ((7 + 25) * 100);             // sleep enough to transmit the 7 plus
-    // receive 25:  approx 100 uS per char transmit
-    char buf [100];
-    int n = read (fd, buf, sizeof buf);  // read up to 100 characters if ready to read
+    set_interface_attribs (fd, B9600, 0);  // set speed to 115,200 bps, 8n1 (no parity)
+    set_blocking (fd, 1);                // set blocking
+    printf("Start !\n");
+    while(1){
+        regmatch_t rm[2];
+        arduino_data ard;
+        char buf[255];
+        int n = read(fd,buf,255);
+        int success = regexec(&regex, buf, 2, rm, 0);
+        if(success == 0){
+            char extractedWord[255];
+            for(int i = rm[0].rm_so ; i < rm[0].rm_eo ; i++)
+            {
+                sprintf(extractedWord,"%c", buf[i]);
+            }
+            sscanf(extractedWord,"@%d;%d;%d;",&ard.hour,&ard.currentWeatherId,&ard.nextWeatherId);
+            printf("\n");
+            //sscanf(buf,"@%d;%d;%d;",&ard.hour,&ard.currentWeatherId,&ard.nextWeatherId);
+        }
+        else{
+            printf("Error");
+        }
+    }
+    regfree(&regex);
+    usleep(100000);
 }
