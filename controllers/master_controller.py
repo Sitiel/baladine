@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from database import db_session
+from database import db_session, Base, engine
 from models import ingredient, recette
 
 
@@ -13,21 +13,27 @@ def post_sales(sales=None):
 
 
 def reset_game():
+
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    return "Success", 200, {'Content-Type': 'application/text'}
+
     # Example of recette creation with ingredients
-    u = ingredient('Citron', 0.1, False, True)
+    #u = ingredient('Citron', 0.1, False, True)
 
-    a = ingredient('Eau', 0, False, True)
 
-    db_session.add(u)
-    db_session.add(a)
+    #a = ingredient('Eau', 0, False, True)
 
-    db_session.commit()
+    #db_session.add(u)
+    #db_session.add(a)
 
-    x = recette("Limonade")
-    x.ingredients.append(u)
-    x.ingredients.append(a)
+    #db_session.commit()
 
-    db_session.add(x)
-    db_session.commit()
+    #x = recette("Limonade")
+    #x.ingredients.append(u)
+    #x.ingredients.append(a)
 
-    return jsonify(ingredients_of_recette=[i.toJson() for i in x.ingredients])
+    #db_session.add(x)
+    #db_session.commit()
+
+    #return jsonify(ingredients_of_recette=[i.toJson() for i in x.ingredients])
