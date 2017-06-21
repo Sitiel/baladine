@@ -2,13 +2,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import relationship, backref
 
 from database import Base
-
-
-class JsonModel():
-    def toJson(self):
-        dict = self.__dict__
-        invalid_keys = {"_sa_instance_state"}
-        return {x.rsplit('_', 1)[-1]: dict[x] for x in dict if x not in invalid_keys}
+from json_model import *
 
 #----- Relation -----#
 
