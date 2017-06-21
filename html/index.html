@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <!-- Bootstrap -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  <meta charset="UTF-8">
+  <title>Limonade.io</title>
+  <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+  <div id="info_bar" class="row">
+   <span id="day"></span>
+   <span id="hour"></span>
+   Climat : <span id="weather"></span>
+   Prévision : <span id="futur_weather"></span>
+  </div>
+  <div class="row">
+   <div class="col-sm-9">
+    <canvas id="map"></canvas>
+    <!--<img id="map" src="map.jpg">-->
+   </div>
+   <div id="menu droite" class="col-sm-3">
+    <form id="choix" action="#">
+     <input type="submit" value="CHOIX">
+	</form>
+	<div id="ventes_actuelles">
+	 <strong>Ventes</strong>
+	 <ul id="recettes_en_ventes">
+	 </ul>
+	</div>
+	<div id="info_budget">
+	 Budget : <span id="budget">0.00</span>€
+	</div>
+   </div>
+  </div>
+ 
+ </body>
+ <script src="script.js"></script>
+ <script src="set_pub.js"></script>
+</html>
