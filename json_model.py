@@ -9,10 +9,8 @@ class JsonModel():
         for x in dict :
             if x not in invalid_keys :
                 if isinstance(dict[x],JsonModel):
-                    print("Json")
                     dictio[x.rsplit('_', 1)[-1]] = dict[x].toJson()
                 else :
-                    print("Not Json")
                     dictio[x.rsplit('_', 1)[-1]] = dict[x]
         return dictio
         #return {x.rsplit('_', 1)[-1]: dict[x] for x in dict if x not in invalid_keys}
