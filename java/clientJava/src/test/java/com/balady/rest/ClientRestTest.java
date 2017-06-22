@@ -17,8 +17,8 @@ public class ClientRestTest {
 	public void testConvertToJson() {
 		clientRest = new ClientRest("test");
 		List<Sale> sales = new ArrayList<>();
-		sales.add(new Sale("toto","limonade"));
-		sales.add(new Sale("michel","eau"));
+		sales.add(new Sale("toto","limonade",2));
+		sales.add(new Sale("michel","eau",10));
 		System.out.println(clientRest.convertToJson(sales));	
 	}
 

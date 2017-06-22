@@ -32,6 +32,20 @@
 	text-align: left;
 }
 
+#creation_recette{
+font-size : 30px;
+}
+
+#ingredients{
+	text-align: center;
+	border-style : solid;
+	height : 70vh;
+	overflow:auto;
+}
+
+#ingredients div{
+	border-style : solid;
+}
 
 
 

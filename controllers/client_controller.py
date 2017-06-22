@@ -17,10 +17,6 @@ def get_meteorology():
 
 
 def ingredients_get():
-    # Example of insert into
-    u = ingredient('Citron', 0.1, False, True)
-    db_session.add(u)
-    db_session.commit()
     # Example of select *
     ingredients = ingredient.query.all()
     # Example of Model (row of table) to json conversion
@@ -32,7 +28,7 @@ def join_game(playerJoinUsername):
     db_session.add(j)
     db_session.commit()
     return jsonify(playerJoinUsername)
-
+#curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
 
 def map_player_name_get(playerName):
     return 'do some magic!'
@@ -43,10 +39,26 @@ def post_action(playerName, actions):
     if typeAction == "recipe" :
         #ajouter l'ajout de stand a la base de donnees
         #"recipe": {"name": "Limonade","ingredients": {},"hasAlcohol": false,"isCold": false}
-        nameRec = actions['actions'][0]['name']
-        composition = actions['actions'][0]['ingredients']
-        ingredients = ingredient.query.with_entities(ingredient.ing_id, ingredient.ing_nom)
-        return jsonify(ingredients)
+        nameRec = actions['actions'][0]['recipe']['name']
+        composition = actions['actions'][0]['recipe']['ingredients']
+        ingredients_nom = []
+        #recuperations des id de chaque ingredient
+        for x in composition :
+            ingredients_nom.append(x['name'])
+        ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
+        #ajout a la table possede des ingredients pour la recette
+        #j = joueur(playerJoinUsername['name'], 1.0)
+        joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).one()
+        #db_session.add(j)
+        #db_session.commit()
+        rec = recette(nameRec)
+        for x in ingredients :
+            rec.ingredients.append(x)    
+        joueurDB.recettes.append(rec)
+        db_session.add(rec)
+        db_session.commit()
+
+        return jsonify(ingredients=[i.toJson() for i in ingredients])
     elif typeAction == "ad" :
         #ajouter l'ajout d'une pub a la base de donnees
         return 'creation de pub'
@@ -58,7 +70,7 @@ def post_action(playerName, actions):
         return "Error bad input", 400, {'Content-Type': 'application/text'}
 
     return jsonify(actions)
-#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "stand","recipe": {"name": "Limonade","ingredients": {},"hasAlcohol": false,"isCold": false},"location": {"latitude": 0,"longitude": 0},"prepare": {}}],"simulated": false}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/suskiki
+#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Suskiki
 
 def quit_game(playerName):
     return 'do some magic!'

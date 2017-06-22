@@ -10,8 +10,9 @@ public class testClientRest {
 		ClientRest client = new ClientRest("https://virtserver.swaggerhub.com/ValerianKang/Balady_API/1.0.0");
 		System.out.println(client.getData());
 		List<Sale> sales = new ArrayList<>();
-		sales.add(new Sale("toto","limonade"));
-		sales.add(new Sale("michel","eau"));
-		client.sendSale(sales);
+		sales.add(new Sale("toto","limonade",3));
+		sales.add(new Sale("michel","eau",4));
+		client.sendSales(sales);
+		System.out.println(client.getMeteorologyAndTime());
 	}
 }

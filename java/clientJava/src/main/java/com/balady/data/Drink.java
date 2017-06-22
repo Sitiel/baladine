@@ -3,19 +3,19 @@ package com.balady.data;
 public class Drink {
 	private String name;
 	private float cost;
-	private boolean isAlcholize;
+	private boolean hasAlcholize;
 	private boolean isCold;
-	
+
 	/**
 	 * @param name
 	 * @param cost
-	 * @param isAlcholize
+	 * @param hasAlcholize
 	 * @param isCold
 	 */
-	public Drink(String name, float cost, boolean isAlcholize, boolean isCold) {
+	public Drink(String name, float cost, boolean hasAlcholize, boolean isCold) {
 		this.name = name;
 		this.cost = cost;
-		this.isAlcholize = isAlcholize;
+		this.hasAlcholize = hasAlcholize;
 		this.isCold = isCold;
 	}
 
@@ -48,17 +48,17 @@ public class Drink {
 	}
 
 	/**
-	 * @return the isAlcholize
+	 * @return the hasAlcholize
 	 */
-	public boolean isAlcholize() {
-		return isAlcholize;
+	public boolean isHasAlcholize() {
+		return hasAlcholize;
 	}
 
 	/**
-	 * @param isAlcholize the isAlcholize to set
+	 * @param hasAlcholize the hasAlcholize to set
 	 */
-	public void setAlcholize(boolean isAlcholize) {
-		this.isAlcholize = isAlcholize;
+	public void setHasAlcholize(boolean hasAlcholize) {
+		this.hasAlcholize = hasAlcholize;
 	}
 
 	/**
@@ -74,4 +74,5 @@ public class Drink {
 	public void setCold(boolean isCold) {
 		this.isCold = isCold;
 	}
+	
 }
