@@ -6,15 +6,36 @@ public class Zone {
 	
 	private float influence;
 	private TypeZone typeZone;
+	private Coordinates coordinates;
 
 	/**
 	 * @param influence
 	 * @param typeZone
+	 * @param coordinates
 	 */
-	public Zone(float influence, TypeZone typeZone) {
+	public Zone(float influence, TypeZone typeZone, Coordinates coordinates) {
 		this.influence = influence;
 		this.typeZone = typeZone;
+		this.coordinates = coordinates;
 	}
+
+	/**
+	 * @return the coordinates
+	 */
+	public Coordinates getCoordinates() {
+		return coordinates;
+	}
+
+
+
+	/**
+	 * @param coordinates the coordinates to set
+	 */
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
+	}
+
+
 
 	/**
 	 * @return the influence

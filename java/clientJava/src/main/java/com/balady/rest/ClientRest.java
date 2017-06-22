@@ -9,9 +9,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import com.balady.data.Sale;
+import com.balady.rest.receiptJson.ReceiptObject;
+import com.balady.rest.receiptJson.TimeReceipt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClientRest {
@@ -44,8 +44,9 @@ public class ClientRest {
 	 * GET \map Get data of current day 
 	 * @return JSONObject which contains all data
 	 */
-	public JSONObject getData() {
+	public ReceiptObject getData() {
 		try {
+			ObjectMapper mapper = new ObjectMapper();
 			URL adress = new URL(url + "/map");
 			HttpURLConnection conn = (HttpURLConnection) adress.openConnection();
 			conn.setRequestMethod("GET");
@@ -63,13 +64,50 @@ public class ClientRest {
 				ret += output;
 			}
 			conn.disconnect();
-			JSONObject res = new JSONObject(ret);
+			ReceiptObject res = mapper.readValue(ret, ReceiptObject.class);
 			return res;
 		} catch (MalformedURLException e) {
 			System.out.println("ERROR while trying to create url: " + url + "/map");
 			return null;
 		} catch (IOException e) {
 			System.out.println("ERROR while Rest Connexion");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * GET \map Get data of current day 
+	 * @return JSONObject which contains all data
+	 */
+	public TimeReceipt getMeteorologyAndTime() {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			URL adress = new URL(url + "/meteorology");
+			HttpURLConnection conn = (HttpURLConnection) adress.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+			String ret = "";
+			String output;
+			while ((output = br.readLine()) != null) {
+				ret += output;
+			}
+			conn.disconnect();
+			TimeReceipt res = mapper.readValue(ret, TimeReceipt.class);
+			return res;
+		} catch (MalformedURLException e) {
+			System.out.println("ERROR while trying to create url: " + url + "/meteorology");
+			return null;
+		} catch (IOException e) {
+			System.out.println("ERROR while Rest Connexion");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -78,7 +116,7 @@ public class ClientRest {
 	 * POST \sales
 	 * @param The list of sale 
 	 */
-	public void sendSale(List<Sale> sales) {
+	public void sendSales(List<Sale> sales) {
 		try {
 			URL adress = new URL(url + "/sales");
 			HttpURLConnection conn = (HttpURLConnection) adress.openConnection();
@@ -132,7 +170,7 @@ public class ClientRest {
 		}
 	}
 	
-	public String convertToJson(List<Sale> sales) {
+	String convertToJson(List<Sale> sales) {
 		ListSales tmp = new ListSales(sales);
 		ObjectMapper mapper = new ObjectMapper();
 		try {

@@ -5,3 +5,4 @@ java/clientJava/bin
 java/clientJava/build
 ./bin
 *.pyc
+java/clientJava/.gitignore
