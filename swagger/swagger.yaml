@@ -111,7 +111,7 @@ paths:
       - "controller"
       summary: "Set the meteorology"
       description: "Set the json object containing the time, weather and next weather"
-      operationId: "controllers.controller_controller.post_meterology"
+      operationId: "controllers.controller_controller.post_meteorology"
       consumes:
       - "application/json"
       produces:

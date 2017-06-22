@@ -1,18 +1,19 @@
 from database import db_session
 from flask import jsonify
 from models import *
-from json_model import *
-
+import json_model
 
 # - Fonction Flask - #
+
 
 def get_meteorology():
     #jour = carte.journees[-1]
     #jour.meteo.meteo_libelle
-    meteo = WeatherJson(0,'Sunny')
-    metrology = MetrologyJson(0,meteo)
-    
-    return metrology.toJson()
+    #meteo = WeatherJson(0,'Sunny')
+    #meteorology = MeteorologyJson(0,meteo)
+    #return meteoJson.timestamp
+    return jsonify(json_model.meteoJsontoString)
+
 
 
 def ingredients_get():

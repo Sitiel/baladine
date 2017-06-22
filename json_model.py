@@ -18,9 +18,9 @@ class JsonModel():
         #return {x.rsplit('_', 1)[-1]: dict[x] for x in dict if x not in invalid_keys}
 
 
-class MetrologyJson(JsonModel):
+class MeteorologyJson(JsonModel):
     metro_timestamp = 0
-    metro_weather = 0
+    metro_weather = []
 
     def __init__(self, timestamp, weather):
         self.metro_timestamp = timestamp
@@ -35,3 +35,4 @@ class WeatherJson(JsonModel):
         self.weather_dfn = dfn
         self.weather_type = wtype
 
+meteoJson = MeteorologyJson(0,0)
