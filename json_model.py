@@ -36,3 +36,4 @@ class WeatherJson(JsonModel):
         self.weather_type = wtype
 
 meteoJson = MeteorologyJson(0,0)
+meteoJsontoString = 0
