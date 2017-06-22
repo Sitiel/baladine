@@ -5,6 +5,8 @@
 	height : 10vh;
 	width : 99%;
 	margin-left:1px;
+	font-size : 300%;
+	text-align: center;
 }
 #map{
 	width : 75vw;
@@ -17,9 +19,20 @@
 
 #menu_droite{
 	width : 20%;
+	text-align: center;
 }
+
 #ventes_actuelles{
 	border-style : solid;
 	height : 75vh;
 	overflow:auto;
 }
+
+#recettes_en_ventes{
+	text-align: left;
+}
+
+
+
+
+
