@@ -1,14 +1,16 @@
-from flask import jsonify
+from flask import request,jsonify
 
 from database import db_session, Base, engine
-from models import ingredient, recette
+from models import *
 
 
 def map_get():
-    return 'do some magic!'
+    joueurs = joueur.query.all()
+    return jsonify(joueurs=[i.toJson() for i in joueurs])
 
 
 def post_sales(sales):
+    
     return 'do some magic!'
 
 

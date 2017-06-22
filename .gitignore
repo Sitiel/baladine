@@ -4,3 +4,4 @@ config.py
 java/clientJava/bin
 java/clientJava/build
 ./bin
+*.pyc

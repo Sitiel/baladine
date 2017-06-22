@@ -41,7 +41,7 @@ produit = Table('produit', Base.metadata,
 class ingredient(Base, JsonModel):
     __tablename__ = "ingredient"
     ing_id = Column(Integer, primary_key=True)
-    ing_nom = Column(String(255))
+    ing_nom = Column(String(255),unique=True)
     ing_cout = Column(Float)
     ing_alcohol = Column(Boolean)
     ing_froid = Column(Boolean)
