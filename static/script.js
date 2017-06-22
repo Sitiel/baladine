@@ -1,14 +1,17 @@
+setInterval(function (){ 
+	$.ajax("http://balady.herokuapp.com/ValerianKang/Balady_API/1.0.0/meteorology")
+	 .done(function(data){
+		var hour = data['timestamp']%24
+		console.log(data['timestamp']);
+		if(hour < 10){
+			hour = "0"+hour
+		}
+		$("#hour").html(hour+":00");
+		$("#weather").html(data['weather']['0']['weather']);
+		$("#futur_weather").html(data['weather']['1']['weather']);
+	   });
+}, 1000);
 
-$.ajax("http://localhost:5000/ValerianKang/Balady_API/1.0.0/meteorology")
-   .done(function(data){
-	var hour = data['timestamp']%24
-    if(hour < 10){
-		hour = "0"+hour
-	}
-    $("#hour").html(hour+":00");
-    $("#weather").html(data['weather']['0']['weather']);
-	$("#futur_weather").html(data['weather']['1']['weather']);
-   });
 
 $("#day").html(
  Math.floor((Math.random() * 29) + 1)+"/"
