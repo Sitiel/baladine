@@ -147,7 +147,7 @@ paths:
         description: "Meteorology information to set"
         required: true
         schema:
-          $ref: "#/definitions/sale"
+          $ref: "#/definitions/sales"
       responses:
         200:
           description: "Sucess"
@@ -382,6 +382,7 @@ definitions:
     type: "object"
     required:
     - "cash"
+    - "drinksOffered"
     - "profit"
     - "sales"
     properties:
@@ -394,9 +395,15 @@ definitions:
       profit:
         type: "number"
         example: 8.019999999999999573674358543939888477325439453125
+      drinksOffered:
+        type: "array"
+        items:
+          $ref: "#/definitions/drinkInfo"
   drinkInfo:
     type: "object"
     required:
+    - "hasAlcohol"
+    - "isCold"
     - "name"
     - "price"
     properties:
@@ -406,6 +413,12 @@ definitions:
       price:
         type: "number"
         example: 0.450000000000000011102230246251565404236316680908203125
+      hasAlcohol:
+        type: "boolean"
+        example: false
+      isCold:
+        type: "boolean"
+        example: false
   itemsByPlayer:
     type: "object"
     additionalProperties:
@@ -442,6 +455,15 @@ definitions:
         $ref: "#/definitions/playerInfoByPlayer"
       drinksByPlayer:
         $ref: "#/definitions/drinksByPlayer"
+  sales:
+    type: "object"
+    required:
+    - "sales"
+    properties:
+      sales:
+        type: "array"
+        items:
+          $ref: "#/definitions/sale"
   sale:
     type: "object"
     required:
@@ -499,8 +521,9 @@ definitions:
         type: "string"
         example: "Limonade"
       ingredients:
-        type: "object"
-        properties: {}
+        type: "array"
+        items:
+          $ref: "#/definitions/ingredient"
       hasAlcohol:
         type: "boolean"
         example: false
