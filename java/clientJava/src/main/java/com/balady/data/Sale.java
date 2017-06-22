@@ -3,14 +3,31 @@ package com.balady.data;
 public class Sale {
 	private String player;
 	private String item;
-	
+	private int nb;
+
 	/**
 	 * @param player
 	 * @param item
+	 * @param nb
 	 */
-	public Sale(String player, String item) {
+	public Sale(String player, String item, int nb) {
 		this.player = player;
 		this.item = item;
+		this.nb = nb;
+	}
+
+	/**
+	 * @return the nb
+	 */
+	public int getNb() {
+		return nb;
+	}
+
+	/**
+	 * @param nb the nb to set
+	 */
+	public void setNb(int nb) {
+		this.nb = nb;
 	}
 
 	/**

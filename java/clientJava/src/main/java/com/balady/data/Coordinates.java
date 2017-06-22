@@ -1,38 +1,38 @@
 package com.balady.data;
 
 public class Coordinates {
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	/**
 	 * @param x
 	 * @param y
 	 */
-	public Coordinates(int x, int y) {
+	public Coordinates(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 	/**
 	 * @return the x
 	 */
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 	/**
 	 * @param x the x to set
 	 */
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 	/**
 	 * @return the y
 	 */
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 	/**
 	 * @param y the y to set
 	 */
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	
