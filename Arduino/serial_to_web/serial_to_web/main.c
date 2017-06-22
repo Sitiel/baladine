@@ -116,14 +116,14 @@ void updateMeteo(arduino_data ard) {
     char *data = generateJsonFromValues(ard);
     char request_template[] = "POST /ValerianKang/Balady_API/1.0.0/meteorology HTTP/1.1\r\nHost: %s\r\nContent-type: application/json\r\nContent-length: %d\r\n\r\n%s\r\n";
     struct protoent *protoent;
-    char *hostname = "localhost";
+    char *hostname = "balady.herokuapp.com";
     in_addr_t in_addr;
     int request_len;
     int socket_file_descriptor;
     ssize_t nbytes_total, nbytes_last;
     struct hostent *hostent;
     struct sockaddr_in sockaddr_in;
-    unsigned short server_port = 5000;
+    unsigned short server_port = 80;
     
     request_len = snprintf(request, MAX_REQUEST_LEN, request_template, hostname, strlen(data), data);
     if (request_len >= MAX_REQUEST_LEN) {
@@ -164,6 +164,9 @@ void updateMeteo(arduino_data ard) {
         exit(EXIT_FAILURE);
     }
     
+    fd_set readfs;
+    
+    
     /* Send HTTP request. */
     nbytes_total = 0;
     while (nbytes_total < request_len) {
@@ -174,9 +177,8 @@ void updateMeteo(arduino_data ard) {
         }
         nbytes_total += nbytes_last;
     }
-    while ((nbytes_total = read(socket_file_descriptor, buffer, BUFSIZ)) > 0) {
-        //write(STDOUT_FILENO, buffer, nbytes_total);
-    }
+    nbytes_total = read(socket_file_descriptor, buffer, BUFSIZ);
+
     if (nbytes_total == -1) {
         perror("read");
         exit(EXIT_FAILURE);
@@ -200,7 +202,7 @@ arduino_data getCurrentState(int USB){
         {
             started = true;
             ended = false;
-            memset(received, 0, 1024);
+            memset(received, 0, 1020);
         }
         if(buf == '!' && started){
             ended = true;
@@ -257,7 +259,7 @@ int main(){
     printf("Start !\n");
     while(1){
         arduino_data ard = getCurrentState(USB);
-        printf("Current hour of the game : %d\n", ard.hour );
+        printf("Current hour of the game : %d weather : %s next weather : %s\n", ard.hour, weatherNameFromId(ard.currentWeatherId),weatherNameFromId(ard.nextWeatherId));
         updateMeteo(ard);
         
     }
