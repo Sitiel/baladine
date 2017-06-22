@@ -100,6 +100,7 @@ public class ClientRest {
 				ret += output;
 			}
 			conn.disconnect();
+			System.out.println(ret);
 			TimeReceipt res = mapper.readValue(ret, TimeReceipt.class);
 			return res;
 		} catch (MalformedURLException e) {

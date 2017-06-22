@@ -1,6 +1,7 @@
 package com.balady.data;
 
 import com.balady.data.utils.TypeZone;
+import com.balady.population.Consumer;
 
 public class Zone {
 	
@@ -70,8 +71,8 @@ public class Zone {
 	 * @param c
 	 * @return true if is in Influencce
 	 */
-	public boolean isInInfluence(Coordinates c) {
-		// TODO
-		return false;
+	public boolean isInInfluence(Consumer c) {
+		float tmp = Math.abs(this.getCoordinates().getX() - c.getCoordinates().getX())+Math.abs(this.getCoordinates().getY()-c.getCoordinates().getY());
+		return tmp < this.getInfluence();
 	}
 }
