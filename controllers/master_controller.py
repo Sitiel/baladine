@@ -10,12 +10,22 @@ def map_get():
 
 
 def post_sales(sales):
-    
-    return 'do some magic!'
+    r = recette.query().filter(recette.recette_nom == sales['item'])
+    total_cost = 0
+    return r.toJson()
+    for i in r:
+        total_cost += i.ing_cout
+    quantity = sales['quantity']
+    #if sales['quantity'] > availablesItems['player'][sales['item']]:
+    #    quantity = availablesItems['player'][sales['item']]
+
+    t = transaction(quantity * total_cost)
+    db_session.add(t)
+    db_session.commit()
+    return t.toJson()
 
 
 def reset_game():
-
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     return "Success", 200, {'Content-Type': 'application/text'}

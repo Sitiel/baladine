@@ -35,3 +35,8 @@ class WeatherJson(JsonModel):
 
 meteoJson = MeteorologyJson(0,0)
 meteoJsontoString = 0
+
+currentDay = 0
+
+
+availablesItems = []
