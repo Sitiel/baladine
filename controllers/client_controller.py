@@ -1,14 +1,12 @@
-#from models import ingredient
 from database import db_session
 from flask import jsonify
-#from models import JsonModel
 from models import *
 from json_model import *
 
 
 # - Fonction Flask - #
 
-def get_metrology():
+def get_meteorology():
     #jour = carte.journees[-1]
     #jour.meteo.meteo_libelle
     meteo = WeatherJson(0,'Sunny')
@@ -28,7 +26,7 @@ def ingredients_get():
     return jsonify(ingredients=[i.toJson() for i in ingredients])
 
 
-def join_game(playerJoinUsername=None):
+def join_game(playerJoinUsername):
     return 'do some magic!'
 
 
@@ -36,7 +34,7 @@ def map_player_name_get(playerName):
     return 'do some magic!'
 
 
-def post_action(playerName, actions=None):
+def post_action(playerName, actions):
     return 'do some magic!'
 
 

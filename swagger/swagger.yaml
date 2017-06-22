@@ -54,7 +54,7 @@ paths:
       - in: "body"
         name: "playerJoinUsername"
         description: "Players informations required to join a game"
-        required: false
+        required: true
         schema:
           $ref: "#/definitions/playerUsername"
       responses:
@@ -88,20 +88,20 @@ paths:
           description: "invalid input"
       x-tags:
       - tag: "client"
-  /metrology:
+  /meteorology:
     get:
       tags:
       - "client"
-      summary: "Get the metrology"
+      summary: "Get the meteorology"
       description: "Return a json object containing current time, current weather\
         \ and next weather"
-      operationId: "controllers.client_controller.get_metrology"
+      operationId: "controllers.client_controller.get_meteorology"
       produces:
       - "application/json"
       parameters: []
       responses:
         200:
-          description: "Metrology ( temps )"
+          description: "Meteorology ( temps )"
           schema:
             $ref: "#/definitions/temps"
       x-tags:
@@ -109,18 +109,18 @@ paths:
     post:
       tags:
       - "controller"
-      summary: "Set the metrology"
+      summary: "Set the meteorology"
       description: "Set the json object containing the time, weather and next weather"
-      operationId: "controllers.controller_controller.post_metrology"
+      operationId: "controllers.controller_controller.post_meterology"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: "body"
-        name: "Metrology"
-        description: "Metrology information to set"
-        required: false
+        name: "Meteorology"
+        description: "Meteorology information to set"
+        required: true
         schema:
           $ref: "#/definitions/temps"
       responses:
@@ -144,8 +144,8 @@ paths:
       parameters:
       - in: "body"
         name: "sales"
-        description: "Metrology information to set"
-        required: false
+        description: "Meteorology information to set"
+        required: true
         schema:
           $ref: "#/definitions/sale"
       responses:
@@ -178,7 +178,7 @@ paths:
         name: "actions"
         description: "Actions (could be an array) that the player will do the next\
           \ day"
-        required: false
+        required: true
         schema:
           $ref: "#/definitions/addActions"
       responses:
@@ -329,7 +329,9 @@ definitions:
         type: "integer"
         example: 2203
       weather:
-        $ref: "#/definitions/forecast"
+        type: "array"
+        items:
+          $ref: "#/definitions/forecast"
   coordinates:
     type: "object"
     required:

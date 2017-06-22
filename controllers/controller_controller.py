@@ -1,3 +1,5 @@
+from flask import request, jsonify
 
-def post_metrology(metrology = None):
-    return 'do some magic!'
+
+def post_meterology():
+    meteorology = request.get_json(force=True)

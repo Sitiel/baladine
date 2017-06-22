@@ -8,7 +8,7 @@ def map_get():
     return 'do some magic!'
 
 
-def post_sales(sales=None):
+def post_sales(sales):
     return 'do some magic!'
 
 

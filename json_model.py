@@ -8,7 +8,7 @@ class JsonModel():
         invalid_keys = {"_sa_instance_state"}
         for x in dict :
             if x not in invalid_keys :
-                if isinstance(dict[x],JsonModel) :
+                if isinstance(dict[x],JsonModel):
                     print("Json")
                     dictio[x.rsplit('_', 1)[-1]] = dict[x].toJson()
                 else :
