@@ -38,7 +38,6 @@ def post_action(playerName, actions):
     typeAction = actions['actions'][0]['kind']
     if typeAction == "recipe" :
         #ajouter l'ajout de stand a la base de donnees
-        #"recipe": {"name": "Limonade","ingredients": {},"hasAlcohol": false,"isCold": false}
         nameRec = actions['actions'][0]['recipe']['name']
         composition = actions['actions'][0]['recipe']['ingredients']
         ingredients_nom = []
@@ -47,10 +46,7 @@ def post_action(playerName, actions):
             ingredients_nom.append(x['name'])
         ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
         #ajout a la table possede des ingredients pour la recette
-        #j = joueur(playerJoinUsername['name'], 1.0)
         joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).one()
-        #db_session.add(j)
-        #db_session.commit()
         rec = recette(nameRec)
         for x in ingredients :
             rec.ingredients.append(x)    
