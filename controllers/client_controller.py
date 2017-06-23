@@ -2,6 +2,7 @@ import random
 
 from sqlalchemy.orm import load_only
 
+from datetime import datetime, timedelta
 from database import db_session
 from flask import request,jsonify
 from  models import *
@@ -90,9 +91,9 @@ def post_action(playerName, actions):
         return jsonify(ingredients=[i.toJson() for i in ingredients])
     elif typeAction == "ad" :
         #ajouter l'ajout d'une pub a la base de donnees
-        adX = actions['actions'][0]['location']['coord']['latitude']
-        adY = actions['actions'][0]['location']['coord']['longitude']
-        adRayon = actions['actions'][0]['location']['influence']
+        adX = actions['actions'][0]['location']['latitude']
+        adY = actions['actions'][0]['location']['longitude']
+        adRayon = actions['actions'][0]['rayon']
         advertisement = zone(adX,adY,adRayon,"ad")
         joueurDB.zones.append(advertisement)
         db_session.add(advertisement)
@@ -107,19 +108,23 @@ def post_action(playerName, actions):
         for key in actions['actions'][0]['price'] :
             nomPrix = key
             prix = actions['actions'][0]['price'][key]
-
-
-
         
-        #joueur_id = joueur.query.with_entities(joueur.joueur_id).filter(joueur.joueur_pseudo == playerName).one()
-        recette_produit = recette.query.filter(and_(recette.recette_nom == nomRecette, recette.joueur_id == joueurDB.joueur_id)).one()
+        recette_produit = recette.query.filter(and_(recette.recette_nom == nomRecette, joueurDB.joueur_id == joueurDB.joueur_id)).one()
         actualDate = datetime.now() + timedelta(days=json_model.currentDay)
         jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
         
-        joueurDB.recette_produit.append(recette_produit)
-        joueurDB.journee_produit.append(jour)
 
-        return recette.toJson()
+        # create parent, append a child via association
+        p = joueurDB
+        a = produit(nombre_prod=nbRecette, prix_vente=prix)
+        a.recette = recette_produit
+        a.journee = jour
+        p.recettes_produit.append(a)
+        p.journees_produit.append(a)
+        db_session.add(a)
+        db_session.commit()
+
+        return 'Success'
     else :
         #error 400
         return "Error bad input", 400, {'Content-Type': 'application/text'}
