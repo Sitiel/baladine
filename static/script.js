@@ -5,7 +5,7 @@ var pseudal     = "";
 
 var page = 0;
 
-setPage("choix_page");
+setPage("map_page");
 $("#info_bar").hide();
 $("#button_menu").show();
 
@@ -81,8 +81,8 @@ function getMap() {
 	$.ajax("/ValerianKang/Balady_API/1.0.0/map/" + pseudal)
 		.done(function (data) {
 			network_map_items = [];
-			var largeur       = data['map']['region']['span']['latitudeSpan'];
-			var longeur       = data['map']['region']['span']['longitudeSpan'];
+			largeur_map       = data['map']['region']['span']['latitudeSpan'];
+			longueur_map      = data['map']['region']['span']['longitudeSpan'];
 			canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 			drawPub(canvas.getContext('2d'), pubs);
 			var itemsByPlayer = data['map']['itemsByPlayer'];
@@ -90,9 +90,9 @@ function getMap() {
 				for (var mapItem in itemsByPlayer[pseudal_joueur]) {
 					var location = itemsByPlayer[pseudal_joueur][mapItem]['location'];
 					if (pseudal_joueur === pseudal) {
-						addCircle(location['latitude'] / largeur * canvas.width, location['longitude'] / longeur * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 0, 255, 0, 0.3);
+						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 0, 255, 0, 0.3);
 					} else {
-						addCircle(location['latitude'] / largeur * canvas.width, location['longitude'] / longeur * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 255, 0, 0, 0.3);
+						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 255, 0, 0, 0.3);
 					}
 				}
 			}

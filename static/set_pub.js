@@ -15,6 +15,9 @@ var posY1 = 0;
 var rayon = 0;
 var pubs  = [];
 
+var largeur_map = 0;
+var longueur_map = 0;
+
 var setpub = false;
 function active_pub() {
 	if (!setpub) {
@@ -77,6 +80,26 @@ function drawPub(ctx, _pubs) {
 	}
 }
 
+
+function sendActions() {
+	var pubs_actions = [];
+	for (var i in pubs) {
+		var l = {latitude: pubs[i]["x"]/canvas.width*largeur_map, longitude: pubs[i]["y"]/canvas.height*longueur_map};
+		pubs_actions.push({ kind: "ad", location: l, rayon: pubs[i]['rayon']});
+	}
+	$.ajax({
+		type       : "POST",
+		url        : "/ValerianKang/Balady_API/1.0.0/actions/" + pseudal,
+		// The key needs to match your method's input parameter (case-sensitive).
+		data       : JSON.stringify({actions: pubs_actions}),
+		contentType: "application/json; charset=utf-8",
+		dataType   : "json",
+		success    : function (data) {
+			pubs = [];
+		}
+	});
+}
+
 var network_map_items;
 
 function addCircle(x, y, rayon, r, g, b, a) {
@@ -107,6 +130,7 @@ canvas.onmouseup = function () {
 		publicite["rayon"] = rayon;
 		publicite["color"] = "rgba(0,200,0,0.3)";
 		pubs.push(publicite);
+		sendActions();
 		//addCircle(posX1, posY1, rayon, 0, 200, 0, 0.3);
 	}
 };
