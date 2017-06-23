@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="58e7ae52-6532-45f3-8604-8bfe15da1538" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/client_controller.py" afterPath="$PROJECT_DIR$/controllers/client_controller.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/master_controller.py" afterPath="$PROJECT_DIR$/controllers/master_controller.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/swagger/swagger.yaml" afterPath="$PROJECT_DIR$/swagger/swagger.yaml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="controller_controller.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="controller_controller.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+            <state relative-caret-position="330">
+              <caret line="22" column="27" lean-forward="true" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -51,13 +48,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="master_controller.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="master_controller.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-113">
-              <caret line="37" column="35" lean-forward="true" selection-start-line="37" selection-start-column="35" selection-end-line="37" selection-end-column="35" />
+            <state relative-caret-position="620">
+              <caret line="97" column="54" lean-forward="true" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="54" />
               <folding>
-                <element signature="e#0#40#0" expanded="true" />
+                <element signature="e#60#100#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,9 +87,6 @@
               <caret line="137" column="29" lean-forward="false" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
-                <marker date="1498212987000" expanded="true" signature="2347:3026" ph="..." />
-                <marker date="1498212987000" expanded="true" signature="5792:5854" ph="..." />
-                <marker date="1498212987000" expanded="true" signature="5824:5854" ph="..." />
               </folding>
             </state>
           </provider>
@@ -111,6 +105,7 @@
     <findStrings>
       <find>meteo</find>
       <find>temps</find>
+      <find>=</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -138,8 +133,8 @@
         <option value="$PROJECT_DIR$/json_model.py" />
         <option value="$PROJECT_DIR$/database.py" />
         <option value="$PROJECT_DIR$/models.py" />
-        <option value="$PROJECT_DIR$/controllers/master_controller.py" />
         <option value="$PROJECT_DIR$/controllers/client_controller.py" />
+        <option value="$PROJECT_DIR$/controllers/master_controller.py" />
       </list>
     </option>
   </component>
@@ -373,7 +368,7 @@
         <state relative-caret-position="390">
           <caret line="30" column="26" lean-forward="true" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#60#100#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -400,9 +395,6 @@
           <caret line="103" column="17" lean-forward="false" selection-start-line="103" selection-start-column="4" selection-end-line="103" selection-end-column="17" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1498212987000" expanded="true" signature="2347:3026" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5792:5854" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5824:5854" ph="..." />
           </folding>
         </state>
       </provider>
@@ -441,9 +433,6 @@
           <caret line="103" column="17" lean-forward="false" selection-start-line="103" selection-start-column="4" selection-end-line="103" selection-end-column="17" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1498212987000" expanded="true" signature="2347:3026" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5792:5854" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5824:5854" ph="..." />
           </folding>
         </state>
       </provider>
@@ -453,7 +442,7 @@
         <state relative-caret-position="465">
           <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#60#100#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -473,7 +462,7 @@
         <state relative-caret-position="315">
           <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="e#0#40#0" expanded="true" />
+            <element signature="e#60#100#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -515,9 +504,6 @@
           <caret line="37" column="26" lean-forward="true" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
-            <marker date="1498212987000" expanded="true" signature="2347:3026" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5792:5854" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5824:5854" ph="..." />
           </folding>
         </state>
       </provider>
@@ -588,6 +574,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2055">
+          <caret line="137" column="29" lean-forward="false" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/database.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -596,26 +592,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models.py">
+    <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2055">
-          <caret line="137" column="29" lean-forward="false" selection-start-line="137" selection-start-column="29" selection-end-line="137" selection-end-column="29" />
+        <state relative-caret-position="330">
+          <caret line="22" column="27" lean-forward="true" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
           <folding>
-            <element signature="e#0#24#0" expanded="true" />
-            <marker date="1498212987000" expanded="true" signature="2347:3026" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5792:5854" ph="..." />
-            <marker date="1498212987000" expanded="true" signature="5824:5854" ph="..." />
+            <element signature="e#0#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
+    <entry file="file://$PROJECT_DIR$/swagger/swagger.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-113">
-          <caret line="37" column="35" lean-forward="true" selection-start-line="37" selection-start-column="35" selection-end-line="37" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="411">
+          <caret line="326" column="15" lean-forward="true" selection-start-line="326" selection-start-column="15" selection-end-line="326" selection-end-column="15" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -629,20 +620,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/swagger/swagger.yaml">
+    <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="326" column="15" lean-forward="true" selection-start-line="326" selection-start-column="15" selection-end-line="326" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="620">
+          <caret line="97" column="54" lean-forward="true" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="54" />
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#60#100#0" expanded="true" />
           </folding>
         </state>
       </provider>

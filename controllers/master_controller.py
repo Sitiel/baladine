@@ -1,3 +1,7 @@
+# coding=utf-8
+# coding=utf-8
+# coding=utf-8
+# coding=utf-8
 from datetime import datetime, timedelta
 from flask import request,jsonify
 
@@ -74,6 +78,25 @@ def reset_game():
     #Database seeding
     u = ingredient('Citron', 0.1, False, True)
     a = ingredient('Eau', 0, False, True)
+    db_session.add(ingredient('Café', 0.5, False, False))
+    db_session.add(ingredient('Chocolat', 0.22, False, False))
+    db_session.add(ingredient('Rhum', 6, True, True))
+    db_session.add(ingredient('Sucre', 0.1, False, False))
+    db_session.add(ingredient('Alcool', 10, True, True))
+    db_session.add(ingredient('Jus d\'orange', 0.5, False, True))
+    db_session.add(ingredient('Gin', 0.3, True, True))
+    db_session.add(ingredient('Vodka', 5, True, True))
+    db_session.add(ingredient('Jus de grenadine', 0.2, False, True))
+    db_session.add(ingredient('Sirop de menthe', 0.2, False, True))
+    db_session.add(ingredient('Jus de banane', 0.33, False, True))
+    db_session.add(ingredient('Glaçons', 0.02, False, True))
+    db_session.add(ingredient('Sel', 0.1, False, True))
+    db_session.add(ingredient('Colorant', 0.2, False, True))
+    db_session.add(ingredient('Infusion de pêche', 0.6, False, True))
+    db_session.add(ingredient('Feuilles de thé', 2, False, True))
+    db_session.add(ingredient('Feuilles de Kola', 5, False, True))
+    db_session.add(ingredient('Lait', 1, False, True))
+
 
     db_session.add(u)
     db_session.add(a)
@@ -84,7 +107,7 @@ def reset_game():
 
     db_session.add(x)
 
-    c = carte(1000,1000)
+    c = carte(1000, 1000)
     today = datetime.now()
     j = journee(today)
     c.journees.append(j)
