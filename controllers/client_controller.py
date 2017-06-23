@@ -87,6 +87,7 @@ def post_action(playerName, actions):
         return jsonify(ingredients=[i.toJson() for i in ingredients])
     elif typeAction == "ad" :
         #ajouter l'ajout d'une pub a la base de donnees
+        
         return 'creation de pub'
     elif typeAction == "drinks" :
         #ajouter une recette
