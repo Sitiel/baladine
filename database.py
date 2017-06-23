@@ -6,7 +6,7 @@ import os
 
 print "Load : " + os.getenv('DATABASE_URL', SQLALCHEMY_DATABASE_URI)
 
-engine = create_engine(os.getenv('DATABASE_URL', SQLALCHEMY_DATABASE_URI), echo = True)
+engine = create_engine(os.getenv('DATABASE_URL', SQLALCHEMY_DATABASE_URI), echo = False)
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

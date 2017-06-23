@@ -27,8 +27,8 @@ def post_sales(sales):
 
 
 def reset_game():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    for tbl in reversed(Base.metadata.sorted_tables):
+        engine.execute(tbl.delete())
 
     #Database seeding
     u = ingredient('Citron', 0.1, False, True)
