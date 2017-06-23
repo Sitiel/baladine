@@ -77,6 +77,7 @@ function getMap() {
 	if (pseudal === "") {
 		return 0;
 	}
+	getMesRecettes();
 	$.ajax("/ValerianKang/Balady_API/1.0.0/map/" + pseudal)
 		.done(function (data) {
 			network_map_items = [];
