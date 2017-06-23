@@ -14,7 +14,7 @@ def map_get():
     c = db_session.query(carte).first()
     region = {"center": {"latitude": 0, "longitude": 0}, "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
     r = joueur.query.all()
-    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in r]}
+    ranking = [i.getProp('joueur_pseudo') for i in r]
     itemsByPlayer = {}
     additionalPropPlayerInfo = {}
     drinksByPlayer = {}

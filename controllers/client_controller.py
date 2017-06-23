@@ -140,5 +140,9 @@ def post_action(playerName, actions):
 #curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}, {"kind": "ad", "location": {"latitude": 50,"longitude": 60},"rayon": 50}, {"kind": "drinks", "prepare": {"Limonade": 15},"price": {"Limonade" : 50.0}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 
 def quit_game(playerName):
-    
-    return 'do some magic!'
+    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    db_session.delete(joueurDB)
+    db_session.commit()
+    return joueurDB.toJson()
+
+#curl -X DELETE http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players/Coco
