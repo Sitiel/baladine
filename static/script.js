@@ -3,7 +3,30 @@ var begin_month = 6;
 var begin_year  = 2017;
 var pseudal     = "";
 
-function login() {
+var page = 0;
+
+setPage("choix_page");
+$("#info_bar").hide();
+$("#button_menu").show();
+
+function setPage(page){
+	$("#b_creation_recette").attr("class", "btn btn-primary");//debug
+	$("#b_map_page").attr("class", "btn btn-primary");//debug
+	$("#b_choix_page").attr("class", "btn btn-primary");//debug
+
+	$("#creation_recette").hide();
+	$("#choix_page").hide();
+	$("#map_page").hide();
+	$("#pub").hide();
+	
+	$("#"+page).show();
+	$("#b_"+page).attr("class", "btn btn-secondary"); //debug
+	if(page === "map_page"){
+		$("#pub").show();
+	}
+}
+
+function login() { 	
 	$.ajax({
 		type       : "POST",
 		url        : "/ValerianKang/Balady_API/1.0.0/players",
@@ -22,7 +45,7 @@ function login() {
 }
 
 setInterval(function () {
-	$.ajax("/ValerianKang/Balady_API/1.0.0/meteorology")
+	$.ajax("http://balady.herokuapp.com/ValerianKang/Balady_API/1.0.0/meteorology")
 		.done(function (data) {
 			var hour  = data['timestamp'] % 24;
 			var day   = begin_day + Math.floor(data['timestamp'] / 24);
@@ -54,9 +77,9 @@ function getMap() {
 	if (pseudal === "") {
 		return 0;
 	}
+	getMesRecettes();
 	$.ajax("/ValerianKang/Balady_API/1.0.0/map/" + pseudal)
 		.done(function (data) {
-			console.log(data);
 			network_map_items = [];
 			var largeur       = data['map']['region']['span']['latitudeSpan'];
 			var longeur       = data['map']['region']['span']['longitudeSpan'];
@@ -73,6 +96,7 @@ function getMap() {
 					}
 				}
 			}
+			$("#budget").html(data['playerInfo']['cash'].toFixed(2));
 		});
 }
 
@@ -83,6 +107,3 @@ for (var i = 1; i < 51; i++) {
 	var sales = Math.floor((Math.random() * 10) + 1);
 	$("#recettes_en_ventes").append("<li>Recette " + i + " => " + (price * sales).toFixed(2) + "€ (" + sales + " verres)</li>");
 }
-
-
-$("#budget").html((Math.random() * (100 - 0.01) + 0.01).toFixed(2));

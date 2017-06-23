@@ -1,6 +1,6 @@
 
 
-#info_bar{
+#info_bar, #button_menu{
 	border-style : solid;
 	height : 10vh;
 	width : 99%;
@@ -32,7 +32,7 @@
 	text-align: left;
 }
 
-#creation_recette{
+#creation_recette, #mes_recettes{
 font-size : 30px;
 }
 
@@ -45,6 +45,14 @@ font-size : 30px;
 
 #ingredients div{
 	border-style : solid;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+td, th{
+    border: 1px solid black;
 }
 
 

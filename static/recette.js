@@ -11,7 +11,7 @@ var prod = 0;
 refresh_prices()
 
 function refresh_prices(){
-	dev = Math.sqrt(ingredients.length)
+	dev = Math.pow(ingredients.length,2)
 	$("#cout_dev").html(dev);
 	$("#cout_prod").html(prod);
 }

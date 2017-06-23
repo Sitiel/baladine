@@ -42,15 +42,37 @@
             Prévision :
             <span id="futur_weather"></span>
         </div>
+		<div id="button_menu" class="row">
+			<input id="b_map_page" type="submit" class="btn btn-primary" onclick="setPage('map_page')" value="Map">
+            <input id="b_creation_recette" type="submit" class="btn btn-primary" onclick="setPage('creation_recette')" value="Recette">
+			<input id="b_choix_page" type="submit" class="btn btn-primary" onclick="setPage('choix_page')" value="choix">
+        </div>
         <div class="row">
-            <div class="col-sm-9">
+            <div id="map_page" class="col-sm-9">
                 <canvas id="map"></canvas>
-                <!--<img id="map" src="map.jpg">-->
             </div>
+		    <div id="creation_recette" class="col-sm-9">
+             <form id="ma_recette">
+			     Nom : <input type="text" id="nom_new_recette"><br />
+			 <div class="row">
+		   	  <div class="col-sm-6">
+			   <input type="submit" value="Valider">
+		      </div>
+		      <div class="col-sm-6">
+			   Cout de Développement : <span id="cout_dev"></span>€<br />
+			   Cout de Prod : <span id="cout_prod"></span>€
+		      </div>
+		     </div>
+		    </form>
+		    <div id="ingredients" class="row">
+		    </div>
+		   </div>
+		   <div id="choix_page" class="col-sm-9">
+             <form id="mes_recettes">
+		    </form>
+		   </div>
             <div id="menu_droite" class="col-sm-3">
-                <form id="choix" action="#">
-                    <input type="submit" class="btn btn-info" value="CHOIX">
-                </form>
+               <input type="submit" class="btn btn-info" onclick="setPage('choix_page')"value="CHOIX">
                 <div id="ventes_actuelles">
                     <strong>Ventes</strong>
                     <ul id="recettes_en_ventes">
@@ -71,4 +93,6 @@
     </body>
     <script src="script.js"></script>
     <script src="set_pub.js"></script>
+	<script src="recette.js"></script>
+	<script src="choix.js"></script>
 </html>
