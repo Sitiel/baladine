@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import request,jsonify
 
 from database import db_session, Base, engine
 from models import *
-
+import json_model
 
 def map_get():
     joueurs = joueur.query.all()
@@ -11,19 +11,22 @@ def map_get():
 
 
 def post_sales(sales):
-    r = recette.query.filter(recette.recette_nom == sales['sales'][0]['item']).first()
-    total_cost = 0
-    for i in r.ingredients:
-        total_cost += i.ing_cout
-    return total_cost*sales['sales'][0]['quantity']
-    quantity = sales['quantity']
-    #if sales['quantity'] > availablesItems['player'][sales['item']]:
-    #    quantity = availablesItems['player'][sales['item']]
+    for s in sales['sales']:
+        r = recette.query.filter(recette.recette_nom == s['item']).first()
+        total_cost = 0
+        for i in r.ingredients:
+            total_cost += i.ing_cout
+        quantity = s['quantity']
+        t = transaction(quantity * total_cost)
+        actualDate = datetime.now() + timedelta(days=json_model.currentDay)
+        jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
+        t.journee = jour
+        j = joueur.query.filter(joueur.joueur_pseudo == s['player']).first()
+        j.transactions.append(t)
+        db_session.add(t)
 
-    t = transaction(quantity * total_cost)
-    db_session.add(t)
     db_session.commit()
-    return t.toJson()
+    return "Success"
 
 
 def reset_game():

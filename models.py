@@ -22,7 +22,7 @@ possede = Table('possede', Base.metadata,
 # Relation entre un joueur, un produit et une transaction
 participe = Table('participe', Base.metadata,
                 Column('joueur_id', Integer, ForeignKey('joueur.joueur_id')),
-                Column('recette_id', Integer, ForeignKey('ingredient.ing_id')),
+                Column('recette_id', Integer, ForeignKey('recette.recette_id')),
                 Column('transaction_id', Integer, ForeignKey('transaction.transaction_id'))
                 )
 
