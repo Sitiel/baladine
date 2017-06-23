@@ -33,3 +33,15 @@ function addIngr(id, cout){
 	}
 	refresh_prices()
 }
+
+new_recettes = [];
+function create(){
+	var new_recette = {};
+	new_recette['nom'] =  $("#nom_new_recette").val();
+	new_recette['cout_dev'] = $("#cout_dev").val();
+	new_recette['cout_prod'] = $("#cout_prod").val();
+	new_recette['ingredients'] = ingredients;
+	alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
+	new_recettes.push(new_recette);
+	
+}
