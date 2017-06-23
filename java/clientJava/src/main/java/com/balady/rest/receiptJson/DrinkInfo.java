@@ -55,17 +55,11 @@ public class DrinkInfo {
 		this.price = price;
 	}
 
-	/**
-	 * @return the hasAlcohol
-	 */
-	public boolean HasAlcohol() {
+	public boolean isHasAlcohol() {
 		return hasAlcohol;
 	}
 
-	/**
-	 * @param hasAlcohol the hasAlcohol to set
-	 */
-	public void hasAlcohol(boolean hasAlcohol) {
+	public void setHasAlcohol(boolean hasAlcohol) {
 		this.hasAlcohol = hasAlcohol;
 	}
 
@@ -79,7 +73,7 @@ public class DrinkInfo {
 	/**
 	 * @param isCold the isCold to set
 	 */
-	public void setCold(boolean isCold) {
+	public void setIsCold(boolean isCold) {
 		this.isCold = isCold;
 	}
 	

@@ -23,7 +23,7 @@ public class ReceiptObject {
 		 * @param ranking
 		 * @param itemsByPlayer
 		 * @param playerInfo
-		 * @param drinkInfo
+		 * @param drinksByPlayer
 		 */
 		public ReceiptObject(Region region, List<String> ranking, Map<String, List<MapItem>> itemsByPlayer,
 				Map<String, PlayerInfo> playerInfo, Map<String, List<DrinkInfo>> drinksByPlayer) {
@@ -34,16 +34,10 @@ public class ReceiptObject {
 			this.drinksByPlayer = drinksByPlayer;
 		}
 
-		/**
-		 * @return the region
-		 */
 		public Region getRegion() {
 			return region;
 		}
 
-		/**
-		 * @param region the region to set
-		 */
 		public void setRegion(Region region) {
 			this.region = region;
 		}

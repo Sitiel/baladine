@@ -72,7 +72,8 @@ public class Zone {
 	 * @return true if is in Influencce
 	 */
 	public boolean isInInfluence(Consumer c) {
-		float tmp = Math.abs(this.getCoordinates().getX() - c.getCoordinates().getX())+Math.abs(this.getCoordinates().getY()-c.getCoordinates().getY());
-		return tmp < this.getInfluence();
+		double tmp = Math.sqrt((c.getCoordinates().getX()-this.getCoordinates().getX())*(c.getCoordinates().getX()-this.getCoordinates().getX())+(c.getCoordinates().getY()-this.getCoordinates().getY())*(c.getCoordinates().getY()-this.getCoordinates().getY()));
+		boolean res = tmp < this.getInfluence();
+		return res;
 	}
 }

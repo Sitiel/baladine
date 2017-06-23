@@ -8,8 +8,6 @@ public class CoordinatesSpan {
 	 * 
 	 */
 	public CoordinatesSpan() {
-		latitudeSpan = 0;
-		longitudeSpan = 0;
 	}
 
 	/**

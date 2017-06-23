@@ -50,7 +50,7 @@ public class Drink {
 	/**
 	 * @return the hasAlcholize
 	 */
-	public boolean isHasAlcholize() {
+	public boolean hasAlcholize() {
 		return hasAlcholize;
 	}
 

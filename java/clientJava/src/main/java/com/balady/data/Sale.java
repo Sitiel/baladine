@@ -3,31 +3,37 @@ package com.balady.data;
 public class Sale {
 	private String player;
 	private String item;
-	private int nb;
+	private int quantity;
 
 	/**
 	 * @param player
 	 * @param item
 	 * @param nb
 	 */
-	public Sale(String player, String item, int nb) {
+	public Sale(String player, String item, int quantity) {
 		this.player = player;
 		this.item = item;
-		this.nb = nb;
+		this.quantity = quantity;
+	}
+
+	public Sale(String item, int quantity) {
+		this.player = null;
+		this.item = item;
+		this.quantity = quantity;
 	}
 
 	/**
 	 * @return the nb
 	 */
-	public int getNb() {
-		return nb;
+	public int getQuantity() {
+		return quantity;
 	}
 
 	/**
 	 * @param nb the nb to set
 	 */
-	public void setNb(int nb) {
-		this.nb = nb;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	/**

@@ -12,6 +12,7 @@ import java.util.List;
 import com.balady.data.Sale;
 import com.balady.rest.receiptJson.ReceiptObject;
 import com.balady.rest.receiptJson.TimeReceipt;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClientRest {
@@ -64,6 +65,8 @@ public class ClientRest {
 				ret += output;
 			}
 			conn.disconnect();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 			ReceiptObject res = mapper.readValue(ret, ReceiptObject.class);
 			return res;
 		} catch (MalformedURLException e) {
@@ -100,7 +103,6 @@ public class ClientRest {
 				ret += output;
 			}
 			conn.disconnect();
-			System.out.println(ret);
 			TimeReceipt res = mapper.readValue(ret, TimeReceipt.class);
 			return res;
 		} catch (MalformedURLException e) {
