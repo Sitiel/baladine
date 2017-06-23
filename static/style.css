@@ -28,6 +28,7 @@ font-size : 30px;
 	border-style : solid;
 	height : 75vh;
 	overflow:auto;
+	font-size : 15px;
 }
 
 #recettes_en_ventes{
