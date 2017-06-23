@@ -1,6 +1,7 @@
 package com.balady.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,7 +19,7 @@ import com.balady.rest.receiptJson.TimeReceipt;
 public class GameMap {
 
 	private String meteo;
-	private long hour;
+	private int hour;
 	private List<Player> players;
 	private Coordinates start;
 	private Coordinates end;
@@ -27,10 +28,14 @@ public class GameMap {
 	private List<Consumer> consumers;
 
 	public GameMap(String url) {
+		sales = new HashMap<>();
 		rest = new ClientRest(url);
 		refreshMap();
 		consumers = new ArrayList<>();
-		addCustomers();
+		addConsumers();
+	}
+	
+	public GameMap() {
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class GameMap {
 	/**
 	 * @return the hour
 	 */
-	public long getHour() {
+	public int getHour() {
 		return hour;
 	}
 
@@ -119,7 +124,7 @@ public class GameMap {
 	 * @param hour
 	 *            the hour to set
 	 */
-	public void setHour(long hour) {
+	public void setHour(int hour) {
 		this.hour = hour;
 	}
 
@@ -138,6 +143,17 @@ public class GameMap {
 		this.rest = rest;
 	}
 
+	public List<Consumer> getConsumers() {
+		return consumers;
+	}
+
+	public void setConsumers(List<Consumer> consumers) {
+		this.consumers = consumers;
+	}
+
+	/**
+	 * refresh data to Map with data server
+	 */
 	public void refreshMap() {
 		players = new ArrayList<>();
 
@@ -147,7 +163,7 @@ public class GameMap {
 			if (f.getDfn() == 0)
 				meteo = f.getWeather();
 		}
-		hour = time.getTimestamp() / 24;
+		hour = time.getTimestamp() % 24;
 		ReceiptObject receipt = rest.getData();
 
 		// Fill Position of Map
@@ -170,7 +186,7 @@ public class GameMap {
 							typeZone = TypeZone.PUB;
 						else
 							typeZone = TypeZone.STAND;
-						zones.add(new Zone(item.getInfluencce(), typeZone,
+						zones.add(new Zone(item.getInfluence(), typeZone,
 								new Coordinates(item.getLocation().getLongitude(), item.getLocation().getLatitude())));
 					}
 				}
@@ -179,9 +195,10 @@ public class GameMap {
 				List<Drink> drinks = new ArrayList<>();
 				if (receipt.getDrinksByPlayer().containsKey(name)) {
 					for (DrinkInfo drink : receipt.getDrinksByPlayer().get(name)) {
-						drinks.add(new Drink(drink.getName(), drink.getPrice(), drink.HasAlcohol(), drink.isCold()));
+						drinks.add(new Drink(drink.getName(), drink.getPrice(), drink.isHasAlcohol(), drink.isCold()));
 					}
 				}
+				
 				players.add(new Player(name, player.getCash(), player.getProfit(), player.getSales(), zones, drinks));
 			}
 		}
@@ -194,13 +211,18 @@ public class GameMap {
 		for (Consumer c : consumers) {
 			for (Player p : players) {
 				for (Zone z : p.getZones()) {
-					if (z.isInInfluence(c) && !p.getDrinks().isEmpty()) {
-						if (sales.containsKey(p.getName() + "/" + p.getDrinks().get(0))) {
-							Sale sale = sales.get(p.getName() + "/" + p.getDrinks().get(0));
-							sale.setNb(sale.getNb() + 1);
-						} else
-							sales.put(p.getName() + "/" + p.getDrinks().get(0),
-									new Sale(p.getName(), p.getDrinks().get(0).getName(), 1));
+					if (z.getTypeZone() == TypeZone.STAND) {
+						if (z.isInInfluence(c) && !p.getDrinks().isEmpty()) {
+							Sale s = c.chooseDrink(hour, meteo, p.getDrinks());
+							if (s != null) {
+								if (sales.containsKey(p.getName()+"/"+s.getItem()))
+									sales.get(p.getName()+"/"+s.getItem()).setQuantity(sales.get(p.getName()+"/"+s.getItem()).getQuantity() + s.getQuantity());
+								else {
+									s.setPlayer(p.getName());
+									sales.put(p.getName()+"/"+s.getItem(), s);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -211,37 +233,46 @@ public class GameMap {
 	 * Send sales to Server python
 	 */
 	public void sendSales() {
-		List<Sale> listSales = new ArrayList<>();
-		for (Entry<String, Sale> tmp : this.sales.entrySet()) {
-			listSales.add(tmp.getValue());
+		if (!sales.isEmpty()) {
+			List<Sale> listSales = new ArrayList<>();
+			for (Entry<String, Sale> tmp : this.sales.entrySet()) {
+				listSales.add(tmp.getValue());
+			}
+			rest.sendSales(listSales);
+			sales.clear();
 		}
-		rest.sendSales(listSales);
-		sales.clear();
 	}
 
-	public void addCustomers() {
+	/**
+	 * add new Customers in function of meteo.
+	 */
+	public void addConsumers() {
 		
-		int nbPop;
+		int nbPop = 	10000;
 		
 		switch (meteo) {
 		case ("Soleil"):
-			nbPop = 75;
+			nbPop *= 0.75;
 			break;
 		case ("Orage"):
 			nbPop = 0;
 			break;
 		case ("Nuage"):
-			nbPop = 30;
+			nbPop *= 0.3;
 			break;
 		case ("Canicule"):
-			nbPop = 100;
+			nbPop *= 1;
 			break;
 		default:
-			nbPop = 15;
+			nbPop *= 0.15;
 			break;
 		}
 		for (int i = 0; i < nbPop; i++) {
 			consumers.add(new Consumer(start.getX(), end.getX(), start.getY(), end.getY()));
 		}
+	}
+	
+	public void clearConsumers () {
+		consumers.clear();
 	}
 }

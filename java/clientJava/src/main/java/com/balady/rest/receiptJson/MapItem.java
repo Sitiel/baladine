@@ -4,7 +4,7 @@ public class MapItem {
 	private String kind;
 	private String owner;
 	private CoordinatesReceipt location;
-	private float influencce;
+	private float influence;
 	
 	/**
 	 * 
@@ -16,13 +16,13 @@ public class MapItem {
 	 * @param kind
 	 * @param owner
 	 * @param location
-	 * @param influencce
+	 * @param influence
 	 */
-	public MapItem(String kind, String owner, CoordinatesReceipt location, float influencce) {
+	public MapItem(String kind, String owner, CoordinatesReceipt location, float influence) {
 		this.kind = kind;
 		this.owner = owner;
 		this.location = location;
-		this.influencce = influencce;
+		this.influence = influence;
 	}
 
 	/**
@@ -68,16 +68,16 @@ public class MapItem {
 	}
 
 	/**
-	 * @return the influencce
+	 * @return the influence
 	 */
-	public float getInfluencce() {
-		return influencce;
+	public float getInfluence() {
+		return influence;
 	}
 
 	/**
-	 * @param influencce the influencce to set
+	 * @param influence the influence to set
 	 */
-	public void setInfluencce(float influencce) {
-		this.influencce = influencce;
+	public void setInfluence(float influence) {
+		this.influence = influence;
 	}
 }

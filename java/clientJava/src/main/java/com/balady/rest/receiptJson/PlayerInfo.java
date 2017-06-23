@@ -1,9 +1,12 @@
 package com.balady.rest.receiptJson;
 
+import java.util.List;
+
 public class PlayerInfo {
 	float cash;
 	int sales;
 	float profit;
+	//private List<DrinkInfo> drinksOffered;
 	
 	/**
 	 * 
@@ -15,12 +18,15 @@ public class PlayerInfo {
 	 * @param cash
 	 * @param sales
 	 * @param profit
+	 * @param drinksOffered
 	 */
 	public PlayerInfo(float cash, int sales, float profit) {
 		this.cash = cash;
 		this.sales = sales;
 		this.profit = profit;
+		//this.drinksOffered = drinksOffered;
 	}
+
 
 	/**
 	 * @return the cash
@@ -63,4 +69,13 @@ public class PlayerInfo {
 	public void setProfit(float profit) {
 		this.profit = profit;
 	}
+
+	/*public List<DrinkInfo> getDrinksOffered() {
+		return drinksOffered;
+	}
+
+	public void setDrinksOffered(List<DrinkInfo> drinksOffered) {
+		this.drinksOffered = drinksOffered;
+	}*/
+	
 }

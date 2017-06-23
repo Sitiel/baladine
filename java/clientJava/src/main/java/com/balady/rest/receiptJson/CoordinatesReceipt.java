@@ -8,8 +8,6 @@ public class CoordinatesReceipt {
 	 * 
 	 */
 	public CoordinatesReceipt() {
-		latitude = 0;
-		longitude = 0;
 	}
 
 	/**
