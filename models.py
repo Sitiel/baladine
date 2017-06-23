@@ -27,13 +27,15 @@ participe = Table('participe', Base.metadata,
                 )
 
 # Relation pour le choix de production du joueur
-produit = Table('produit', Base.metadata,
-                Column('joueur_id', Integer, ForeignKey('joueur.joueur_id')),
-                Column('jour_id', Integer, ForeignKey('journee.jour_id')),
-                Column('recette_id', Integer, ForeignKey('recette.recette_id')),
-                Column('nombre_prod', Integer),
-                Column('prix_vente', Float)
-                )
+class produit(Base, JsonModel):
+    __tablename__="produit"
+    joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'), primary_key=True)
+    jour_id = Column(Integer, ForeignKey('journee.jour_id'), primary_key=True)
+    recette_id = Column(Integer, ForeignKey('recette.recette_id'), primary_key=True)
+    nombre_prod = Column(Integer)
+    prix_vente = Column(Float)
+    journee = relationship("journee")
+    recette = relationship("recette")
 
 #----- Tables -----#
 
@@ -78,8 +80,8 @@ class joueur(Base, JsonModel):
     transactions = relationship('transaction', secondary=participe)
     recette = relationship('recette', secondary=participe)
     #represente les relations du joueur avec le produit
-    recette_produit = relationship('recette', secondary=produit)
-    journee_produit = relationship('journee', secondary=produit)
+    journees_produit = relationship('produit')
+    recettes_produit = relationship('produit')
 
     def __init__(self, pseudo, budget):
         self.joueur_pseudo = pseudo
@@ -147,8 +149,6 @@ class journee(Base, JsonModel):
     meteo_id = Column(Integer, ForeignKey('meteo.meteo_id'))
     meteo = relationship("meteo", back_populates="journees")
     #represente les relations du joueur avec le produit
-    recette_produit = relationship("recette", secondary=produit)
-    joueur_produit = relationship("joueur", secondary=produit)
 
     def __init__(self, date):
         self.jour_date = date
