@@ -115,13 +115,12 @@ def post_action(playerName, actions):
         
 
         # create parent, append a child via association
-        p = joueurDB
-        a = produit(nombre_prod=nbRecette, prix_vente=prix)
-        a.recette = recette_produit
-        a.journee = jour
-        p.recettes_produit.append(a)
-        p.journees_produit.append(a)
-        db_session.add(a)
+        prod = produit(nombre_prod=nbRecette, prix_vente=prix)
+        prod.recette = recette_produit
+        prod.journee = jour
+        joueurDB.recettes_produit.append(prod)
+        joueurDB.journees_produit.append(prod)
+        db_session.add(prod)
         db_session.commit()
 
         return 'Success'
@@ -133,7 +132,7 @@ def post_action(playerName, actions):
 #recette    
 #curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Suskiki
 #pub
-#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "ad", "location": {"coord": {"latitude": 50,"longitude": 60},"influence": 50}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
+#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "ad", "location": {"latitude": 50,"longitude": 60},"rayon": 50}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 #preparation
 #curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "drinks", "prepare": {"Limonade": 15},"price": {"Limonade" : 50.0}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 

@@ -47,7 +47,7 @@ def map_get():
         additionalPropPlayerInfo[e_joueur.getProp('joueur_pseudo')] = propPlayerProperties
         drinksByPlayer[e_joueur.getProp('joueur_pseudo')] = propDrinksByPlayer
 
-    final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer, "playerInfo": additionalPropPlayerInfo, "drinksByPlayer": drinksByPlayer}
+    final_map = {"aregion": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer, "playerInfo": additionalPropPlayerInfo, "drinksByPlayer": drinksByPlayer}
     return final_map
 
 
