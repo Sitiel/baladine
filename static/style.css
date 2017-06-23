@@ -1,11 +1,13 @@
-
+*{
+font-size : 30px;
+}
 
 #info_bar, #button_menu{
 	border-style : solid;
 	height : 10vh;
 	width : 99%;
 	margin-left:1px;
-	font-size : 300%;
+	/*font-size : 300%;*/
 	text-align: center;
 }
 #map{

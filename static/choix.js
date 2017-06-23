@@ -1,3 +1,8 @@
+
+var recettes = [];
+var nb_produits = 0;
+
+var production = [];
 function getMesRecettes() {
 	if (pseudal === "") {
 		return 0;
@@ -5,14 +10,31 @@ function getMesRecettes() {
 	$.ajax("/ValerianKang/Balady_API/1.0.0/map/" + pseudal)
 		.done(function (data) {
 			var recettes_joueur = data['playerInfo']['drinksOffered'];
-			var tableau  = "Mes Recettes : <table><tr><td>Produit</td><td>Quantité</td><td>Prix</td><td>Cout production</td></tr>";
-			for (var i = 0; i< recettes_joueur.length ; i++) {
-				tableau  += "<tr><td>"+data['playerInfo']['drinksOffered'][i]['name']+"</td>";
-				tableau  += "<td><input type=\"number\"></td>";
-				tableau  += "<td>"+data['playerInfo']['drinksOffered'][i]['name']+"</td>";
-				tableau  += "<td>"+data['playerInfo']['drinksOffered'][i]['price']+"€</td></tr>";
+			var tableau  = "";
+			nb_produits = recettes_joueur.length;
+			for (var i = 0; i< nb_produits ; i++) {
+				if(recettes.indexOf(data['playerInfo']['drinksOffered'][i]['name']) == -1){
+					tableau  += "<tr><td id=\"nom_"+i+"\">"+data['playerInfo']['drinksOffered'][i]['name']+"</td>";
+					tableau  += "<td><input id=\"prod_"+i+"\" type=\"number\" placeholder=\"ex: 3\"></td>";
+					tableau  += "<td><input id=\"prix_"+i+"\"type=\"text\" placeholder=\"ex: 0.15\">€/verre</td>";
+					tableau  += "<td id=\"cout_"+i+"\">"+data['playerInfo']['drinksOffered'][i]['price']+"€</td></tr>";
+					recettes.push(data['playerInfo']['drinksOffered'][i]['name']);
+				}
 			}
-			tableau  += "</table>";
-			$("#mes_recettes").html(tableau);
+			$("#mes_recettes").append(tableau);
 		});
+}
+
+function savProd(){
+	for (var i = 0; i< nb_produits ; i++) {
+		if($("#prod_"+i).val() != "" && $("#prod_"+i).val() != 0 && $("#prix_"+i).val() != "" && $("#prix_"+i).val() != 0){
+			var produit = {};
+			produit['nom'] = $("#nom_"+i).html();
+			produit['quantite'] = $("#prod_"+i).val();
+			produit['prix'] = $("#prix_"+i).val();
+			production.push(produit);
+		}
+	}
+	console.log(production);
+	sendAction();
 }
