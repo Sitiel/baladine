@@ -58,18 +58,18 @@ function getMap() {
 		.done(function (data) {
 			console.log(data);
 			network_map_items = [];
-			var largeur = data['map']['region']['span']['latitudeSpan'];
-			var longeur = data['map']['region']['span']['longitudeSpan'];
+			var largeur       = data['map']['region']['span']['latitudeSpan'];
+			var longeur       = data['map']['region']['span']['longitudeSpan'];
 			canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-			drawPub(canvas.getContext('2d'),pubs);
+			drawPub(canvas.getContext('2d'), pubs);
 			var itemsByPlayer = data['map']['itemsByPlayer'];
 			for (var pseudal_joueur in itemsByPlayer) {
 				for (var mapItem in itemsByPlayer[pseudal_joueur]) {
 					var location = itemsByPlayer[pseudal_joueur][mapItem]['location'];
 					if (pseudal_joueur === pseudal) {
-						addCircle(location['latitude']/largeur*canvas.width, location['longitude']/longeur*canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 0, 255, 0, 0.3);
+						addCircle(location['latitude'] / largeur * canvas.width, location['longitude'] / longeur * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 0, 255, 0, 0.3);
 					} else {
-						addCircle(location['latitude']/largeur*canvas.width, location['longitude']/longeur*canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 255, 0, 0, 0.3);
+						addCircle(location['latitude'] / largeur * canvas.width, location['longitude'] / longeur * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 255, 0, 0, 0.3);
 					}
 				}
 			}
