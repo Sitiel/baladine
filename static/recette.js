@@ -12,8 +12,8 @@ refresh_prices()
 
 function refresh_prices(){
 	dev = Math.pow(ingredients.length,2)
-	$("#cout_dev").html(dev);
-	$("#cout_prod").html(prod);
+	$("#cout_dev").html(dev.toFixed(2));
+	$("#cout_prod").html(Math.abs(prod).toFixed(2));
 }
 
 function addIngr(id, cout){
