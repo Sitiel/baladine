@@ -437,9 +437,7 @@ definitions:
   playerInfoByPlayer:
     type: "object"
     additionalProperties:
-      type: "array"
-      items:
-        $ref: "#/definitions/playerInfo"
+      $ref: "#/definitions/playerInfo"
   map:
     type: "object"
     required:
@@ -535,6 +533,19 @@ definitions:
       isCold:
         type: "boolean"
         example: false
+  recipeWithoutCalcul:
+    type: "object"
+    required:
+    - "ingredients"
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "Limonade"
+      ingredients:
+        type: "array"
+        items:
+          $ref: "#/definitions/ingredient"
   playerAction:
     type: "object"
     required:
@@ -544,7 +555,7 @@ definitions:
         type: "string"
         example: "stand"
       recipe:
-        $ref: "#/definitions/recipe"
+        $ref: "#/definitions/recipeWithoutCalcul"
       location:
         $ref: "#/definitions/coordinates"
       radius:

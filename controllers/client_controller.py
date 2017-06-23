@@ -32,8 +32,11 @@ def join_game(playerJoinUsername):
     latitude = (random.random()*(c.carte_largeur-rayon)+rayon)
     longitude = (random.random()*(c.carte_longueur-rayon)+rayon)
     location = {"latitude": latitude, "longitude": longitude}
-    info = {"cash": 1, "sales": 0, "profit":0, "drinksOffered": [{"name": "Limonade", "price": 0.45, "hasAlcohol": False, "isCold": False}]}
+    info = {"cash": 1, "sales": 0, "profit": 0, "drinksOffered": [{"name": "Limonade", "price": 0.45, "hasAlcohol": False, "isCold": False}]}
     z = zone(latitude,longitude,rayon, "stand")
+    rec = recette.query.filter(recette.recette_nom == 'Limonade').one()
+    j.recettes.append(rec)
+
     c.joueurs.append(j)
     j.zones.append(z)
     db_session.add(j)

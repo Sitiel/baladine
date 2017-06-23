@@ -6,8 +6,45 @@ from models import *
 import json_model
 
 def map_get():
-    joueurs = joueur.query.all()
-    return jsonify(joueurs=[i.toJson() for i in joueurs])
+    ingredients = ingredient.query.all()
+    c = db_session.query(carte).first()
+    region = {"center": {"latitude": 0, "longitude": 0}, "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
+    r = joueur.query.all()
+    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in r]}
+    itemsByPlayer = {}
+    additionalPropPlayerInfo = {}
+    drinksByPlayer = {}
+
+    for e_joueur in r:
+        prop = []
+        zones = e_joueur.zones
+        for zone in zones:
+            zone_location = {"latitude": zone.zone_posX, "longitude": zone.zone_posY}
+            prop.append({"kind": zone.zone_type, "owner": e_joueur.getProp('joueur_pseudo'), "influence": zone.zone_rayon, "location": zone_location})
+
+        itemsByPlayer[e_joueur.getProp('joueur_pseudo')] = prop
+
+        propPlayerInfoRecettes = []
+        propDrinksByPlayer = []
+        for recette in e_joueur.recettes:
+            isCold = False
+            hasAlcohol = False
+            price = 0
+            for i in recette.ingredients:
+                if i.ing_froid:
+                    isCold = True
+                if i.ing_alcohol:
+                    hasAlcohol = True
+                price += i.ing_cout
+            propPlayerInfoRecettes.append({"name": recette.recette_nom, "price": price, "hasAlcohol": hasAlcohol, "isCold": isCold})
+            propDrinksByPlayer.append({"name": recette.recette_nom, "price": price, "hasAlcohol": hasAlcohol, "isCold": isCold})
+
+        propPlayerProperties = {"cash": e_joueur.joueur_budget, "sales": 0, "profit": 0, "drinksOffered": propPlayerInfoRecettes}
+        additionalPropPlayerInfo[e_joueur.getProp('joueur_pseudo')] = propPlayerProperties
+        drinksByPlayer[e_joueur.getProp('joueur_pseudo')] = propDrinksByPlayer
+
+    final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer, "playerInfo": additionalPropPlayerInfo, "drinksByPlayer": drinksByPlayer}
+    return final_map
 
 
 def post_sales(sales):
@@ -28,7 +65,6 @@ def post_sales(sales):
 
     db_session.commit()
     return "Success"
-
 
 
 def reset_game():
