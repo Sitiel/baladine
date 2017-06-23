@@ -35,7 +35,6 @@ produit = Table('produit', Base.metadata,
                 Column('prix_vente', Float)
                 )
 
-# Relation eentre le joueur et ses zones
 #----- Tables -----#
 
 class ingredient(Base, JsonModel):
@@ -87,14 +86,16 @@ class zone(Base, JsonModel):
     zone_posX = Column(Float)
     zone_posY = Column(Float)
     zone_rayon = Column(Float)
+    zone_type = Column(String(64))
     #represente la carte sur laquelle se trouve le joueur
     joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'))
     joueur = relationship("joueur", back_populates="zones")
 
-    def __init__(self, posX, posY, rayon):
+    def __init__(self, posX, posY, rayon, type):
         self.zone_posX = posX
         self.zone_posY = posY
         self.zone_rayon = rayon
+        self.zone_type = type
 
 
 class carte(Base, JsonModel):

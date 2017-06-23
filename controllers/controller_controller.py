@@ -13,12 +13,8 @@ def post_meteorology():
     #meteoJson.metro_weather.append(WeatherJson(meteo['weather'][0]['dfn'],meteo['weather'][0]['weather']))
 
     if json_model.meteoJsontoString['timestamp']/24 != json_model.currentDay:
-        # TODO : IF NOT EXIST
-        m = meteo(json_model.meteoJsontoString['weather'][0]['weather'])
-
-
+        m = json_model.get_or_create(db_session, meteo,  meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
         json_model.currentDay = json_model.meteoJsontoString['timestamp']/24
-
         newDay = datetime.now() + timedelta(days=json_model.currentDay)
         j = journee(newDay)
         m.journees.append(j)

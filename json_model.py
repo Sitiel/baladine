@@ -13,7 +13,9 @@ class JsonModel():
                 else :
                     dictio[x.rsplit('_', 1)[-1]] = dict[x]
         return dictio
-        #return {x.rsplit('_', 1)[-1]: dict[x] for x in dict if x not in invalid_keys}
+
+    def getProp(self, propertie):
+        return self.__dict__[propertie]
 
 
 class MeteorologyJson(JsonModel):
@@ -32,6 +34,17 @@ class WeatherJson(JsonModel):
     def __init__(self, dfn, wtype):
         self.weather_dfn = dfn
         self.weather_type = wtype
+
+
+def get_or_create(session, model, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance:
+        return instance
+    else:
+        instance = model(**kwargs)
+        session.add(instance)
+        session.commit()
+        return instance
 
 meteoJson = MeteorologyJson(0,0)
 meteoJsontoString = 0
