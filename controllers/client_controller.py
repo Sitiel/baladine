@@ -69,72 +69,75 @@ def map_player_name_get(playerName):
 
 
 def post_action(playerName, actions):
-    typeAction = actions['actions'][0]['kind']
-    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).one()
-    if typeAction == "recipe" :
-        #ajouter l'ajout de stand a la base de donnees
-        nameRec = actions['actions'][0]['recipe']['name']
-        composition = actions['actions'][0]['recipe']['ingredients']
-        ingredients_nom = []
-        #recuperations des id de chaque ingredients
-        for x in composition :
-            ingredients_nom.append(x['name'])
-        ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
-        #ajout a la table possede des ingredients pour la recette
-        rec = recette(nameRec)
-        for x in ingredients :
-            rec.ingredients.append(x)    
-        joueurDB.recettes.append(rec)
-        db_session.add(rec)
-        db_session.commit()
+    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
 
-        return jsonify(ingredients=[i.toJson() for i in ingredients])
-    elif typeAction == "ad" :
-        #ajouter l'ajout d'une pub a la base de donnees
-        adX = actions['actions'][0]['location']['latitude']
-        adY = actions['actions'][0]['location']['longitude']
-        adRayon = actions['actions'][0]['rayon']
-        advertisement = zone(adX,adY,adRayon,"ad")
-        joueurDB.zones.append(advertisement)
-        db_session.add(advertisement)
-        db_session.commit()
+    for action in actions['actions'] :
+        typeAction = action['kind']
 
-        return advertisement.toJson()
-    elif typeAction == "drinks" :
-        #preparation
-        for key in actions['actions'][0]['prepare'] :
-            nomRecette = key
-            nbRecette = actions['actions'][0]['prepare'][key]
-        for key in actions['actions'][0]['price'] :
-            nomPrix = key
-            prix = actions['actions'][0]['price'][key]
-        
-        recette_produit = recette.query.filter(and_(recette.recette_nom == nomRecette, joueurDB.joueur_id == joueurDB.joueur_id)).one()
-        actualDate = datetime.now() + timedelta(days=json_model.currentDay)
-        jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
-        
+        if typeAction == "recipe" :
+            #ajouter l'ajout de stand a la base de donnees
+            nameRec = action['recipe']['name']
+            composition = action['recipe']['ingredients']
+            ingredients_nom = []
+            #recuperations des id de chaque ingredients
+            for x in composition :
+                ingredients_nom.append(x['name'])
+            ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
+            #ajout a la table possede des ingredients pour la recette
+            rec = recette(nameRec)
+            for x in ingredients :
+                rec.ingredients.append(x)    
+            joueurDB.recettes.append(rec)
+            db_session.add(rec)
+            db_session.commit()
 
-        # create parent, append a child via association
-        prod = produit(nombre_prod=nbRecette, prix_vente=prix)
-        prod.recette = recette_produit
-        prod.journee = jour
-        joueurDB.recettes_produit.append(prod)
-        joueurDB.journees_produit.append(prod)
-        db_session.add(prod)
-        db_session.commit()
+        elif typeAction == "ad" :
+            #ajouter l'ajout d'une pub a la base de donnees
+            adX = action['location']['latitude']
+            adY = action['location']['longitude']
+            adRayon = action['rayon']
+            advertisement = zone(adX,adY,adRayon,"ad")
+            joueurDB.zones.append(advertisement)
+            db_session.add(advertisement)
+            db_session.commit()
 
-        return 'Success'
-    else :
-        #error 400
-        return "Error bad input", 400, {'Content-Type': 'application/text'}
+        elif typeAction == "drinks" :
+            #preparation
+            for key in action['prepare'] :
+                nomRecette = key
+                nbRecette = action['prepare'][key]
+            for key in action['price'] :
+                nomPrix = key
+                prix = action['price'][key]
+            
+            recette_produit = recette.query.filter(and_(recette.recette_nom == nomRecette, joueurDB.joueur_id == joueurDB.joueur_id)).first()
+            actualDate = datetime.now() + timedelta(days=json_model.currentDay)
+            jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
+            
 
-    return jsonify(actions)
+            # create parent, append a child via association
+            prod = produit(nombre_prod=nbRecette, prix_vente=prix)
+            prod.recette = recette_produit
+            prod.journee = jour
+            joueurDB.recettes_produit.append(prod)
+            joueurDB.journees_produit.append(prod)
+            db_session.add(prod)
+            db_session.commit()
+
+        else :
+            #error 400
+            return "Error bad input", 400, {'Content-Type': 'application/text'}
+
+    return 'Success'
 #recette    
-#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Suskiki
+#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 #pub
 #curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "ad", "location": {"latitude": 50,"longitude": 60},"rayon": 50}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 #preparation
 #curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "drinks", "prepare": {"Limonade": 15},"price": {"Limonade" : 50.0}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
+
+#3 d'un coup !
+#curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}, {"kind": "ad", "location": {"latitude": 50,"longitude": 60},"rayon": 50}, {"kind": "drinks", "prepare": {"Limonade": 15},"price": {"Limonade" : 50.0}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 
 def quit_game(playerName):
     return 'do some magic!'
