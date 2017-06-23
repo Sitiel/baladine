@@ -141,8 +141,10 @@ def post_action(playerName, actions):
 
 def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
+    for prod in productions :
+        db_session.delete(prod)
     db_session.delete(joueurDB)
     db_session.commit()
-    return joueurDB.toJson()
 
 #curl -X DELETE http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players/Coco
