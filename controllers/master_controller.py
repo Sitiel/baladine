@@ -23,10 +23,12 @@ def post_sales(sales):
         t.journee = jour
         j = joueur.query.filter(joueur.joueur_pseudo == s['player']).first()
         j.transactions.append(t)
+        j.joueur_budget += (quantity*total_cost)
         db_session.add(t)
 
     db_session.commit()
     return "Success"
+
 
 
 def reset_game():

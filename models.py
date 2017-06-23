@@ -67,7 +67,7 @@ class joueur(Base, JsonModel):
     __tablename__ = "joueur"
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
-    joueur_budget = Column(Integer)
+    joueur_budget = Column(Float)
     recettes = relationship('recette', secondary=possede) #relation vers recette
     #represente la carte sur laquelle se trouve le joueur
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
