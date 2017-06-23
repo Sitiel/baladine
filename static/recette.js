@@ -1,7 +1,7 @@
 $.ajax("http://balady.herokuapp.com/ValerianKang/Balady_API/1.0.0/ingredients")
 	 .done(function(data){
 		for(var i = 0; i<data['ingredients'].length; i++){
-			$("#ingredients").append('<div id="'+i+'" class="col-sm-3" onclick="addIngr('+i+', '+data['ingredients'][i]['cout']+')">'+data['ingredients'][i]['nom']+'</div>')	
+			$("#ingredients").append('<div id="'+i+'" class="col-sm-3" onclick="addIngr('id+','+data['ingredients'][i]['nom']+', '+data['ingredients'][i]['cout']+')">'+data['ingredients'][i]['nom']+'</div>')	
 		}
 	});
 
@@ -16,16 +16,16 @@ function refresh_prices(){
 	$("#cout_prod").html(Math.abs(prod).toFixed(2));
 }
 
-function addIngr(id, cout){
+function addIngr(id, nom, cout){
 	if($("#"+id).css("color") != "rgb(0, 255, 0)"){
 		$("#"+id).css("color","rgb(0, 255, 0)");
-		ingredients.push(id);
+		ingredients.push(nom);
 		prod += cout;
 		
 	}else{
 		$("#"+id).css("color","rgb(0, 0, 0)");
 		
-		var i = ingredients.indexOf(id);
+		var i = ingredients.indexOf(nom);
 		if(i != -1) {
 			ingredients.splice(i, 1);
 		}
