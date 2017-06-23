@@ -77,7 +77,9 @@ class joueur(Base, JsonModel):
     #represente les transactions du joueurs
     transactions = relationship('transaction', secondary=participe)
     recette = relationship('recette', secondary=participe)
-
+    #represente les relations du joueur avec le produit
+    recette_produit = relationship('recette', secondary=produit)
+    journee_produit = relationship('journee', secondary=produit)
 
     def __init__(self, pseudo, budget):
         self.joueur_pseudo = pseudo
@@ -125,8 +127,8 @@ class transaction(Base, JsonModel):
     journee_id = Column(Integer, ForeignKey('journee.jour_id'))
     journee = relationship("journee", back_populates="transactions")
     #represente le joueurs du joueurs
-    joueur = relationship('joueur', secondary=participe)
-    recette = relationship('recette', secondary=participe)
+    joueur = relationship("joueur", secondary=participe)
+    recette = relationship("recette", secondary=participe)
 
     def __init__(self, prix):
         self.transaction_prix = prix
@@ -144,6 +146,9 @@ class journee(Base, JsonModel):
     #represente le lien entre la meteo et les journees
     meteo_id = Column(Integer, ForeignKey('meteo.meteo_id'))
     meteo = relationship("meteo", back_populates="journees")
+    #represente les relations du joueur avec le produit
+    recette_produit = relationship("recette", secondary=produit)
+    joueur_produit = relationship("joueur", secondary=produit)
 
     def __init__(self, date):
         self.jour_date = date

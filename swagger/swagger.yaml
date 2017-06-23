@@ -367,6 +367,7 @@ definitions:
     required:
     - "influence"
     - "kind"
+    - "location"
     - "owner"
     properties:
       kind:
@@ -378,6 +379,8 @@ definitions:
       influence:
         type: "number"
         example: 15.339999999999999857891452847979962825775146484375
+      location:
+        $ref: "#/definitions/coordinates"
   playerInfo:
     type: "object"
     required:
@@ -434,7 +437,9 @@ definitions:
   playerInfoByPlayer:
     type: "object"
     additionalProperties:
-      type: "string"
+      type: "array"
+      items:
+        $ref: "#/definitions/playerInfo"
   map:
     type: "object"
     required:
@@ -542,6 +547,11 @@ definitions:
         $ref: "#/definitions/recipe"
       location:
         $ref: "#/definitions/coordinates"
+      radius:
+        type: "number"
       prepare:
+        type: "object"
+        properties: {}
+      price:
         type: "object"
         properties: {}
