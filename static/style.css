@@ -1,56 +1,65 @@
-#info_bar, #button_menu{
+#info_bar, #button_menu {
 	border-style : solid;
-	height : 10vh;
-	width : 99%;
-	margin-left:1px;
+	height       : 10vh;
+	width        : 99%;
+	margin-left  : 1px;
 	/*font-size : 300%;*/
-	text-align: center;
-}
-#map{
-	width : 75vw;
-	height : 85vh;
-	background-image : url("map.jpg");
-	background-repeat: no-repeat;
-    background-attachment: fixed;
-	background-size: 75vw 100vh;
+	text-align   : center;
 }
 
-#menu_droite{
-	width : 20%;
-	text-align: center;
+#map {
+	width                 : 75vw;
+	height                : 85vh;
+	background-image      : url("map.jpg");
+	background-repeat     : no-repeat;
+	background-attachment : fixed;
+	background-size       : 75vw 100vh;
 }
 
-#ventes_actuelles{
+html {
+	cursor              : default;
+	-webkit-user-select : none;
+	-moz-user-select    : none;
+	-ms-user-select     : none;
+	user-select         : none;
+}
+
+#menu_droite {
+	width      : 20%;
+	text-align : center;
+}
+
+#ventes_actuelles {
 	border-style : solid;
-	height : 75vh;
-	overflow:auto;
+	height       : 75vh;
+	overflow     : auto;
 }
 
-#recettes_en_ventes{
-	text-align: left;
+#recettes_en_ventes {
+	text-align : left;
 }
 
-#creation_recette, #mes_recettes{
-font-size : 30px;
+#creation_recette, #mes_recettes {
+	font-size : 30px;
 }
 
-#ingredients{
-	text-align: center;
+#ingredients {
+	text-align   : center;
 	border-style : solid;
-	height : 70vh;
-	overflow:auto;
+	height       : 70vh;
+	overflow     : auto;
 }
 
-#ingredients div{
+#ingredients div {
 	border-style : solid;
 }
 
-table{
-    border-collapse: collapse;
+table {
+	border-collapse : collapse;
 }
 
-td, th{
-    border: 1px solid black;
+td, th {
+	border : 1px solid black;
 }
 
 

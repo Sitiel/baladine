@@ -49,10 +49,10 @@
         </div>
         <div class="row">
             <div id="map_page" class="col-sm-9">
-                <canvas id="map"></canvas>
+                <canvas id="map" width="1000px" height="1000px" ></canvas>
             </div>
 		    <div id="creation_recette" class="col-sm-9">
-             <form id="ma_recette">
+             <form id="ma_recette" onsubmit="return false;">
 			     Nom : <input type="text" id="nom_new_recette"><br />
 			 <div class="row">
 		   	  <div class="col-sm-6">
@@ -74,7 +74,7 @@
 		    </table>
 		   </div>
             <div id="menu_droite" class="col-sm-3">
-               <input type="submit" class="btn btn-info" onclick="setPage('choix_page')"value="CHOIX">
+               <input type="submit" class="btn btn-info" onclick="setPage('choix_page')" value="CHOIX">
                 <div id="ventes_actuelles">
                     <strong>Ventes</strong>
                     <ul id="recettes_en_ventes">

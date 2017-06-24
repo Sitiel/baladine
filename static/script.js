@@ -43,10 +43,12 @@ function login() {
 	setInterval(getMap, 2000);
 	return false;
 }
-
+var lastDay = 0;
 setInterval(function () {
-	$.ajax("http://balady.herokuapp.com/ValerianKang/Balady_API/1.0.0/meteorology")
+	$.ajax("/ValerianKang/Balady_API/1.0.0/meteorology")
 		.done(function (data) {
+			if (data === 0)
+					return;
 			var hour  = data['timestamp'] % 24;
 			var day   = begin_day + Math.floor(data['timestamp'] / 24);
 			var month = begin_month + Math.floor(day / 30);
@@ -64,6 +66,12 @@ setInterval(function () {
 			if (month < 10) {
 				month = "0" + month
 			}
+
+
+			if (day !== lastDay){
+				pubs = [];
+			}
+			lastDay = day;
 
 			$("#hour").html(hour + ":00");
 			$("#weather").html(data['weather']['0']['weather']);
@@ -102,6 +110,7 @@ function getMap() {
 
 
 $("#recettes_en_ventes").html();
+
 for (var i = 1; i < 51; i++) {
 	var price = (Math.random() * (1.0 - 0.01) + 0.01);
 	var sales = Math.floor((Math.random() * 10) + 1);

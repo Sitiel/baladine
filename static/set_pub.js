@@ -14,6 +14,10 @@ var posX1 = 0;
 var posY1 = 0;
 var rayon = 0;
 var pubs  = [];
+var production = [];
+var new_recettes = [];
+var ingredients  = [];
+var recettes = [];
 
 var largeur_map = 0;
 var longueur_map = 0;
@@ -51,7 +55,7 @@ canvas.onmousemove = function (e) {
 		ctx.beginPath();
 		ctx.moveTo(posX1 + rayon, posY1);
 		ctx.arc(posX1, posY1, rayon, 0, 2 * Math.PI);
-		ctx.fillStyle = "rgba(0,200,0,0.3)";
+		ctx.fillStyle = "rgba(255,255,106,0.3)";
 		ctx.fill();
 		ctx.lineWidth = 0.3;
 		ctx.stroke();
@@ -63,6 +67,25 @@ canvas.onmousedown = function (e) {
 		posX1   = (e.clientX * canvas.width) / $("#map").width();
 		posY1   = (e.clientY * canvas.height) / $("#map").height() - ($("#info_bar").height() * canvas.height) / $("#map").height();
 		pressed = true;
+	}
+};
+
+canvas.onmouseup = function () {
+	if (setpub) {
+		pressed            = false;
+
+		if (rayon > 10) {
+			var publicite      = {};
+			publicite["x"]     = posX1;
+			publicite["y"]     = posY1;
+			publicite["rayon"] = rayon;
+			publicite["color"] = "rgba(51,204,255,0.3)";
+			pubs.push(publicite);
+		}
+		rayon = 0;
+		posX1 = 0;
+		posY1 = 0;
+		//addCircle(posX1, posY1, rayon, 0, 200, 0, 0.3);
 	}
 };
 
@@ -82,20 +105,45 @@ function drawPub(ctx, _pubs) {
 
 
 function sendActions() {
-	var pubs_actions = [];
+	var actions = [];
 	for (var i in pubs) {
 		var l = {latitude: pubs[i]["x"]/canvas.width*largeur_map, longitude: pubs[i]["y"]/canvas.height*longueur_map};
-		pubs_actions.push({ kind: "ad", location: l, rayon: pubs[i]['rayon']});
+		actions.push({ kind: "ad", location: l, rayon: pubs[i]['rayon']*(largeur_map/canvas.width)});
 	}
+	for(i in new_recettes) {
+		var ingredients = [];
+		for (var ing_i in new_recettes[0]['ingredients'])
+		{
+			ingredients.push({name: new_recettes[0]['ingredients'][ing_i],cost: 0, hasAlcohol: false, isCold: false});
+		}
+		var recipe = {name: new_recettes[i]['nom'], ingredients: ingredients};
+		actions.push({kind: "recipe", recipe: recipe});
+		//alert(JSON.stringify(actions));
+	}
+
+	for(i in production) {
+		var drinkName = production[i]['nom'];
+		var quantity = production[i]['quantite'];
+		var price = production[i]['prix'];
+		var prepare = {};
+		prepare[drinkName] = quantity;
+		var price_json = {};
+		price_json[drinkName] = price;
+		var tmp = {kind: "drinks"};
+		tmp['prepare'] = prepare;
+		tmp['price'] = price_json;
+		actions.push(tmp);
+	}
+
+
 	$.ajax({
 		type       : "POST",
 		url        : "/ValerianKang/Balady_API/1.0.0/actions/" + pseudal,
 		// The key needs to match your method's input parameter (case-sensitive).
-		data       : JSON.stringify({actions: pubs_actions}),
+		data       : JSON.stringify({actions: actions}),
 		contentType: "application/json; charset=utf-8",
 		dataType   : "json",
 		success    : function (data) {
-			pubs = [];
 		}
 	});
 }
@@ -121,16 +169,3 @@ function addCircle(x, y, rayon, r, g, b, a) {
 }
 
 
-canvas.onmouseup = function () {
-	if (setpub) {
-		pressed            = false;
-		var publicite      = {};
-		publicite["x"]     = posX1;
-		publicite["y"]     = posY1;
-		publicite["rayon"] = rayon;
-		publicite["color"] = "rgba(0,200,0,0.3)";
-		pubs.push(publicite);
-		sendActions();
-		//addCircle(posX1, posY1, rayon, 0, 200, 0, 0.3);
-	}
-};

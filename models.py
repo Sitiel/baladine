@@ -160,6 +160,6 @@ class meteo(Base, JsonModel):
     #represente les journees ayant cette meteo
     journees = relationship("journee", back_populates="meteo")
 
-    def __init__(self, libelle):
-        self.meteo_libelle = libelle
+    def __init__(self, meteo_libelle):
+        self.meteo_libelle = meteo_libelle
 

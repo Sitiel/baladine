@@ -1,8 +1,5 @@
-
-var recettes = [];
 var nb_produits = 0;
 
-var production = [];
 function getMesRecettes() {
 	if (pseudal === "") {
 		return 0;
@@ -35,6 +32,5 @@ function savProd(){
 			production.push(produit);
 		}
 	}
-	console.log(production);
-	sendAction();
+	sendActions();
 }

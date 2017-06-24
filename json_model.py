@@ -53,3 +53,4 @@ currentDay = 0
 
 
 availablesItems = []
+tomorrowActions = {}
