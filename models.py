@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from database import Base
 from json_model import *
 
-#----- Relation -----#
+# ----- Relation -----#
 
 # Example of many to many relationship (see /reset in master_controller to use it)
 # Relation entre ingredient et recette
@@ -21,28 +21,33 @@ possede = Table('possede', Base.metadata,
 
 # Relation entre un joueur, un produit et une transaction
 participe = Table('participe', Base.metadata,
-                Column('joueur_id', Integer, ForeignKey('joueur.joueur_id')),
-                Column('recette_id', Integer, ForeignKey('recette.recette_id')),
-                Column('transaction_id', Integer, ForeignKey('transaction.transaction_id'))
-                )
+                  Column('joueur_id', Integer, ForeignKey('joueur.joueur_id')),
+                  Column('recette_id', Integer, ForeignKey('recette.recette_id')),
+                  Column('transaction_id', Integer, ForeignKey('transaction.transaction_id'))
+                  )
+
 
 # Relation pour le choix de production du joueur
 class produit(Base, JsonModel):
-    __tablename__="produit"
-    joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'), primary_key=True)
-    jour_id = Column(Integer, ForeignKey('journee.jour_id'), primary_key=True)
-    recette_id = Column(Integer, ForeignKey('recette.recette_id'), primary_key=True)
+    __tablename__ = "produit"
+    produit_id = Column(Integer, primary_key=True)
+    joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'))
+    jour_id = Column(Integer, ForeignKey('journee.jour_id'))
+    recette_id = Column(Integer, ForeignKey('recette.recette_id'))
     nombre_prod = Column(Integer)
     prix_vente = Column(Float)
     journee = relationship("journee")
     recette = relationship("recette")
+    ForeignKeyConstraint(['joueur_id', 'jour_id'], ['joueur.joueur_id', 'journee.journee_id']),
+    ForeignKeyConstraint(['joueur_id', 'recette_id'], ['joueur.joueur_id', 'recette.recette_id']),
 
-#----- Tables -----#
+
+# ----- Tables -----#
 
 class ingredient(Base, JsonModel):
     __tablename__ = "ingredient"
     ing_id = Column(Integer, primary_key=True)
-    ing_nom = Column(String(255),unique=True)
+    ing_nom = Column(String(255), unique=True)
     ing_cout = Column(Float)
     ing_alcohol = Column(Boolean)
     ing_froid = Column(Boolean)
@@ -58,8 +63,8 @@ class recette(Base, JsonModel):
     __tablename__ = "recette"
     recette_id = Column(Integer, primary_key=True)
     recette_nom = Column(String(255))
-    #relation vers ingredient
-    ingredients = relationship('ingredient', secondary=compose) 
+    # relation vers ingredient
+    ingredients = relationship('ingredient', secondary=compose)
 
     def __init__(self, nom):
         self.recette_nom = nom
@@ -70,16 +75,16 @@ class joueur(Base, JsonModel):
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
     joueur_budget = Column(Float)
-    recettes = relationship('recette', secondary=possede) #relation vers recette
-    #represente la carte sur laquelle se trouve le joueur
+    recettes = relationship('recette', secondary=possede)  # relation vers recette
+    # represente la carte sur laquelle se trouve le joueur
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
     carte = relationship("carte", back_populates="joueurs")
-    #represente les zones du joueur
+    # represente les zones du joueur
     zones = relationship("zone", back_populates="joueur")
-    #represente les transactions du joueurs
+    # represente les transactions du joueurs
     transactions = relationship('transaction', secondary=participe)
     recette = relationship('recette', secondary=participe)
-    #represente les relations du joueur avec le produit
+    # represente les relations du joueur avec le produit
     journees_produit = relationship('produit')
     recettes_produit = relationship('produit')
 
@@ -95,7 +100,7 @@ class zone(Base, JsonModel):
     zone_posY = Column(Float)
     zone_rayon = Column(Float)
     zone_type = Column(String(64))
-    #represente la carte sur laquelle se trouve le joueur
+    # represente la carte sur laquelle se trouve le joueur
     joueur_id = Column(Integer, ForeignKey('joueur.joueur_id'))
     joueur = relationship("joueur", back_populates="zones")
 
@@ -111,9 +116,9 @@ class carte(Base, JsonModel):
     carte_id = Column(Integer, primary_key=True)
     carte_largeur = Column(Float)
     carte_longueur = Column(Float)
-    #represente les journees par carte
+    # represente les journees par carte
     journees = relationship("journee", back_populates="carte")
-    #represente les joueurs par carte
+    # represente les joueurs par carte
     joueurs = relationship("joueur", back_populates="carte")
 
     def __init__(self, largeur, longueur):
@@ -125,10 +130,10 @@ class transaction(Base, JsonModel):
     __tablename__ = "transaction"
     transaction_id = Column(Integer, primary_key=True)
     transaction_prix = Column(Float)
-    #represente la journee pendant laquelle a lieu la transaction
+    # represente la journee pendant laquelle a lieu la transaction
     journee_id = Column(Integer, ForeignKey('journee.jour_id'))
     journee = relationship("journee", back_populates="transactions")
-    #represente le joueurs du joueurs
+    # represente le joueurs du joueurs
     joueur = relationship("joueur", secondary=participe)
     recette = relationship("recette", secondary=participe)
 
@@ -140,26 +145,27 @@ class journee(Base, JsonModel):
     __tablename__ = "journee"
     jour_id = Column(Integer, primary_key=True)
     jour_date = Column(Date)
-    #represente les transactions de la journee
+    # represente les transactions de la journee
     transactions = relationship("transaction", back_populates="journee")
-    #represente le lien entre la carte et les journees
+    # represente le lien entre la carte et les journees
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
     carte = relationship("carte", back_populates="journees")
-    #represente le lien entre la meteo et les journees
+    # represente le lien entre la meteo et les journees
     meteo_id = Column(Integer, ForeignKey('meteo.meteo_id'))
     meteo = relationship("meteo", back_populates="journees")
-    #represente les relations du joueur avec le produit
+
+    # represente les relations du joueur avec le produit
 
     def __init__(self, date):
         self.jour_date = date
+
 
 class meteo(Base, JsonModel):
     __tablename__ = "meteo"
     meteo_id = Column(Integer, primary_key=True)
     meteo_libelle = Column(String(255))
-    #represente les journees ayant cette meteo
+    # represente les journees ayant cette meteo
     journees = relationship("journee", back_populates="meteo")
 
     def __init__(self, meteo_libelle):
         self.meteo_libelle = meteo_libelle
-

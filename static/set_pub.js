@@ -10,16 +10,17 @@ var canvas  = document.getElementById('map');
 var pressed = false;
 
 
-var posX1 = 0;
-var posY1 = 0;
-var rayon = 0;
-var pubs  = [];
-var production = [];
+var posX1        = 0;
+var posY1        = 0;
+var rayon        = 0;
+var pubs         = [];
+var production   = [];
 var new_recettes = [];
 var ingredients  = [];
-var recettes = [];
+var recettes     = [];
+var budget = 0;
 
-var largeur_map = 0;
+var largeur_map  = 0;
 var longueur_map = 0;
 
 var setpub = false;
@@ -51,6 +52,24 @@ canvas.onmousemove = function (e) {
 		drawPub(ctx, network_map_items);
 
 		drawPub(ctx, pubs);
+		var realRayon     = rayon / canvas.width * largeur_map;
+		var pub_price = Math.pow(realRayon, 1.8) / 2;
+		pub_price = pub_price.toFixed(2);
+		//Les joies du JS -> Budget est un string pour je ne sais quelle raison
+		if (parseInt(pub_price) > parseInt(budget))
+		{
+			rayon = ((Math.pow(budget*2, 1/1.8))  /largeur_map) * canvas.width;
+			pub_price = budget;
+		}
+		var metrics       = ctx.measureText("Prix : " + pub_price + "€");
+		var textXpos      = posX;
+		if (textXpos + metrics.width > canvas.width) {
+			textXpos -= ((textXpos + metrics.width) - canvas.width);
+		}
+		ctx.font         = '20px _sans';
+		ctx.fillStyle    = '#000000';
+		ctx.textBaseline = 'top';
+		ctx.fillText("Prix : " + pub_price + "€", textXpos, posY);
 
 		ctx.beginPath();
 		ctx.moveTo(posX1 + rayon, posY1);
@@ -72,9 +91,9 @@ canvas.onmousedown = function (e) {
 
 canvas.onmouseup = function () {
 	if (setpub) {
-		pressed            = false;
+		pressed = false;
 
-		if (rayon > 10) {
+		if (rayon > 5) {
 			var publicite      = {};
 			publicite["x"]     = posX1;
 			publicite["y"]     = posY1;
@@ -107,31 +126,48 @@ function drawPub(ctx, _pubs) {
 function sendActions() {
 	var actions = [];
 	for (var i in pubs) {
-		var l = {latitude: pubs[i]["x"]/canvas.width*largeur_map, longitude: pubs[i]["y"]/canvas.height*longueur_map};
-		actions.push({ kind: "ad", location: l, rayon: pubs[i]['rayon']*(largeur_map/canvas.width)});
+		var l = {
+			latitude : pubs[i]["x"] / canvas.width * largeur_map,
+			longitude: pubs[i]["y"] / canvas.height * longueur_map
+		};
+		actions.push({
+			kind    : "ad",
+			location: l,
+			rayon   : pubs[i]['rayon'] / canvas.width * largeur_map
+		});
 	}
-	for(i in new_recettes) {
+	for (i in new_recettes) {
 		var ingredients = [];
-		for (var ing_i in new_recettes[0]['ingredients'])
-		{
-			ingredients.push({name: new_recettes[0]['ingredients'][ing_i],cost: 0, hasAlcohol: false, isCold: false});
+		for (var ing_i in new_recettes[0]['ingredients']) {
+			ingredients.push({
+				name      : new_recettes[0]['ingredients'][ing_i],
+				cost      : 0,
+				hasAlcohol: false,
+				isCold    : false
+			});
 		}
-		var recipe = {name: new_recettes[i]['nom'], ingredients: ingredients};
-		actions.push({kind: "recipe", recipe: recipe});
+		var recipe = {
+			name       : new_recettes[i]['nom'],
+			ingredients: ingredients
+		};
+		actions.push({
+			kind  : "recipe",
+			recipe: recipe
+		});
 		//alert(JSON.stringify(actions));
 	}
 
-	for(i in production) {
-		var drinkName = production[i]['nom'];
-		var quantity = production[i]['quantite'];
-		var price = production[i]['prix'];
-		var prepare = {};
-		prepare[drinkName] = quantity;
-		var price_json = {};
+	for (i in production) {
+		var drinkName         = production[i]['nom'];
+		var quantity          = production[i]['quantite'];
+		var price             = production[i]['prix'];
+		var prepare           = {};
+		prepare[drinkName]    = quantity;
+		var price_json        = {};
 		price_json[drinkName] = price;
-		var tmp = {kind: "drinks"};
-		tmp['prepare'] = prepare;
-		tmp['price'] = price_json;
+		var tmp               = {kind: "drinks"};
+		tmp['prepare']        = prepare;
+		tmp['price']          = price_json;
 		actions.push(tmp);
 	}
 

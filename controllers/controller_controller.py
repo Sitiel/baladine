@@ -10,11 +10,8 @@ from models import journee, meteo, joueur, recette, produit, ingredient, zone
 
 def post_meteorology():
     json_model.meteoJsontoString = request.get_json(force=True)
-    
-    #meteoJson.metro_timestamp = meteo['timestamp']
-    #meteoJson.metro_weather.append(WeatherJson(meteo['weather'][0]['dfn'],meteo['weather'][0]['weather']))
-
     if json_model.meteoJsontoString['timestamp']/24 != json_model.currentDay:
+        #It's a new day
         m = json_model.get_or_create(db_session, meteo,  meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
         json_model.currentDay = json_model.meteoJsontoString['timestamp']/24
         newDay = datetime.now() + timedelta(days=json_model.currentDay)
@@ -58,32 +55,47 @@ def play_actions():
                 # ajouter l'ajout d'une pub a la base de donnees
                 adX = action['location']['latitude']
                 adY = action['location']['longitude']
-                adRayon = action['rayon']
-                advertisement = zone(adX, adY, adRayon, "ad")
-                joueurDB.zones.append(advertisement)
-                db_session.add(advertisement)
-                db_session.commit()
+                adRayon = float(action['rayon'])
+                cost_ad = pow(adRayon, 1.8) / 2
+                if joueurDB.joueur_budget > cost_ad:
+                    joueurDB.joueur_budget -= cost_ad
+                    advertisement = zone(adX, adY, adRayon, "ad")
+                    joueurDB.zones.append(advertisement)
+                    db_session.add(advertisement)
+                    db_session.commit()
 
             elif typeAction == "drinks":
                 # preparation
-                for key in action['prepare']:
-                    nomRecette = key
-                    nbRecette = action['prepare'][key]
-                for key in action['price']:
-                    nomPrix = key
-                    prix = action['price'][key]
 
-                recette_produit = recette.query.filter(
-                    and_(recette.recette_nom == nomRecette, joueurDB.joueur_id == joueurDB.joueur_id)).first()
+                # todo accept also when samples are sent by this way
+                for key, act in action['prepare'].iteritems():
+                    nomRecette = key
+                    nbRecette = int(act)
+                for key, act in action['price'].iteritems():
+                    nomPrix = key
+                    prix = act
+                r = recette.query.filter(recette.recette_nom == nomRecette).first()
+                coutProd = 0
+                for ing in r.ingredients:
+                    coutProd += ing.ing_cout
+
                 actualDate = datetime.now() + timedelta(days=json_model.currentDay)
                 jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
 
+                total_cout_prod = (coutProd * nbRecette)
+                if total_cout_prod > joueurDB.joueur_budget:
+                    nbRecette = int(joueurDB.joueur_budget/coutProd)
+                    total_cout_prod = nbRecette * coutProd
+                joueurDB.joueur_budget -= total_cout_prod
+
                 # create parent, append a child via association
                 prod = produit(nombre_prod=nbRecette, prix_vente=prix)
-                prod.recette = recette_produit
+                prod.recette = r
                 prod.journee = jour
                 joueurDB.recettes_produit.append(prod)
                 joueurDB.journees_produit.append(prod)
                 db_session.add(prod)
                 db_session.commit()
+    json_model.nbVentesPlayer = {}
     json_model.tomorrowActions = {}
+    return "Success"

@@ -9,7 +9,7 @@ setPage("map_page");
 $("#info_bar").hide();
 $("#button_menu").show();
 
-function setPage(page){
+function setPage(page) {
 	$("#b_creation_recette").attr("class", "btn btn-primary");//debug
 	$("#b_map_page").attr("class", "btn btn-primary");//debug
 	$("#b_choix_page").attr("class", "btn btn-primary");//debug
@@ -18,15 +18,15 @@ function setPage(page){
 	$("#choix_page").hide();
 	$("#map_page").hide();
 	$("#pub").hide();
-	
-	$("#"+page).show();
-	$("#b_"+page).attr("class", "btn btn-secondary"); //debug
-	if(page === "map_page"){
+
+	$("#" + page).show();
+	$("#b_" + page).attr("class", "btn btn-secondary"); //debug
+	if (page === "map_page") {
 		$("#pub").show();
 	}
 }
 
-function login() { 	
+function login() {
 	$.ajax({
 		type       : "POST",
 		url        : "/ValerianKang/Balady_API/1.0.0/players",
@@ -47,8 +47,9 @@ var lastDay = 0;
 setInterval(function () {
 	$.ajax("/ValerianKang/Balady_API/1.0.0/meteorology")
 		.done(function (data) {
-			if (data === 0)
-					return;
+			if (data === 0) {
+				return;
+			}
 			var hour  = data['timestamp'] % 24;
 			var day   = begin_day + Math.floor(data['timestamp'] / 24);
 			var month = begin_month + Math.floor(day / 30);
@@ -68,8 +69,10 @@ setInterval(function () {
 			}
 
 
-			if (day !== lastDay){
+			if (day !== lastDay) {
 				pubs = [];
+				new_recettes = [];
+				production = [];
 			}
 			lastDay = day;
 
@@ -85,7 +88,6 @@ function getMap() {
 	if (pseudal === "") {
 		return 0;
 	}
-	getMesRecettes();
 	$.ajax("/ValerianKang/Balady_API/1.0.0/map/" + pseudal)
 		.done(function (data) {
 			network_map_items = [];
@@ -98,13 +100,27 @@ function getMap() {
 				for (var mapItem in itemsByPlayer[pseudal_joueur]) {
 					var location = itemsByPlayer[pseudal_joueur][mapItem]['location'];
 					if (pseudal_joueur === pseudal) {
-						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 0, 255, 0, 0.3);
+						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / largeur_map * canvas.width, 0, 255, 0, 0.3);
 					} else {
-						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'], 255, 0, 0, 0.3);
+						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / longueur_map * canvas.height, 255, 0, 0, 0.3);
 					}
 				}
 			}
 			$("#budget").html(data['playerInfo']['cash'].toFixed(2));
+			budget = data['playerInfo']['cash'].toFixed(2);
+			var recettes_joueur = data['playerInfo']['drinksOffered'];
+			var tableau         = "";
+			nb_produits         = recettes_joueur.length;
+			for (var i = 0; i < nb_produits; i++) {
+				if (recettes.indexOf(data['playerInfo']['drinksOffered'][i]['name']) == -1) {
+					tableau += "<tr><td id=\"nom_" + i + "\">" + data['playerInfo']['drinksOffered'][i]['name'] + "</td>";
+					tableau += "<td><input id=\"prod_" + i + "\" type=\"number\" placeholder=\"ex: 3\"></td>";
+					tableau += "<td><input id=\"prix_" + i + "\"type=\"text\" placeholder=\"ex: 0.15\">€/verre</td>";
+					tableau += "<td id=\"cout_" + i + "\">" + data['playerInfo']['drinksOffered'][i]['price'] + "€/verre</td></tr>";
+					recettes.push(data['playerInfo']['drinksOffered'][i]['name']);
+				}
+			}
+			$("#mes_recettes").append(tableau);
 		});
 }
 

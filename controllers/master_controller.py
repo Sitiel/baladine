@@ -1,13 +1,11 @@
 # coding=utf-8
-# coding=utf-8
-# coding=utf-8
-# coding=utf-8
 from datetime import datetime, timedelta
 from flask import request,jsonify
 
 from database import db_session, Base, engine
 from models import *
 import json_model
+
 
 def map_get():
     ingredients = ingredient.query.all()
@@ -52,17 +50,26 @@ def map_get():
 
 
 def post_sales(sales):
+    actualDate = datetime.now() + timedelta(days=json_model.currentDay)
+    jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
     for s in sales['sales']:
-        r = recette.query.filter(recette.recette_nom == s['item']).first()
-        total_cost = 0
-        for i in r.ingredients:
-            total_cost += i.ing_cout
-        quantity = s['quantity']
-        t = transaction(quantity * total_cost)
-        actualDate = datetime.now() + timedelta(days=json_model.currentDay)
-        jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
-        t.journee = jour
         j = joueur.query.filter(joueur.joueur_pseudo == s['player']).first()
+        r = recette.query.filter(recette.recette_nom == s['item']).first()
+        r_produit = produit.query.filter(produit.recette_id == r.recette_id, produit.joueur_id == j.joueur_id, produit.jour_id == jour.jour_id).first()
+        if r_produit is None:
+            continue
+        total_cost = r_produit.prix_vente
+        quantity = s['quantity']
+
+        if j.joueur_pseudo not in nbVentesPlayer:
+            json_model.nbVentesPlayer[j.joueur_pseudo] = 0
+
+        if quantity > (r_produit.nombre_prod - json_model.nbVentesPlayer[j.joueur_pseudo]):
+            quantity = (r_produit.nombre_prod - json_model.nbVentesPlayer[j.joueur_pseudo])
+
+        json_model.nbVentesPlayer[j.joueur_pseudo] += quantity
+        t = transaction(quantity * total_cost)
+        t.journee = jour
         j.transactions.append(t)
         j.joueur_budget += (quantity*total_cost)
         db_session.add(t)
@@ -97,7 +104,6 @@ def reset_game():
     db_session.add(ingredient('Feuilles de Kola', 5, False, True))
     db_session.add(ingredient('Lait', 1, False, True))
 
-
     db_session.add(u)
     db_session.add(a)
 
@@ -115,7 +121,11 @@ def reset_game():
     db_session.add(j)
 
     db_session.commit()
+    json_model.currentDay = 0
 
+    json_model.availablesItems = []
+    json_model.tomorrowActions = {}
+    json_model.nbVentesPlayer = {}
 
     return "Success", 200, {'Content-Type': 'application/text'}
 
