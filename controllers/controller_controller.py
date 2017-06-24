@@ -23,7 +23,7 @@ def post_meteorology():
         db_session.add(m)
         db_session.add(j)
         db_session.commit()
-        play_actions()
+        return play_actions()
 
     return jsonify(json_model.meteoJsontoString)
 
@@ -31,7 +31,6 @@ def post_meteorology():
 
 
 def play_actions():
-
     for playerName, actions in json_model.tomorrowActions.iteritems():
         joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
 

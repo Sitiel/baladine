@@ -91,7 +91,7 @@ def map_player_name_get(playerName):
 
 
 def post_action(playerName, actions):
-    tomorrowActions[playerName] = actions
+    json_model.tomorrowActions[playerName] = actions
     return "Success"
 
 
