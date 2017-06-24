@@ -73,7 +73,7 @@ def play_actions():
                 for key in action['price']:
                     nomPrix = key
                     prix = action['price'][key]
-
+ÒÒ
                 recette_produit = recette.query.filter(
                     and_(recette.recette_nom == nomRecette, joueurDB.joueur_id == joueurDB.joueur_id)).first()
                 actualDate = datetime.now() + timedelta(days=json_model.currentDay)
@@ -87,4 +87,4 @@ def play_actions():
                 joueurDB.journees_produit.append(prod)
                 db_session.add(prod)
                 db_session.commit()
-    tomorrowActions = {}
+    json_model.tomorrowActions = {}

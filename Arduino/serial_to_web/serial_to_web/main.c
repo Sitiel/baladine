@@ -216,7 +216,7 @@ arduino_data getCurrentState(int USB){
 
 int main(){
     
-    int USB = open( "/dev/cu.usbmodem1411", O_RDWR| O_NOCTTY );
+    int USB = open( "/dev/cu.usbmodem1421", O_RDWR| O_NOCTTY );
     struct termios tty;
     struct termios tty_old;
     memset (&tty, 0, sizeof tty);

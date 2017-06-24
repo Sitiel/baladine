@@ -46,7 +46,7 @@ def get_or_create(session, model, **kwargs):
         session.commit()
         return instance
 
-meteoJson = MeteorologyJson(0,0)
+meteoJson = MeteorologyJson(0, 0)
 meteoJsontoString = 0
 
 currentDay = 0
