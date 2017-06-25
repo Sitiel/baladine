@@ -115,4 +115,29 @@ def chat_post(chatMessage):
 # curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}, {"kind": "ad", "location": {"latitude": 50,"longitude": 60},"rayon": 50}, {"kind": "drinks", "prepare": {"Limonade": 15},"price": {"Limonade" : 50.0}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 
 def quit_game(playerName):
-    return 'do some magic!'
+    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
+    participation = participe.query.filter(participe.joueur_id == joueurDB.joueur_id).all()
+    zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
+
+
+    # partie joueur
+    for prod in productions :
+        db_session.delete(prod)
+    for part in participation :
+        db_session.delete(part)
+    for zon in zones :
+        db_session.delete(zon)
+
+    #partie recette liee au joueur
+    possedes = possede.query.filter(possede.joueur_id == joueurDB.joueur_id).all()
+    for pos in possedes :
+        recet = recette.query.filter(pos.recette_id == recette.recette_id).first()
+        db_session.delete(pos)
+        composition = compose.query.filter(compose.recette_id == recet.recette_id).all()
+        for comp in composition :
+            db_session.delete(comp)
+        db_session.delete(recet)
+    db_session.delete(joueurDB)
+    db_session.commit()
+    return 'Success'
