@@ -61,7 +61,7 @@ def post_sales(sales):
         total_cost = r_produit.prix_vente
         quantity = s['quantity']
 
-        if j.joueur_pseudo not in nbVentesPlayer:
+        if j.joueur_pseudo not in json_model.nbVentesPlayer:
             json_model.nbVentesPlayer[j.joueur_pseudo] = 0
 
         if quantity > (r_produit.nombre_prod - json_model.nbVentesPlayer[j.joueur_pseudo]):

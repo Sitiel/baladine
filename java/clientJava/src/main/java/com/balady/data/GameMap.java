@@ -244,7 +244,7 @@ public class GameMap {
 	}
 
 	/**
-	 * add new Customers in function of meteo.
+	 * add new Customers depending on the meteo.
 	 */
 	public void addConsumers() {
 		
