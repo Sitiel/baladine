@@ -95,6 +95,15 @@ def post_action(playerName, actions):
     return json_model.tomorrowActions
 
 
+def chat_get():
+    return jsonify(json_model.lastMessages)
+
+
+def chat_post(chatMessage):
+    json_model.lastMessages.append(chatMessage)
+    return "Success", 200, {'Content-Type': 'application/text'}
+
+
 # recette
 # curl -H "Content-Type: application/json" -X POST -d '{"actions": [{"kind": "recipe","recipe": {"name": "Limonade","ingredients": [{"name": "Citron", "cost": 1,"hasAlcohol": false,"isCold": false}],"hasAlcohol": false,"isCold": false}}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/actions/Coco
 # pub

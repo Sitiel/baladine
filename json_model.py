@@ -55,3 +55,4 @@ currentDay = 0
 availablesItems = []
 tomorrowActions = {}
 nbVentesPlayer = {}
+lastMessages = []

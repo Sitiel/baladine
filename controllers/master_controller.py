@@ -100,9 +100,9 @@ def reset_game():
     db_session.add(ingredient('Sel', 0.1, False, True))
     db_session.add(ingredient('Colorant', 0.2, False, True))
     db_session.add(ingredient('Infusion de pêche', 0.6, False, True))
-    db_session.add(ingredient('Feuilles de thé', 2, False, True))
+    db_session.add(ingredient('Feuilles de thé', 2, False, False))
     db_session.add(ingredient('Feuilles de Kola', 5, False, True))
-    db_session.add(ingredient('Lait', 1, False, True))
+    db_session.add(ingredient('Lait', 1, False, False))
 
     db_session.add(u)
     db_session.add(a)

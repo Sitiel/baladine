@@ -244,6 +244,41 @@ paths:
           description: "Bad input"
       x-tags:
       - tag: "client"
+  /chat:
+    get:
+      tags:
+      - "client"
+      summary: "Get last messages"
+      description: "Get the last posted message"
+      operationId: "controllers.client_controller.chat_get"
+      parameters: []
+      responses:
+        200:
+          description: "Last posted message in json"
+          schema:
+            $ref: "#/definitions/lastChatMessage"
+      x-tags:
+      - tag: "client"
+    post:
+      tags:
+      - "client"
+      summary: "Post a message"
+      description: "post a new message on the chat"
+      operationId: "controllers.client_controller.chat_post"
+      parameters:
+      - in: "body"
+        name: "chatMessage"
+        description: "The message to be posted"
+        required: true
+        schema:
+          $ref: "#/definitions/chatMessage"
+      responses:
+        200:
+          description: "Success your message as been posted"
+        400:
+          description: "Bad input"
+      x-tags:
+      - tag: "client"
 definitions:
   playerUsername:
     type: "object"
@@ -566,3 +601,19 @@ definitions:
       price:
         type: "object"
         properties: {}
+  chatMessage:
+    type: "object"
+    required:
+    - "message"
+    - "sender"
+    properties:
+      sender:
+        type: "string"
+        example: "DarkSasuke69"
+      message:
+        type: "string"
+        example: "An awesome message"
+  lastChatMessage:
+    type: "array"
+    items:
+      $ref: "#/definitions/chatMessage"
