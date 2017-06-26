@@ -86,8 +86,9 @@ function getMessageFromChat() {
 		dataType   : "json",
 		success    : function (data) {
 		var chat = "<br />";
-		for(var i = 0; i< data.length; i++){		
-			chat += "<strong>"+data[i]["sender"] + "</strong> : "+ data[i]["message"] + "<br />";
+		for(var i = 0; i< data.length; i++){
+			var msg = data[i]["message"].replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			chat += "<strong>"+data[i]["sender"] + "</strong> : "+ msg + "<br />";
 		}
 		$("#chat").html(chat);;
 		}
@@ -97,7 +98,8 @@ function getMessageFromChat() {
 function sendMessage(){
 	var msgTest = $("#message_send").val().replace(/ /g, '');
 	if(msgTest != "" && $("#message_send").val().length < 25){
-		postAChatMessage($("#message_send").val());
+		var msg = $("#message_send").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		postAChatMessage(msg);
 		$("#message_send").val("");
 
 	}
