@@ -74,13 +74,51 @@ setInterval(function () {
 			$("#day").html(day + "/" + month + "/" + year
 			);
 		});
-		var messages = getMessageFromChat();
-		/*var chat = "";
-		for(var i = 0; i< messages.length; i++){
-			chat += messages[i]["sender"] + " : "+ messages[i]["message"] + "<br />;
-		}
-		$("#chat").html(chat);*/
+	getMessageFromChat();
 }, 1000);
+
+
+function getMessageFromChat() {
+	$.ajax({
+		type       : "GET",
+		url        : "/ValerianKang/Balady_API/1.0.0/chat",
+		contentType: "application/json; charset=utf-8",
+		dataType   : "json",
+		success    : function (data) {
+		var chat = "<br />";
+		for(var i = 0; i< data.length; i++){		
+			chat += "<strong>"+data[i]["sender"] + "</strong> : "+ data[i]["message"] + "<br />";
+		}
+		$("#chat").html(chat);;
+		}
+	});
+}
+
+function sendMessage(){
+	var msgTest = $("#message_send").val().replace(/ /g, '');
+	if(msgTest != "" && $("#message_send").val().length < 25){
+		postAChatMessage($("#message_send").val());
+		$("#message_send").val("");
+
+	}
+}
+function postAChatMessage(message) {
+	if (pseudal === "") {
+		return;
+	}
+	$.ajax({
+		type       : "POST",
+		url        : "/ValerianKang/Balady_API/1.0.0/chat",
+		data       : JSON.stringify({
+			sender : pseudal,
+			message: message
+		}),
+		contentType: "application/json; charset=utf-8",
+		dataType   : "json",
+		success    : function (data) {
+		}
+	});
+}
 
 function getMap() {
 	if (pseudal === "") {
