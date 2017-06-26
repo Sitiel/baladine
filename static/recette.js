@@ -42,4 +42,11 @@ function create(){
 	alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
 	new_recettes.push(new_recette);
 
+	nouvelles_recettes = "Nouvelles_recettes : <ul>";
+	for(var i = 0; i<new_recettes.length; i++){
+		nouvelles_recettes += "<li>"+new_recettes[i]["nom"]+"</li>";
+	}
+	nouvelles_recettes += "</ul>";
+	$("#file_attente").html(nouvelles_recettes);
+
 }
