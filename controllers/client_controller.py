@@ -161,16 +161,21 @@ def quit_game(playerName):
     # partie joueur
     for prod in productions :
         db_session.delete(prod)
+        db_session.commit()
     participation[:] = []
+    db_session.commit()
     for zon in zones :
         db_session.delete(zon)
+        db_session.commit()
 
     #partie recette liee au joueur
     #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in joueurDB.recettes :
         composition = pos.ingredients
         db_session.delete(pos)
+        db_session.commit()
         composition[:] = []
+        db_session.commit()
     db_session.delete(joueurDB)
     db_session.commit()
 

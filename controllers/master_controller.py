@@ -129,6 +129,7 @@ def reset_game():
     json_model.availablesItems = []
     json_model.tomorrowActions = {}
     json_model.nbVentesPlayer = {}
+    json_model.lastMessages = []
 
     return "Success", 200, {'Content-Type': 'application/text'}
 
