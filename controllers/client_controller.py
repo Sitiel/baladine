@@ -151,7 +151,7 @@ def chat_post(chatMessage):
 def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
-    participation = participe.query.filter(participe.joueur_id == joueurDB.joueur_id).all()
+    participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
     zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
 
 
@@ -164,11 +164,11 @@ def quit_game(playerName):
         db_session.delete(zon)
 
     #partie recette liee au joueur
-    possedes = possede.query.filter(possede.joueur_id == joueurDB.joueur_id).all()
+    possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in possedes :
         recet = recette.query.filter(pos.recette_id == recette.recette_id).first()
         db_session.delete(pos)
-        composition = compose.query.filter(compose.recette_id == recet.recette_id).all()
+        composition = db_session.query(compose).query.filter(compose.recette_id == recet.recette_id).all()
         for comp in composition :
             db_session.delete(comp)
         db_session.delete(recet)
