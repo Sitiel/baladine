@@ -38,13 +38,13 @@ html {
 	text-align : center;
 }
 
-#ventes_actuelles {
+#chat_users {
 	border-style : solid;
 	height       : 75vh;
 	overflow     : auto;
 }
 
-#recettes_en_ventes {
+#chat {
 	text-align : left;
 }
 
