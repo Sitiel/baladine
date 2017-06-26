@@ -174,8 +174,8 @@ def quit_game(playerName):
         composition = pos.ingredients
         composition[:] = []
         db_session.commit()
-        db_session.delete(pos)
-        db_session.commit()
+    joueurDB.recettes[:] = []
+    db_session.commit()
     db_session.delete(joueurDB)
     db_session.commit()
 
