@@ -11,9 +11,11 @@
         <meta charset="UTF-8">
         <title>Limonade.io</title>
         <link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" type="text/css" href="icon.css" />
+		<link rel="stylesheet" type="text/css" href="component.css" />
     </head>
     <body>
-        <div id="modal_login"
+ <div id="modal_login"
              class="modal"
              data-easein="bounceDownIn"
              tabindex="-1"
@@ -22,64 +24,79 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Connexion à la partie</h4>
-                    </div>
+                    </div><!-- /modal-header -->
                     <div class="modal-body">
                         <form onsubmit="return login()">
                         <label for="username">Username :</label>
                         <input id="username">
                             <button type="submit" onclick="return login()">Connexion</button>
                         </form>
-                    </div>
+                    </div><!-- /modal-body -->
 
-                </div>
-            </div>
-        </div>
-        <div id="info_bar" class="row">
+                </div><!-- /modal-content -->
+            </div><!-- /modal-dialog -->
+        </div><!-- /modal-login -->
+		<div id="st-container" class="st-container">
+			<!-- content push wrapper -->
+			<div class="st-pusher">
+				<nav class="st-menu st-effect-14" id="menu-14">
+					<h2 class="icon icon-stack">Limonade.io</h2>
+					<ul>
+					<li><a href="#" onclick="setPage('map_page')">Map</a></li>
+					<li><a href="#" onclick="setPage('creation_recette')">Recettes</a></li>
+					<li><a href="#" onclick="setPage('choix_page')">Choix</a></li>
+					</ul>
+				</nav>
+
+				<div class="st-content"><!-- this is the wrapper for the content -->
+					<div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+						<div class="main clearfix">
+							<div class="column">
+        <div id="info_bar" class="row">						
+			<div id="st-trigger-effects" class="column">
+				<button data-effect="st-effect-14">Menu</button>
+			</div>
+
             <span id="day"></span>
             <span id="hour"></span>
             Climat :
             <span id="weather"></span>
             Prévision :
             <span id="futur_weather"></span>
-        </div>
-		<div id="button_menu" class="row">
-			<input id="b_map_page" type="submit" class="btn btn-primary" onclick="setPage('map_page')" value="Map">
-            <input id="b_creation_recette" type="submit" class="btn btn-primary" onclick="setPage('creation_recette')" value="Recette">
-			<input id="b_choix_page" type="submit" class="btn btn-primary" onclick="setPage('choix_page')" value="choix">
-        </div>
+        </div><!-- /info_bar -->
         <div class="row">
             <div id="map_page" class="col-sm-9">
                 <canvas id="map" width="1000px" height="1000px" ></canvas>
-            </div>
+            </div><!-- /map_page -->
 		    <div id="creation_recette" class="col-sm-9">
              <form id="ma_recette" onsubmit="return false;">
 			     Nom : <input type="text" id="nom_new_recette"><br />
 			 <div class="row">
 		   	  <div class="col-sm-6">
 			   <input type="submit" onclick="create()" value="Valider">
-		      </div>
+		      </div><!-- /col-sm-6 -->
 		      <div class="col-sm-6">
 			   Cout de Développement : <span id="cout_dev"></span>€<br />
 			   Cout de Prod : <span id="cout_prod"></span>€
-		      </div>
-		     </div>
+		      </div><!-- /col-sm-6 -->
+		     </div><!-- /row -->
 		    </form>
 		    <div id="ingredients" class="row">
-		    </div>
-		   </div>
+		    </div><!-- /ingredients-->
+		   </div><!-- /creation_recette -->
 		   <div id="choix_page" class="col-sm-9">
 			<input type="submit" class="btn btn-primary" value="Valider" onclick="savProd()"><br />
              <table id="mes_recettes">
 				Mes Recettes : <tr><td>Produit</td><td>Quantité</td><td>Prix</td><td>Cout production</td></tr>
 		    </table>
-		   </div>
+		   </div><!-- /choix_page-->
             <div id="menu_droite" class="col-sm-3">
                <input type="submit" class="btn btn-info" onclick="setPage('choix_page')" value="CHOIX">
                 <div id="ventes_actuelles">
                     <strong>Ventes</strong>
                     <ul id="recettes_en_ventes">
                     </ul>
-                </div>
+                </div><!-- /ventes_actuelles -->
                 <div class="row">
                     <form class="col-sm-6" id="pub" action="#" onsubmit="return false">
                         <input id="pub_button" type="submit" class="btn btn-primary" value="Définir Publicité">
@@ -88,13 +105,22 @@
                         Budget :
                         <span id="budget">0.00</span>
                         €
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </div><!-- /col-sm-6 -->
+                </div><!-- /row -->
+            </div><!-- /menu_droite -->
+        </div><!-- /row -->
+							</div>
+						</div><!-- /main -->
+					</div><!-- /st-content-inner -->
+				</div><!-- /st-content -->
+			<!-- </div>/st-pusher -->
+		</div><!-- /st-container -->
     </body>
     <script src="script.js"></script>
     <script src="set_pub.js"></script>
 	<script src="recette.js"></script>
 	<script src="choix.js"></script>
+	
+	<script src="classie.js"></script>
+	<script src="sidebarEffects.js"></script>
 </html>

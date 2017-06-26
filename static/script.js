@@ -6,13 +6,8 @@ var pseudal     = "";
 var page = 0;
 
 setPage("map_page");
-$("#info_bar").hide();
-$("#button_menu").show();
 
 function setPage(page) {
-	$("#b_creation_recette").attr("class", "btn btn-primary");//debug
-	$("#b_map_page").attr("class", "btn btn-primary");//debug
-	$("#b_choix_page").attr("class", "btn btn-primary");//debug
 
 	$("#creation_recette").hide();
 	$("#choix_page").hide();
@@ -20,7 +15,6 @@ function setPage(page) {
 	$("#pub").hide();
 
 	$("#" + page).show();
-	$("#b_" + page).attr("class", "btn btn-secondary"); //debug
 	if (page === "map_page") {
 		$("#pub").show();
 	}
