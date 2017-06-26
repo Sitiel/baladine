@@ -84,6 +84,10 @@ def join_game(playerJoinUsername):
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
 
 def map_player_name_get(playerName):
+    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    if joueurDB is None :
+        return "Error bad input", 400, {"Content-Type": "plain/text"}
+        
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()
@@ -105,8 +109,6 @@ def map_player_name_get(playerName):
 
     final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer}
     drinksOffered = []
-    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
-
     for r in joueurDB.recettes:
         isCold = False
         hasAlcohol = False
