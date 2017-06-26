@@ -75,11 +75,11 @@ setInterval(function () {
 			);
 		});
 		var messages = getMessageFromChat();
-		var chat = "";
+		/*var chat = "";
 		for(var i = 0; i< messages.length; i++){
 			chat += messages[i]["sender"] + " : "+ messages[i]["message"] + "<br />;
 		}
-		$("#chat").html(chat);
+		$("#chat").html(chat);*/
 }, 1000);
 
 function getMap() {
