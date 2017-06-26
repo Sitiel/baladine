@@ -108,7 +108,7 @@ function getMap() {
 					tableau += "<tr><td id=\"nom_" + i + "\">" + data['playerInfo']['drinksOffered'][i]['name'] + "</td>";
 					tableau += "<td><input id=\"prod_" + i + "\" type=\"number\" placeholder=\"ex: 3\"></td>";
 					tableau += "<td><input id=\"prix_" + i + "\"type=\"text\" placeholder=\"ex: 0.15\">€/verre</td>";
-					tableau += "<td id=\"cout_" + i + "\">" + data['playerInfo']['drinksOffered'][i]['price'] + "€/verre</td></tr>";
+					tableau += "<td id=\"cout_" + i + "\">" + data['playerInfo']['drinksOffered'][i]['price'].toFixed(2) + "€/verre</td></tr>";
 					recettes.push(data['playerInfo']['drinksOffered'][i]['name']);
 				}
 			}
