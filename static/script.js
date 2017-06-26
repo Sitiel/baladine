@@ -1,4 +1,4 @@
-var begin_day   = 22;
+var begin_day   = 26;
 var begin_month = 6;
 var begin_year  = 2017;
 var pseudal     = "";
@@ -114,13 +114,4 @@ function getMap() {
 			}
 			$("#mes_recettes").append(tableau);
 		});
-}
-
-
-$("#recettes_en_ventes").html();
-
-for (var i = 1; i < 51; i++) {
-	var price = (Math.random() * (1.0 - 0.01) + 0.01);
-	var sales = Math.floor((Math.random() * 10) + 1);
-	$("#recettes_en_ventes").append("<li>Recette " + i + " => " + (price * sales).toFixed(2) + "€ (" + sales + " verres)</li>");
 }
