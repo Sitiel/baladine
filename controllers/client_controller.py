@@ -56,7 +56,7 @@ def join_game(playerJoinUsername):
     
     else :
 
-        if json_model.currentHour - lastInfoFromPlayer[playerName] >= 36 :
+        if json_model.currentHour - lastInfoFromPlayer[name] >= 36 :
         
             joueurStand = zone.query.filter(and_(zone.joueur_id == jExist.joueur_id, zone.zone_type == "stand")).first()
             location = {"latitude": joueurStand.latitude, "longitude": joueurStand.longitude}
