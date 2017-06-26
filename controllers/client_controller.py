@@ -85,8 +85,8 @@ def join_game(playerJoinUsername):
 
 def map_player_name_get(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
-    if joueurDB is None :
-        return "Error bad input", 400, {"Content-Type": "plain/text"}
+    #if joueurDB is None :
+     #   return "Error bad input", 400, {"Content-Type": "plain/text"}
 
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
