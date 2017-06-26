@@ -78,7 +78,7 @@ def join_game(playerJoinUsername):
             
             return jsonify({"name": playerJoinUsername['name'], "location": location, "info": info})
 
-        return "Joueur existe deja"
+        return "Joueur existe deja", 400, {'Content-Type': 'text/plain'}
 
 
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
