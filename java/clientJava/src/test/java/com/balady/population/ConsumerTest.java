@@ -26,7 +26,7 @@ public class ConsumerTest {
 	}
 	
 	
-	@Test
+	/*@Test
 	public void testChooseDrink () {
 		Consumer c = new Consumer(0,500,0,400);
 		List<Drink> drinks = new ArrayList<>();
@@ -42,7 +42,7 @@ public class ConsumerTest {
 		assertEquals("biere",tmp.getItem());
 		tmp = c.chooseDrink(23, "Pluie", drinks);
 		assertEquals("vin chaud",tmp.getItem());
-	}
+	}*/
 	
 	@Test
 	public void testMove () {
