@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.balady.data.utils.TypeZone;
 import com.balady.population.Consumer;
 
 public class GameMapTest {
@@ -19,10 +18,8 @@ public class GameMapTest {
 		game.setEnd(new Coordinates(150, 150));
 		game.setMeteo("Soleil");
 		
-		List<Zone> z1 = new ArrayList<>();
-		z1.add(new Zone(10, TypeZone.STAND, new Coordinates(50, 50)));
-		List<Zone> z2 = new ArrayList<>();
-		z2.add(new Zone(10, TypeZone.STAND, new Coordinates(100, 100)));
+		Zone z1 = new Zone(10,  new Coordinates(50, 50));
+		Zone z2 = new Zone(10,  new Coordinates(100, 100));
 		
 		List<Drink> drinks = new ArrayList<>();
 		drinks.add(new Drink("limonade",5,false,true));
@@ -31,9 +28,9 @@ public class GameMapTest {
 		drinks.add(new Drink("vin chaud",2,true,false));
 		
 		List<Player> players = new ArrayList<>();
-		Player j1 = new Player("jean", 10, 0, 0, z1, drinks);
+		Player j1 = new Player("jean", 10, 0, 0, null,z1, drinks);
 		players.add(j1);
-		Player j2 = new Player("michel", 10, 0, 0, z2, drinks);
+		Player j2 = new Player("michel", 10, 0, 0, null,z2, drinks);
 		players.add(j2);
 		
 		List<Consumer> consumers = new ArrayList<>();
@@ -54,8 +51,6 @@ public class GameMapTest {
 		game.setSales(new HashMap<>());
 	
 		game.play();
-		
-		game.toString();
 	}
 
 }

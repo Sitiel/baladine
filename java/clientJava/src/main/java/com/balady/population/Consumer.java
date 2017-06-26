@@ -5,19 +5,20 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.balady.data.Coordinates;
 import com.balady.data.Drink;
+import com.balady.data.Player;
 import com.balady.data.Sale;
+import com.balady.data.Zone;
 
 public class Consumer {
 	
 	private Coordinates coordinates;
+	private Zone target;
 
-	/**
-	 * @param coordinates
-	 */
 	public Consumer(float xMin,float xMax,float yMin,float yMax) {
 		float x = (xMax-xMin)*(float) Math.random();
 		float y = (yMax-yMin)*(float) Math.random();
 		coordinates = new Coordinates(x,y);
+		target = null;
 	}
 
 	/**
@@ -32,6 +33,21 @@ public class Consumer {
 	 */
 	public void setCoordinates(Coordinates coordinates) {
 		this.coordinates = coordinates;
+	}
+	
+	
+	/**
+	 * @return the target
+	 */
+	public Zone getTarget() {
+		return target;
+	}
+
+	/**
+	 * @param target the target to set
+	 */
+	public void setTarget(Zone target) {
+		this.target = target;
 	}
 
 	public Sale chooseDrink (int hour, String meteo, List<Drink> drinks) {
@@ -70,5 +86,32 @@ public class Consumer {
 			nb++;
 		}
 		return nb;
+	}
+
+	public void findStand(List<Player> players) {
+		double distanceMin = 0;
+		for (Player p:players) {
+			double distance = calculDistance(p.getStand());
+			if (target == null || distance < distanceMin) {
+				target = p.getStand();
+				distanceMin = distance;
+			}
+		}
+	}
+	
+	private double calculDistance (Zone z) {
+		return Math.sqrt((z.getCoordinates().getX()-this.getCoordinates().getX())*(z.getCoordinates().getX()-this.getCoordinates().getX())+(z.getCoordinates().getY()-this.getCoordinates().getY())*(z.getCoordinates().getY()-this.getCoordinates().getY()));
+	}
+
+	public void move() {
+		double distance = calculDistance(target);
+		if (distance <= 50) {
+			coordinates = target.getCoordinates();
+		}
+		else {
+			double nbToursRequis = distance / 50;
+			coordinates.setX((float) (coordinates.getX() + (target.getCoordinates().getX() - coordinates.getX())/nbToursRequis));
+			coordinates.setY((float) (coordinates.getY() + (target.getCoordinates().getY() - coordinates.getY())/nbToursRequis));
+		}
 	}
 }
