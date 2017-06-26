@@ -214,7 +214,6 @@ function sendActions() {
 			production   = [];
 		}
 	});
-$("#file_attente").html("");
 }
 
 var network_map_items;

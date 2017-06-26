@@ -74,6 +74,12 @@ setInterval(function () {
 			$("#day").html(day + "/" + month + "/" + year
 			);
 		});
+		var messages = getMessageFromChat();
+		var chat = "";
+		for(var i = 0; i< messages.length; i++){
+			chat += messages[i]["sender"] + " : "+ messages[i]["message"] + "<br />;
+		}
+		$("#chat").html(chat);
 }, 1000);
 
 function getMap() {
