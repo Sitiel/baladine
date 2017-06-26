@@ -18,7 +18,7 @@ var production   = [];
 var new_recettes = [];
 var ingredients  = [];
 var recettes     = [];
-var budget = 0;
+var budget       = 0;
 
 var largeur_map  = 0;
 var longueur_map = 0;
@@ -52,17 +52,16 @@ canvas.onmousemove = function (e) {
 		drawPub(ctx, network_map_items);
 
 		drawPub(ctx, pubs);
-		var realRayon     = rayon / canvas.width * largeur_map;
+		var realRayon = rayon / canvas.width * largeur_map;
 		var pub_price = Math.pow(realRayon, 1.8) / 2;
-		pub_price = pub_price.toFixed(2);
+		pub_price     = pub_price.toFixed(2);
 		//Les joies du JS -> Budget est un string pour je ne sais quelle raison
-		if (parseInt(pub_price) > parseInt(budget))
-		{
-			rayon = ((Math.pow(budget*2, 1/1.8))  /largeur_map) * canvas.width;
+		if (parseInt(pub_price) > parseInt(budget)) {
+			rayon     = ((Math.pow(budget * 2, 1 / 1.8)) / largeur_map) * canvas.width;
 			pub_price = budget;
 		}
-		var metrics       = ctx.measureText("Prix : " + pub_price + "€");
-		var textXpos      = posX;
+		var metrics  = ctx.measureText("Prix : " + pub_price + "€");
+		var textXpos = posX;
 		if (textXpos + metrics.width > canvas.width) {
 			textXpos -= ((textXpos + metrics.width) - canvas.width);
 		}
@@ -136,12 +135,16 @@ function getMessageFromChat() {
 }
 
 function postAChatMessage(message) {
-	if (pseudal === "")
+	if (pseudal === "") {
 		return;
+	}
 	$.ajax({
 		type       : "POST",
 		url        : "/ValerianKang/Balady_API/1.0.0/chat",
-		data       : JSON.stringify({sender: pseudal, message: message }),
+		data       : JSON.stringify({
+			sender : pseudal,
+			message: message
+		}),
 		contentType: "application/json; charset=utf-8",
 		dataType   : "json",
 		success    : function (data) {
@@ -207,6 +210,8 @@ function sendActions() {
 		contentType: "application/json; charset=utf-8",
 		dataType   : "json",
 		success    : function (data) {
+			new_recettes = [];
+			production   = [];
 		}
 	});
 }

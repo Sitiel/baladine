@@ -92,7 +92,7 @@ def map_player_name_get(playerName):
 
 def post_action(playerName, actions):
     json_model.tomorrowActions[playerName] = actions
-    return json_model.tomorrowActions
+    return "Success", 200, {'Content-Type': 'text/plain'}
 
 
 def chat_get():
@@ -101,7 +101,7 @@ def chat_get():
 
 def chat_post(chatMessage):
     json_model.lastMessages.append(chatMessage)
-    return "Success", 200, {'Content-Type': 'application/text'}
+    return "Success", 200, {'Content-Type': 'text/plain'}
 
 
 # recette
