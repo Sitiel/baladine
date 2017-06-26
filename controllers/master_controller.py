@@ -49,6 +49,9 @@ def map_get():
     return final_map
 
 
+
+
+
 def post_sales(sales):
     actualDate = datetime.now() + timedelta(days=json_model.currentDay)
     jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()

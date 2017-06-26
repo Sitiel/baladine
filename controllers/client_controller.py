@@ -174,4 +174,5 @@ def quit_game(playerName):
         db_session.delete(recet)
     db_session.delete(joueurDB)
     db_session.commit()
+    
     return 'Success'

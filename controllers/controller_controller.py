@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from database import db_session
 from models import journee, meteo, joueur, recette, produit, ingredient, zone
-
+from client_controller import quit_game
 
 def post_meteorology():
     json_model.meteoJsontoString = request.get_json(force=True)
@@ -21,6 +21,7 @@ def post_meteorology():
         db_session.add(m)
         db_session.add(j)
         db_session.commit()
+        kickPlayer()
         return play_actions()
 
     return jsonify(json_model.meteoJsontoString)
@@ -100,3 +101,12 @@ def play_actions():
     json_model.nbVentesPlayer = {}
     json_model.tomorrowActions = {}
     return "Success"
+
+
+def kickPlayer() :
+    firstJoueur = joueur.query.first()
+    if firstJoueur is not None : 
+        joueurs = joueur.query.all()
+        for j in joueurs :
+            if json_model.currentHour - json_model.lastInfoFromPlayer[j.joueur_pseudo] >= 168 :
+                quit_game(j.joueur_pseudo)
