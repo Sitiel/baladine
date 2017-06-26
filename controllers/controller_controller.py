@@ -105,7 +105,7 @@ def play_actions():
 
 def kickPlayer() :
     firstJoueur = joueur.query.first()
-    if firstJoueur is None : 
+    if firstJoueur is not None : 
         joueurs = joueur.query.all()
         for j in joueurs :
             if json_model.currentHour - json_model.lastInfoFromPlayer[j.joueur_pseudo] >= 168 :
