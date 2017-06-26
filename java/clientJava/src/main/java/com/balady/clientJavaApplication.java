@@ -16,11 +16,13 @@ public class clientJavaApplication {
 			@Override
 			public void run() {
 				game.refreshMap();
+				if (game.getHour() == 0) {
+					game.addConsumers();
+				}
 				if (game.getHour() != current_hour) {
 					game.play();
+					game.moveConsumers();
 					game.sendSales();
-					game.clearConsumers();
-					game.addConsumers();
 					current_hour = game.getHour();
 				}
 			}

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.balady.data.utils.TypeZone;
 import com.balady.population.Consumer;
 import com.balady.rest.ClientRest;
 import com.balady.rest.receiptJson.DrinkInfo;
@@ -34,7 +33,7 @@ public class GameMap {
 		consumers = new ArrayList<>();
 		addConsumers();
 	}
-	
+
 	public GameMap() {
 	}
 
@@ -178,16 +177,16 @@ public class GameMap {
 				PlayerInfo player = receipt.getPlayerInfo().get(name);
 
 				// Fill Zones info to Player
-				List<Zone> zones = new ArrayList<>();
+				List<Zone> pubs = new ArrayList<>();
+				Zone stand = null;
 				if (receipt.getItemsByPlayer().containsKey(name)) {
 					for (MapItem item : receipt.getItemsByPlayer().get(name)) {
-						TypeZone typeZone;
 						if ("ad".equals(item.getKind()))
-							typeZone = TypeZone.PUB;
+							pubs.add(new Zone(item.getInfluence(), new Coordinates(item.getLocation().getLongitude(),
+									item.getLocation().getLatitude())));
 						else
-							typeZone = TypeZone.STAND;
-						zones.add(new Zone(item.getInfluence(), typeZone,
-								new Coordinates(item.getLocation().getLongitude(), item.getLocation().getLatitude())));
+							stand = new Zone(item.getInfluence(), new Coordinates(item.getLocation().getLongitude(),
+									item.getLocation().getLatitude()));
 					}
 				}
 
@@ -198,8 +197,9 @@ public class GameMap {
 						drinks.add(new Drink(drink.getName(), drink.getPrice(), drink.isHasAlcohol(), drink.isCold()));
 					}
 				}
-				
-				players.add(new Player(name, player.getCash(), player.getProfit(), player.getSales(), zones, drinks));
+
+				players.add(
+						new Player(name, player.getCash(), player.getProfit(), player.getSales(), pubs, stand, drinks));
 			}
 		}
 	}
@@ -208,24 +208,26 @@ public class GameMap {
 	 * Make one turn (If the consumer drink and when the consumer move)
 	 */
 	public void play() {
+		List<Consumer> toRemove = new ArrayList<>();
 		for (Consumer c : consumers) {
 			for (Player p : players) {
-				for (Zone z : p.getZones()) {
-					if (z.getTypeZone() == TypeZone.STAND) {
-						if (z.isInInfluence(c) && !p.getDrinks().isEmpty()) {
-							Sale s = c.chooseDrink(hour, meteo, p.getDrinks());
-							if (s != null) {
-								if (sales.containsKey(p.getName()+"/"+s.getItem()))
-									sales.get(p.getName()+"/"+s.getItem()).setQuantity(sales.get(p.getName()+"/"+s.getItem()).getQuantity() + s.getQuantity());
-								else {
-									s.setPlayer(p.getName());
-									sales.put(p.getName()+"/"+s.getItem(), s);
-								}
-							}
+				if (p.getStand().isInInfluence(c) && !p.getDrinks().isEmpty()) {
+					Sale s = c.chooseDrink(hour, meteo, p.getDrinks());
+					if (s != null) {
+						if (sales.containsKey(p.getName() + "/" + s.getItem()))
+							sales.get(p.getName() + "/" + s.getItem()).setQuantity(
+									sales.get(p.getName() + "/" + s.getItem()).getQuantity() + s.getQuantity());
+						else {
+							s.setPlayer(p.getName());
+							sales.put(p.getName() + "/" + s.getItem(), s);
 						}
+						toRemove.add(c);
 					}
 				}
 			}
+		}
+		for (Consumer c : toRemove) {
+			this.consumers.remove(c);
 		}
 	}
 
@@ -247,9 +249,9 @@ public class GameMap {
 	 * add new Customers depending on the meteo.
 	 */
 	public void addConsumers() {
-		
-		int nbPop = 	10000;
-		
+
+		int nbPop = 10000;
+
 		switch (meteo) {
 		case ("Soleil"):
 			nbPop *= 0.75;
@@ -271,8 +273,17 @@ public class GameMap {
 			consumers.add(new Consumer(start.getX(), end.getX(), start.getY(), end.getY()));
 		}
 	}
-	
-	public void clearConsumers () {
+
+	public void clearConsumers() {
 		consumers.clear();
+	}
+	
+	public void moveConsumers () {
+		for (Consumer c: consumers) {
+			if (c.getTarget() == null) {
+				c.findStand(players);
+			}
+			c.move();
+		}
 	}
 }
