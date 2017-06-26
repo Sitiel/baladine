@@ -1,3 +1,6 @@
+*{
+	margin-left : 2px;
+}
 #info_bar {
 	border-style : solid;
 	height       : 10vh;
@@ -52,7 +55,7 @@ html {
 #ingredients {
 	text-align   : center;
 	border-style : solid;
-	height       : 70vh;
+	height       : 40vh;
 	overflow     : auto;
 }
 
