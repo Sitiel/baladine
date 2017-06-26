@@ -56,3 +56,5 @@ availablesItems = []
 tomorrowActions = {}
 nbVentesPlayer = {}
 lastMessages = []
+currentHour = 0
+lastInfoFromPlayer = {}
