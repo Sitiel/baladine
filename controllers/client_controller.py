@@ -172,9 +172,9 @@ def quit_game(playerName):
     #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in joueurDB.recettes :
         composition = pos.ingredients
-        db_session.delete(pos)
-        db_session.commit()
         composition[:] = []
+        db_session.commit()
+        db_session.delete(pos)
         db_session.commit()
     db_session.delete(joueurDB)
     db_session.commit()
