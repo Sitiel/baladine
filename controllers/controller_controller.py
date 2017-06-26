@@ -10,6 +10,7 @@ from models import journee, meteo, joueur, recette, produit, ingredient, zone
 
 def post_meteorology():
     json_model.meteoJsontoString = request.get_json(force=True)
+    json_model.currentHour = json_model.meteoJsontoString['timestamp']
     if json_model.meteoJsontoString['timestamp']/24 != json_model.currentDay:
         #It's a new day
         m = json_model.get_or_create(db_session, meteo,  meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])

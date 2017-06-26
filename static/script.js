@@ -65,8 +65,6 @@ setInterval(function () {
 
 			if (day !== lastDay) {
 				pubs = [];
-				new_recettes = [];
-				production = [];
 			}
 			lastDay = day;
 

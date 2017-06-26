@@ -68,7 +68,7 @@ def post_sales(sales):
             quantity = (r_produit.nombre_prod - json_model.nbVentesPlayer[j.joueur_pseudo])
 
         json_model.nbVentesPlayer[j.joueur_pseudo] += quantity
-        t = transaction(quantity * total_cost)
+        t = transaction((quantity * total_cost ) * 0.85)
         t.journee = jour
         j.transactions.append(t)
         j.joueur_budget += (quantity*total_cost)
