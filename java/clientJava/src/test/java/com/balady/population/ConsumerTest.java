@@ -50,12 +50,12 @@ public class ConsumerTest {
 		c.setCoordinates(new Coordinates(100, 100));
 		Zone z = new Zone(10, new Coordinates(100, 300));
 		c.setTarget(z);
-		c.move();
+		//c.move();
 		assertEquals(100f, c.getCoordinates().getX(),0);
 		assertEquals(150f, c.getCoordinates().getY(),0);
 		c.setCoordinates(new Coordinates(50, 50));
 		z.setCoordinates(new Coordinates(0, 0));
-		c.move();
+		//c.move();
 		assertEquals(14.644661f, c.getCoordinates().getX(),0);
 		assertEquals(14.644661f, c.getCoordinates().getY(),0);
 	}

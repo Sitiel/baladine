@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.balady.data.GameMap;
-import com.balady.rest.ClientRest;
 
 public class clientJavaApplication {
 	public static void main(String[] args) {

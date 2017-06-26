@@ -7,16 +7,36 @@ public class Zone {
 	
 	private float influence;
 	private Coordinates coordinates;
+	private Player owner;
 
 	/**
 	 * @param influence
-	 * @param typeZone
 	 * @param coordinates
+	 * @param owner
 	 */
 	public Zone(float influence, Coordinates coordinates) {
 		this.influence = influence;
 		this.coordinates = coordinates;
+		this.owner = null;
 	}
+
+	/**
+	 * @return the owner
+	 */
+	public Player getOwner() {
+		return owner;
+	}
+
+
+
+	/**
+	 * @param owner the owner to set
+	 */
+	public void setOwner(Player owner) {
+		this.owner = owner;
+	}
+
+
 
 	/**
 	 * @return the coordinates
