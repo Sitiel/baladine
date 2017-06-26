@@ -60,7 +60,7 @@ def join_game(playerJoinUsername):
         
             joueurStand = zone.query.filter(and_(zone.joueur_id == jExist.joueur_id, zone.zone_type == "stand")).first()
             location = {"latitude": joueurStand.zone_posX, "longitude": joueurStand.zone_posY}
-        
+            drinksOffered = []
             for r in jExist.recettes:
                 isCold = False
                 hasAlcohol = False
