@@ -87,7 +87,7 @@ def map_player_name_get(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     if joueurDB is None :
         return "Error bad input", 400, {"Content-Type": "plain/text"}
-        
+
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()
@@ -153,7 +153,7 @@ def chat_post(chatMessage):
 def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
-    participation = joueurDB.participe
+    participation = joueurDB.transactions
     #participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
     zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
 
@@ -167,13 +167,9 @@ def quit_game(playerName):
 
     #partie recette liee au joueur
     #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
-    for pos in possedes :
-        recet = recette.query.filter(pos.recette_id == recette.recette_id).first()
+    for pos in joueurDB.recettes :
+        composition[:] = []
         db_session.delete(pos)
-        composition = db_session.query(compose).query.filter(compose.recette_id == recet.recette_id).all()
-        for comp in composition :
-            db_session.delete(comp)
-        db_session.delete(recet)
     db_session.delete(joueurDB)
     db_session.commit()
 
