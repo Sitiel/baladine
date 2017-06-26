@@ -98,8 +98,10 @@
                     <span id="chat"></span>
                 </div><!-- /chat_users -->
                 <div class="row">
-					<input id="message_send" type="text" >
-					<input id="b_send_msg" type="button" class="btn btn-info" value="Envoyer" onclick="sendMessage()">
+					<form action="#">
+						<input id="message_send" type="text" >
+						<input id="b_send_msg" type="submit" class="btn btn-info" value="Envoyer" onclick="sendMessage()">
+					</form>
                     <form class="col-sm-6" id="pub" action="#" onsubmit="return false">
                         <input id="pub_button" type="submit" class="btn btn-primary" value="Définir Publicité">
                     </form>
