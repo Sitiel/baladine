@@ -56,7 +56,7 @@ def join_game(playerJoinUsername):
     
     else :
 
-        if json_model.currentHour - lastInfoFromPlayer[name] >= 36 :
+        if json_model.currentHour - json_model.lastInfoFromPlayer[name] >= 36 :
         
             joueurStand = zone.query.filter(and_(zone.joueur_id == jExist.joueur_id, zone.zone_type == "stand")).first()
             location = {"latitude": joueurStand.latitude, "longitude": joueurStand.longitude}
@@ -84,6 +84,7 @@ def join_game(playerJoinUsername):
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
 
 def map_player_name_get(playerName):
+    json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()
     region = {"center": {"latitude": 0, "longitude": 0},
