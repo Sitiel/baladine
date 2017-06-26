@@ -27,25 +27,58 @@ def ingredients_get():
 
 
 def join_game(playerJoinUsername):
-    j = joueur(playerJoinUsername['name'], 1.0)
-    c = db_session.query(carte).first()
-    rayon = 10
-    latitude = (random.random() * (c.carte_largeur - rayon) + rayon)
-    longitude = (random.random() * (c.carte_longueur - rayon) + rayon)
-    location = {"latitude": latitude, "longitude": longitude}
-    info = {"cash": 1, "sales": 0, "profit": 0,
-            "drinksOffered": [{"name": "Limonade", "price": 0.45, "hasAlcohol": False, "isCold": False}]}
-    z = zone(latitude, longitude, rayon, "stand")
-    rec = recette.query.filter(recette.recette_nom == 'Limonade').one()
-    j.recettes.append(rec)
+    """    """
 
-    c.joueurs.append(j)
-    j.zones.append(z)
-    db_session.add(j)
-    db_session.add(z)
-    db_session.commit()
+    #Test pour savoir si UserName est deja utilise en ce moment
+    name = playerJoinUsername['name']
+    jExist = joueur.query.filter(joueur.joueur_pseudo == name).first()
 
-    return jsonify({"name": playerJoinUsername['name'], "location": location, "info": info})
+    if jExist is None :
+        j = joueur(playerJoinUsername['name'], 1.0)
+        c = db_session.query(carte).first()
+        rayon = 10
+        latitude = (random.random() * (c.carte_largeur - rayon) + rayon)
+        longitude = (random.random() * (c.carte_longueur - rayon) + rayon)
+        location = {"latitude": latitude, "longitude": longitude}
+        info = {"cash": 1, "sales": 0, "profit": 0,
+                "drinksOffered": [{"name": "Limonade", "price": 0.45, "hasAlcohol": False, "isCold": False}]}
+        z = zone(latitude, longitude, rayon, "stand")
+        rec = recette.query.filter(recette.recette_nom == 'Limonade').one()
+        j.recettes.append(rec)
+
+        c.joueurs.append(j)
+        j.zones.append(z)
+        db_session.add(j)
+        db_session.add(z)
+        db_session.commit()
+
+        return jsonify({"name": playerJoinUsername['name'], "location": location, "info": info})
+    
+    else :
+
+        if json_model.currentHour - lastInfoFromPlayer[playerName] >= 36 :
+        
+            joueurStand = zone.query.filter(and_(zone.joueur_id == jExist.joueur_id, zone.zone_type == "stand")).first()
+            location = {"latitude": joueurStand.latitude, "longitude": joueurStand.longitude}
+        
+            for r in jExist.recettes:
+                isCold = False
+                hasAlcohol = False
+                price = 0
+                for i in r.ingredients:
+                    if i.ing_froid:
+                        isCold = True
+                    if i.ing_alcohol:
+                        hasAlcohol = True
+                    price += i.ing_cout
+                drinksOffered.append({"name": r.recette_nom, "price": price, "hasAlcohol": hasAlcohol, "isCold": isCold})
+            
+            info = {"cash": jExist.joueur_budget, "sales": 0, "profit": 0,
+                    "drinksOffered": drinksOffered}
+            
+            return jsonify({"name": playerJoinUsername['name'], "location": location, "info": info})
+
+        return "Joueur existe deja"
 
 
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
