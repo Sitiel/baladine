@@ -151,20 +151,20 @@ def chat_post(chatMessage):
 def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
-    participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
+    participation = joueurDB.participe
+    #participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
     zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
 
 
     # partie joueur
     for prod in productions :
         db_session.delete(prod)
-    for part in participation :
-        db_session.delete(part)
+    participation[:] = []
     for zon in zones :
         db_session.delete(zon)
 
     #partie recette liee au joueur
-    possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
+    #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in possedes :
         recet = recette.query.filter(pos.recette_id == recette.recette_id).first()
         db_session.delete(pos)
@@ -176,3 +176,5 @@ def quit_game(playerName):
     db_session.commit()
 
     return 'Success'
+
+#curl -X DELETE "http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players/Coco"
