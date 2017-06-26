@@ -32,7 +32,6 @@ def join_game(playerJoinUsername):
     #Test pour savoir si UserName est deja utilise en ce moment
     name = playerJoinUsername['name']
     jExist = joueur.query.filter(joueur.joueur_pseudo == name).first()
-
     if jExist is None :
         j = joueur(playerJoinUsername['name'], 1.0)
         c = db_session.query(carte).first()
@@ -51,6 +50,7 @@ def join_game(playerJoinUsername):
         db_session.add(j)
         db_session.add(z)
         db_session.commit()
+        json_model.lastInfoFromPlayer[name] = json_model.currentHour
 
         return jsonify({"name": playerJoinUsername['name'], "location": location, "info": info})
     
@@ -174,5 +174,5 @@ def quit_game(playerName):
         db_session.delete(recet)
     db_session.delete(joueurDB)
     db_session.commit()
-    
+
     return 'Success'
