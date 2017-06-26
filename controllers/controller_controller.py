@@ -108,5 +108,8 @@ def kickPlayer() :
     if firstJoueur is not None : 
         joueurs = joueur.query.all()
         for j in joueurs :
-            if json_model.currentHour - json_model.lastInfoFromPlayer[j.joueur_pseudo] >= 168 :
+            if j.joueur_pseudo in json_model.lastInfoFromPlayer :
+                if json_model.currentHour - json_model.lastInfoFromPlayer[j.joueur_pseudo] >= 168 :
+                    quit_game(j.joueur_pseudo)
+            else :
                 quit_game(j.joueur_pseudo)

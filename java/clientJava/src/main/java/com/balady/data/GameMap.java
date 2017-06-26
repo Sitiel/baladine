@@ -197,9 +197,12 @@ public class GameMap {
 						drinks.add(new Drink(drink.getName(), drink.getPrice(), drink.isHasAlcohol(), drink.isCold()));
 					}
 				}
-
-				players.add(
-						new Player(name, player.getCash(), player.getProfit(), player.getSales(), pubs, stand, drinks));
+				Player tmp = new Player(name, player.getCash(), player.getProfit(), player.getSales(), pubs, stand, drinks);
+				for (Zone z: tmp.getPubs()) {
+					z.setOwner(tmp);
+				}
+				tmp.getStand().setOwner(tmp);
+				players.add(tmp);
 			}
 		}
 	}
@@ -250,7 +253,7 @@ public class GameMap {
 	 */
 	public void addConsumers() {
 
-		int nbPop = 10000;
+		int nbPop = 100;
 
 		switch (meteo) {
 		case ("Soleil"):
@@ -283,7 +286,7 @@ public class GameMap {
 			if (c.getTarget() == null) {
 				c.findStand(players);
 			}
-			c.move();
+			c.move(players,hour,meteo);
 		}
 	}
 }
