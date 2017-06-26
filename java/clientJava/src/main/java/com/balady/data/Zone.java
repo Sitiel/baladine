@@ -1,12 +1,11 @@
 package com.balady.data;
 
-import com.balady.data.utils.TypeZone;
+
 import com.balady.population.Consumer;
 
 public class Zone {
 	
 	private float influence;
-	private TypeZone typeZone;
 	private Coordinates coordinates;
 
 	/**
@@ -14,9 +13,8 @@ public class Zone {
 	 * @param typeZone
 	 * @param coordinates
 	 */
-	public Zone(float influence, TypeZone typeZone, Coordinates coordinates) {
+	public Zone(float influence, Coordinates coordinates) {
 		this.influence = influence;
-		this.typeZone = typeZone;
 		this.coordinates = coordinates;
 	}
 
@@ -50,20 +48,6 @@ public class Zone {
 	 */
 	public void setInfluence(float influence) {
 		this.influence = influence;
-	}
-
-	/**
-	 * @return the typeZone
-	 */
-	public TypeZone getTypeZone() {
-		return typeZone;
-	}
-
-	/**
-	 * @param typeZone the typeZone to set
-	 */
-	public void setTypeZone(TypeZone typeZone) {
-		this.typeZone = typeZone;
 	}
 
 	/**
