@@ -30,7 +30,7 @@ def post_meteorology():
 
 
 def play_actions():
-    json_model.actualRecettesNumberAndPrice = {}
+    json_model.actualRecettesNumberAndPrices.clear()
     for playerName, actions in json_model.tomorrowActions.iteritems():
         joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
 
