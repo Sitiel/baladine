@@ -4,8 +4,8 @@ from sqlalchemy.orm import load_only
 
 from datetime import datetime, timedelta
 from database import db_session
-from flask import request, jsonify
-from  models import *
+from flask import request, jsonify, json
+from models import *
 import json_model
 
 
@@ -23,7 +23,6 @@ def ingredients_get():
 
 def join_game(playerJoinUsername):
     """    """
-
     #Test pour savoir si UserName est deja utilise en ce moment
     name = playerJoinUsername['name']
     jExist = joueur.query.filter(joueur.joueur_pseudo == name).first()
@@ -51,7 +50,7 @@ def join_game(playerJoinUsername):
     
     else :
 
-        if json_model.currentHour - json_model.lastInfoFromPlayer[name] >= 36 :
+        if json_model.currentHour - json_model.lastInfoFromPlayer[name] >= 36:
         
             joueurStand = zone.query.filter(and_(zone.joueur_id == jExist.joueur_id, zone.zone_type == "stand")).first()
             location = {"latitude": joueurStand.zone_posX, "longitude": joueurStand.zone_posY}

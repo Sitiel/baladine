@@ -47,7 +47,7 @@ def get_or_create(session, model, **kwargs):
         return instance
 
 meteoJson = MeteorologyJson(0, 0)
-meteoJsontoString = 0
+meteoJsontoString = {"timestamp": 0, "weather": [{"dfn": 0, "weather": "SOLEIL"}, {"dfn": 1, "weather": "SOLEIL"}]}
 
 currentDay = 0
 

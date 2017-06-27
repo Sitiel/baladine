@@ -12,22 +12,22 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="set_pub.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="set_pub.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/set_pub.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+            <state relative-caret-position="1122">
+              <caret line="51" column="16" lean-forward="false" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
               <folding>
-                <marker date="1498554795000" expanded="true" signature="3290:3741" ph="{...}" />
+                <marker date="1498570370000" expanded="true" signature="3239:3690" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="704">
+            <state relative-caret-position="22">
               <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
               <folding />
             </state>
@@ -217,12 +217,12 @@
       <workItem from="1498220746843" duration="19740000" />
       <workItem from="1498396133947" duration="663000" />
       <workItem from="1498456592602" duration="2184000" />
-      <workItem from="1498556114168" duration="600000" />
+      <workItem from="1498556114168" duration="1392000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35823000" />
+    <option name="totallyTimeSpent" value="36615000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="692" y="23" width="1228" height="1070" extended-state="0" />
@@ -266,7 +266,7 @@
         <state relative-caret-position="2112">
           <caret line="96" column="12" lean-forward="false" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
           <folding>
-            <marker date="1498554795000" expanded="true" signature="3290:3741" ph="{...}" />
+            <marker date="1498570370000" expanded="true" signature="3239:3690" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -292,7 +292,7 @@
         <state relative-caret-position="638">
           <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding>
-            <marker date="1498554795000" expanded="true" signature="3290:3741" ph="{...}" />
+            <marker date="1498570370000" expanded="true" signature="3239:3690" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -309,6 +309,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -316,13 +317,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="12" column="8" lean-forward="false" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -347,11 +341,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/set_pub.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+        <state relative-caret-position="1122">
+          <caret line="51" column="16" lean-forward="false" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
           <folding>
-            <marker date="1498554795000" expanded="true" signature="3290:3741" ph="{...}" />
+            <marker date="1498570370000" expanded="true" signature="3239:3690" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

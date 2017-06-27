@@ -83,6 +83,7 @@ def play_actions():
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
                 hasAlcool = False
                 isCold = False
+                coutProd = 0
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
                     if ing.ing_froid:
