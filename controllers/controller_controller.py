@@ -95,13 +95,14 @@ def play_actions():
                 jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
 
                 total_cout_prod = (coutProd * nbRecette)
+
                 if total_cout_prod > joueurDB.joueur_budget:
                     nbRecette = int(joueurDB.joueur_budget/coutProd)
                     total_cout_prod = nbRecette * coutProd
                 joueurDB.joueur_budget -= total_cout_prod
+
                 if joueurDB.joueur_pseudo not in json_model.actualRecettesNumberAndPrices:
                     json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo] = []
-
 
                 json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append({"name": nomRecette, "price": prix, "hasAlcohol": hasAlcool, "isCold": isCold})
                 # create parent, append a child via association

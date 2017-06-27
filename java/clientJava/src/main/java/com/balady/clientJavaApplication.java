@@ -159,7 +159,7 @@ public class clientJavaApplication extends Application {
                  border.heightProperty());
 
 		leftPanel = new VBox();
-		//border.setLeft(leftPanel);
+		border.setLeft(leftPanel);
 
 		canvas.draw();
 
