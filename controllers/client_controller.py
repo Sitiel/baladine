@@ -13,11 +13,6 @@ import json_model
 
 
 def get_meteorology():
-    # jour = carte.journees[-1]
-    # jour.meteo.meteo_libelle
-    # meteo = WeatherJson(0,'Sunny')
-    # meteorology = MeteorologyJson(0,meteo)
-    # return meteoJson.timestamp
     return jsonify(json_model.meteoJsontoString)
 
 
@@ -94,7 +89,8 @@ def map_player_name_get(playerName):
     region = {"center": {"latitude": 0, "longitude": 0},
               "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
     r = joueur.query.all()
-    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in ranking()]}
+    rankedPlayer = get_rank()
+    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in rankedPlayer]}
     itemsByPlayer = {}
     for e_joueur in r:
         prop = []
@@ -125,7 +121,7 @@ def map_player_name_get(playerName):
     total = {'availablesIngredient': [i.toJson() for i in ingredients], 'map': final_map, "playerInfo": info}
     return total
 
-def ranking():
+def get_rank():
     rankedPlayer = joueur.query().order_by(joueur_budget.desc()).all()
     return rankedPlayer
 
@@ -157,7 +153,6 @@ def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
     participation = joueurDB.transactions
-    #participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
     zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
 
 
@@ -172,7 +167,6 @@ def quit_game(playerName):
         db_session.commit()
 
     #partie recette liee au joueur
-    #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in joueurDB.recettes :
         if pos.recette_nom != 'Limonade' :
             composition = pos.ingredients
