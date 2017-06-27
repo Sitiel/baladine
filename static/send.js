@@ -1,5 +1,6 @@
 function sendActions() {
 	var actions = [];
+	console.log(new_recettes);;
 	for (var i in pubs) {
 		var l = {
 			latitude : pubs[i]["x"] / canvas.width * largeur_map,
@@ -54,11 +55,7 @@ function sendActions() {
 		contentType: "application/json; charset=utf-8",
 		dataType   : "json",
 		success    : function (data) {
-			new_recettes = [];
-			production   = [];
-			$("#file_attente").html("");
+			alert("actions sauvegardées");
 		}
 	});
-	
-	alert("actions sauvegardées");
 }
