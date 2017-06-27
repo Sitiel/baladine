@@ -24,7 +24,7 @@ function addIngr(id, nom, cout){
 		prod += cout;
 
 	}else{
-		$("#"+id).css("color","rgb(0, 0, 0)");
+		$("#ingredient"+id).css("color","rgb(0, 0, 0)");
 
 		var i = ingredients.indexOf(nom);
 		if(i != -1) {
@@ -36,13 +36,17 @@ function addIngr(id, nom, cout){
 }
 
 function create(){
-	var new_recette = {};
-	new_recette['nom'] =  $("#nom_new_recette").val();
-	new_recette['ingredients'] = ingredients;
-	alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
-	new_recettes.push(new_recette);
-	afficherRecettesEnCours()
-
+	var nom = $("#nom_new_recette").val().replace(/ /g, "");
+	if(ingredients.length != 0 && nom != ""){
+		var new_recette = {};
+		new_recette['nom'] =  $("#nom_new_recette").val();
+		new_recette['ingredients'] = ingredients;
+		alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
+		new_recettes.push(new_recette);
+		afficherRecettesEnCours();
+	}else{
+		alert("la recette ne comporte pas d'ingrédient et un nom");
+	}
 }
 
 function supprRecette(id){
