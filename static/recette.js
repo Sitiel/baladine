@@ -3,7 +3,7 @@ $.ajax("/ValerianKang/Balady_API/1.0.0/ingredients")
 		for(var i = 0; i<data['ingredients'].length; i++){
 			var nom =data["ingredients"][i]["nom"];
 			var cout =  data["ingredients"][i]["cout"];
-			$("#ingredients").append('<div id="'+i+'" class="col-sm-3" onclick="addIngr('+ i +', &#34;' +  nom + '&#34;, ' + cout +');">'+data['ingredients'][i]['nom']+'</div>');
+			$("#ingredients").append('<div id="ingredient'+i+'" class="ingredient col-sm-3" onclick="addIngr('+ i +', &#34;' +  nom + '&#34;, ' + cout +');">'+data['ingredients'][i]['nom']+'</div>');
 		}
 	});
 
@@ -18,8 +18,8 @@ function refresh_prices(){
 }
 
 function addIngr(id, nom, cout){
-	if($("#"+id).css("color") != "rgb(0, 255, 0)"){
-		$("#"+id).css("color","rgb(0, 255, 0)");
+	if($("#ingredient"+id).css("color") != "rgb(0, 255, 0)"){
+		$("#ingredient"+id).css("color","rgb(0, 255, 0)");
 		ingredients.push(nom);
 		prod += cout;
 
@@ -41,12 +41,25 @@ function create(){
 	new_recette['ingredients'] = ingredients;
 	alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
 	new_recettes.push(new_recette);
+	afficherRecettesEnCours()
 
-	nouvelles_recettes = "Nouvelles_recettes : <ul>";
-	for(var i = 0; i<new_recettes.length; i++){
-		nouvelles_recettes += "<li>"+new_recettes[i]["nom"]+"</li>";
+}
+
+function supprRecette(id){
+	new_recettes.splice(id,1);
+	afficherRecettesEnCours()
+}
+
+function afficherRecettesEnCours(){
+	if(new_recettes.length == 0){
+		$("#file_attente").html("");
+	}else{
+		var nouvelles_recettes = "Nouvelles_recettes : <ul>";
+		for(var i = 0; i<new_recettes.length; i++){
+			nouvelles_recettes += "<li>"+new_recettes[i]["nom"]+'<input type="submit" value="supprimer" id="currentRecette'+i+'"onclick="supprRecette('+i+');"></li>';
+		}
+		nouvelles_recettes += "</ul>";
+		$("#file_attente").html(nouvelles_recettes);
 	}
-	nouvelles_recettes += "</ul>";
-	$("#file_attente").html(nouvelles_recettes);
-
+	$(".ingredient").css("color","rgb(0, 0, 0)");
 }
