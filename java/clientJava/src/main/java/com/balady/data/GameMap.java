@@ -256,16 +256,16 @@ public class GameMap {
 		int nbPop = 100;
 
 		switch (meteo) {
-		case ("Soleil"):
+		case ("SOLEIL"):
 			nbPop *= 0.75;
 			break;
-		case ("Orage"):
+		case ("ORAGE"):
 			nbPop = 0;
 			break;
-		case ("Nuage"):
+		case ("NUAGE"):
 			nbPop *= 0.3;
 			break;
-		case ("Canicule"):
+		case ("CANICULE"):
 			nbPop *= 1;
 			break;
 		default:

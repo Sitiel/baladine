@@ -18,6 +18,7 @@ public class Consumer {
 	private Coordinates coordinates;
 	private Zone target;
 	private float movement;
+	private List<Zone> pubSeen;
 
 	public Consumer(float xMin, float xMax, float yMin, float yMax) {
 		float x = (xMax - xMin) * (float) Math.random();
@@ -25,6 +26,7 @@ public class Consumer {
 		coordinates = new Coordinates(x, y);
 		movement = 15;
 		target = null;
+		pubSeen = new ArrayList<>();
 	}
 
 	/**
@@ -86,7 +88,7 @@ public class Consumer {
 		}
 		return sale;
 	}
-	
+
 	public Drink chooseDrinkSimulate(int hour, String meteo, List<Drink> drinks) {
 
 		Drink chosenDrink = null;
@@ -133,8 +135,10 @@ public class Consumer {
 	}
 
 	private static double calculDistance(Coordinates p1, Coordinates p2) {
-		return Math.sqrt(
+		double tmp = Math.sqrt(
 				(p2.getX() - p1.getX()) * (p2.getX() - p1.getX()) + (p2.getY() - p1.getY()) * (p2.getY() - p1.getY()));
+
+		return tmp;
 	}
 
 	public void move(List<Player> players, int hour, String meteo) {
@@ -142,14 +146,14 @@ public class Consumer {
 		Intersection intersec = null;
 		if (distance <= movement) {
 			intersec = detectCollision(players, target.getCoordinates());
-			if (intersec != null && conflictWinP2(hour, meteo,target.getOwner(), intersec.getPlayer())) {
-				target = intersec.getPlayer().getStand();
+			if (intersec != null && conflictWinP2(hour, meteo, target.getOwner(), intersec.getPlayer())) {
 				movement -= calculDistance(coordinates, intersec.getIntersecion());
+				target = intersec.getPlayer().getStand();
 				coordinates = intersec.getIntersecion();
-				move(players,hour,meteo);
+				move(players, hour, meteo);
 			} else {
 				coordinates = target.getCoordinates();
-				movement = 150;
+				movement = 15;
 			}
 		} else {
 			double nbToursRequis = distance / movement;
@@ -158,49 +162,58 @@ public class Consumer {
 			float yTmp = (float) (coordinates.getY()
 					+ (target.getCoordinates().getY() - coordinates.getY()) / nbToursRequis);
 			intersec = detectCollision(players, new Coordinates(xTmp, yTmp));
-			if (intersec != null && conflictWinP2(hour, meteo,target.getOwner(), intersec.getPlayer())) {
-				target = intersec.getPlayer().getStand();
+			if (intersec != null && target.getOwner() != intersec.getPlayer() && conflictWinP2(hour, meteo, target.getOwner(), intersec.getPlayer())) {
 				movement -= calculDistance(coordinates, intersec.getIntersecion());
+				target = intersec.getPlayer().getStand();
 				coordinates = intersec.getIntersecion();
-				move(players,hour,meteo);
+				move(players, hour, meteo);
 			} else {
 				coordinates.setX(xTmp);
 				coordinates.setY(yTmp);
-				movement = 150;
+				movement = 15;
 			}
 		}
 	}
 
 	public Intersection detectCollision(List<Player> players, Coordinates target) {
 		Intersection res = null;
+		Zone tmp = null;
 		float distanceMin = -1;
 		for (Player p : players) {
 			for (Zone z : p.getPubs()) {
-				if (z.isInInfluence(this)) {
-					if (distanceMin == 0) {
-						double dist1 = calculDistance(this.getCoordinates(), p.getStand().getCoordinates());
-						double dist2 = calculDistance(this.getCoordinates(),
-								res.getPlayer().getStand().getCoordinates());
-						if (dist1 < dist2) {
-							res.setIntersecion(this.getCoordinates());
-							res.setPlayer(p);
+				if (!pubSeen.contains(z)) {
+					if (z.isInInfluence(this)) {
+						if (distanceMin == 0) {
+							double dist1 = calculDistance(this.getCoordinates(), p.getStand().getCoordinates());
+							double dist2 = calculDistance(this.getCoordinates(),
+									res.getPlayer().getStand().getCoordinates());
+							if (dist1 < dist2) {
+								tmp = z;
+								res.setIntersecion(this.getCoordinates());
+								res.setPlayer(p);
+							}
+						} else {
+							tmp = z;
+							res = new Intersection(this.getCoordinates(), p);
 						}
-					} else {
-						res = new Intersection(this.getCoordinates(), p);
-					}
-				} else if (distanceMin != 0) {
-					List<Coordinates> coords = getCircleLineIntersectionPoint(target, z);
-					if (!coords.isEmpty()) {
-						for (Coordinates c : coords) {
-							float tmpDistance = (float) calculDistance(this.getCoordinates(), c);
-							if (tmpDistance < distanceMin) {
-								res = new Intersection(c, p);
-								distanceMin = tmpDistance;
+					} else if (distanceMin != 0) {
+						List<Coordinates> coords = getCircleLineIntersectionPoint(target, z);
+						if (!coords.isEmpty()) {
+							for (Coordinates c : coords) {
+								float tmpDistance = (float) calculDistance(this.getCoordinates(), c);
+								if (tmpDistance < distanceMin) {
+									tmp = z;
+									res = new Intersection(c, p);
+									distanceMin = tmpDistance;
+								}
 							}
 						}
 					}
 				}
 			}
+		}
+		if (tmp != null) {
+			pubSeen.add(tmp);
 		}
 		return res;
 	}
@@ -236,29 +249,29 @@ public class Consumer {
 				this.getCoordinates().getY() - baY * abScalingFactor2);
 		return Arrays.asList(p1, p2);
 	}
-	
+
 	private boolean conflictWinP2(int hour, String meteo, Player p1, Player p2) {
 		Drink d1 = this.chooseDrinkSimulate(hour, meteo, p1.getDrinks());
 		Drink d2 = this.chooseDrinkSimulate(hour, meteo, p2.getDrinks());
-		if (d1 == null || (d2.getCost() < d1.getCost() && Math.random()*(100)+0 < getLuckChange(meteo)))
+		if (d1 == null || (d2.getCost() < d1.getCost() && Math.random() * (100) + 0 < getLuckChange(meteo)))
 			return true;
 		else
 			return false;
 	}
-	
+
 	private int getLuckChange(String meteo) {
 		int res;
 		switch (meteo) {
-		case ("Soleil"):
+		case ("SOLEIL"):
 			res = 50;
 			break;
-		case ("Orage"):
+		case ("ORAGE"):
 			res = 0;
 			break;
-		case ("Nuage"):
+		case ("NUAGE"):
 			res = 40;
 			break;
-		case ("Canicule"):
+		case ("CANICULE"):
 			res = 20;
 			break;
 		default:

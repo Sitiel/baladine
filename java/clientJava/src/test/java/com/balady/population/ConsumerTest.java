@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.balady.data.Coordinates;
 import com.balady.data.Drink;
+import com.balady.data.Player;
 import com.balady.data.Sale;
 import com.balady.data.Zone;
 
@@ -25,26 +26,7 @@ public class ConsumerTest {
 		}
 	}
 	
-	
 	/*@Test
-	public void testChooseDrink () {
-		Consumer c = new Consumer(0,500,0,400);
-		List<Drink> drinks = new ArrayList<>();
-		drinks.add(new Drink("limonade",5,false,true));
-		drinks.add(new Drink("eau",5,false,false));
-		drinks.add(new Drink("biere",2,true,true));
-		drinks.add(new Drink("vin chaud",2,true,false));
-		Sale tmp = c.chooseDrink(10, "Soleil", drinks);
-		assertEquals("limonade",tmp.getItem());
-		tmp = c.chooseDrink(14, "Nuage", drinks);
-		assertEquals("eau",tmp.getItem());
-		tmp = c.chooseDrink(3, "Soleil", drinks);
-		assertEquals("biere",tmp.getItem());
-		tmp = c.chooseDrink(23, "Pluie", drinks);
-		assertEquals("vin chaud",tmp.getItem());
-	}*/
-	
-	@Test
 	public void testMove () {
 		Consumer c = new Consumer(100,100,100,100);
 		c.setCoordinates(new Coordinates(100, 100));
@@ -58,5 +40,12 @@ public class ConsumerTest {
 		//c.move();
 		assertEquals(14.644661f, c.getCoordinates().getX(),0);
 		assertEquals(14.644661f, c.getCoordinates().getY(),0);
+	}*/
+	
+	@Test
+	public void detectCollision () {
+		List<Player> players = new ArrayList<>();
+		
+		List<Drink> d1 = new ArrayList<>();
 	}
 }
