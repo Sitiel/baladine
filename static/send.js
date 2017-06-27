@@ -39,7 +39,7 @@ function sendActions() {
 	}
 
 	for (i in production) {
-		recap_recettes += "-->"+production[i]['quantite'] + " " + production[i]['nom'] +" a " +production[i]['prix']+"€\r\n"
+		recap_prod += "-->"+production[i]['quantite'] + " " + production[i]['nom'] +" a " +production[i]['prix']+"€\r\n"
 		var drinkName         = production[i]['nom'];
 		var quantity          = production[i]['quantite'];
 		var price             = production[i]['prix'];
@@ -63,7 +63,7 @@ function sendActions() {
 		dataType   : "json",
 		success    : function (data) {
 			alert("actions sauvegardées \r\n"+
-					recap_pub+
+					recap_pub+"\r\n"
 					"Nouvelles recettes : "+recap_recettes+"\r\n"+
 					"Production : "+recap_prod);
 		}
