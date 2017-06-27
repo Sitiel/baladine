@@ -123,16 +123,16 @@ public class clientJavaApplication extends Application {
 		game = new GameMap("http://balady.herokuapp.com/ValerianKang/Balady_API/1.0.0");
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
-			int current_hour = 0;
+			int current_hour = -1;
 
 			@Override
 			public void run() {
 				game.refreshMap();
 
-				if (game.getHour() == 0) {
+				if (game.getHour() == 1 && game.getHour() != current_hour && !game.getPlayers().isEmpty()) {
 					game.addConsumers();
 				}
-				if (game.getHour() != current_hour) {
+				if (game.getHour() != current_hour && !game.getPlayers().isEmpty()) {
 					game.play();
 					game.moveConsumers();
 					game.sendSales();
