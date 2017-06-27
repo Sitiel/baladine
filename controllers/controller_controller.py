@@ -118,7 +118,7 @@ def play_actions():
     json_model.tomorrowActions = {}
     return "Success"
 
-
+"""
 def kickPlayer() :
     firstJoueur = joueur.query.first()
     if firstJoueur is not None : 
@@ -129,3 +129,4 @@ def kickPlayer() :
                     quit_game(j.joueur_pseudo)
             else :
                 quit_game(j.joueur_pseudo)
+"""
