@@ -58,3 +58,4 @@ nbVentesPlayer = {}
 lastMessages = []
 currentHour = 0
 lastInfoFromPlayer = {}
+actualRecettesNumberAndPrices = {}

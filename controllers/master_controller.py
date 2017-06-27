@@ -25,31 +25,14 @@ def map_get():
             prop.append({"kind": zone.zone_type, "owner": e_joueur.getProp('joueur_pseudo'), "influence": zone.zone_rayon, "location": zone_location})
 
         itemsByPlayer[e_joueur.getProp('joueur_pseudo')] = prop
-
-        propPlayerInfoRecettes = []
-        propDrinksByPlayer = []
-        for recette in e_joueur.recettes:
-            isCold = False
-            hasAlcohol = False
-            price = 0
-            for i in recette.ingredients:
-                if i.ing_froid:
-                    isCold = True
-                if i.ing_alcohol:
-                    hasAlcohol = True
-                price += i.ing_cout
-            propPlayerInfoRecettes.append({"name": recette.recette_nom, "price": price, "hasAlcohol": hasAlcohol, "isCold": isCold})
-            propDrinksByPlayer.append({"name": recette.recette_nom, "price": price, "hasAlcohol": hasAlcohol, "isCold": isCold})
-
-        propPlayerProperties = {"cash": e_joueur.joueur_budget, "sales": 0, "profit": 0, "drinksOffered": propPlayerInfoRecettes}
+        if e_joueur.getProp('joueur_pseudo') not in json_model.actualRecettesNumberAndPrices:
+            json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')] = []
+        propPlayerProperties = {"cash": e_joueur.joueur_budget, "sales": 0, "profit": 0, "drinksOffered": json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]}
         additionalPropPlayerInfo[e_joueur.getProp('joueur_pseudo')] = propPlayerProperties
-        drinksByPlayer[e_joueur.getProp('joueur_pseudo')] = propDrinksByPlayer
+        drinksByPlayer[e_joueur.getProp('joueur_pseudo')] = json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]
 
     final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer, "playerInfo": additionalPropPlayerInfo, "drinksByPlayer": drinksByPlayer}
     return final_map
-
-
-
 
 
 def post_sales(sales):

@@ -183,7 +183,7 @@ void updateMeteo(arduino_data ard) {
         perror("read");
         exit(EXIT_FAILURE);
     }
-    
+    free(data);
     close(socket_file_descriptor);
 }
 

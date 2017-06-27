@@ -30,6 +30,7 @@ def post_meteorology():
 
 
 def play_actions():
+    json_model.actualRecettesNumberAndPrice = {}
     for playerName, actions in json_model.tomorrowActions.iteritems():
         joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
 
@@ -78,6 +79,8 @@ def play_actions():
                     prix = act
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
                 coutProd = 0
+                hasAlcool = False
+                isCold = False
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
 
@@ -89,7 +92,9 @@ def play_actions():
                     nbRecette = int(joueurDB.joueur_budget/coutProd)
                     total_cout_prod = nbRecette * coutProd
                 joueurDB.joueur_budget -= total_cout_prod
-
+                if joueurDB.joueur_pseudo not in json_model.actualRecettesNumberAndPrices:
+                    json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo] = []
+                json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append({"name": nomRecette, "price": prix, "hasAlcohol": hasAlcool, "isCold": isCold})
                 # create parent, append a child via association
                 prod = produit(nombre_prod=nbRecette, prix_vente=prix)
                 prod.recette = r
