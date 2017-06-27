@@ -73,7 +73,7 @@
 			     Nom : <input type="text" id="nom_new_recette"><br />
 			 <div class="row">
 		   	  <div class="col-sm-6">
-			   <input type="submit" onclick="create()" value="Valider">
+			   <input type="submit" onclick="create()" value="Sauvegarder Recette">
 		      </div><!-- /col-sm-6 -->
 		      <div class="col-sm-6">
 			   Cout de Développement : <span id="cout_dev"></span>€<br />
@@ -87,14 +87,13 @@
 		    </div><!-- /file_attente-->
 		   </div><!-- /creation_recette -->
 		   <div id="choix_page" class="col-sm-9">
-			<input type="submit" class="btn btn-primary" value="Sauvegarder la production" onclick="savProd()">
-            <input type="submit" class="btn btn-primary" value="En attendant d'avoir une vraie Validation" onclick="sendActions()"><br />
+			<input type="submit" class="btn btn-primary" value="Sauvegarder la production" onclick="savProd()"><br />
              <table id="mes_recettes">
 				Mes Recettes : <tr><td>Produit</td><td>Quantité</td><td>Prix</td><td>Cout production</td></tr>
 		    </table>
 		   </div><!-- /choix_page-->
             <div id="menu_droite" class="col-sm-3">
-               <input type="submit" class="btn btn-info" onclick="setPage('choix_page')" value="CHOIX">
+               <input type="submit" class="btn btn-danger" onclick="sendActions()" value="Valider Choix">
                 <div id="chat_users">
                     <strong>Chat</strong>
                     <span id="chat"></span>

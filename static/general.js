@@ -53,6 +53,7 @@ setInterval(function () {
 				for (var i = 0; i< nb_produits ; i++) {
 					$("#prod_"+i).val("");
 					$("#prix_"+i).val("");
+					$("#send").attr("class", "btn btn-danger");
 				}
 			}
 			lastDay = day;
@@ -64,7 +65,7 @@ setInterval(function () {
 			);
 		});
 	getMessageFromChat();
-}, 1000);
+}, 5000);
 
 
 
