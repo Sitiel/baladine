@@ -77,7 +77,7 @@ setInterval(function () {
 	getMessageFromChat();
 }, 1000);
 
-
+var nbmsg = 0
 function getMessageFromChat() {
 	$.ajax({
 		type       : "GET",
@@ -86,15 +86,17 @@ function getMessageFromChat() {
 		dataType   : "json",
 		success    : function (data) {
 		var chat = "<br />";
+		if(nbmsg != data.length){
+			nbmsg = data.length;
 			for(var i = 0; i< data.length; i++){
 				var msg = data[i]["message"].replace(/</g, '&lt;').replace(/>/g, '&gt;');
 				chat += "<strong>"+data[i]["sender"] + "</strong> : "+ msg + "<br />";
 			}
-			if($("#chat")[0].innerHTML != chat){
-				$("#chat").html(chat);
-				$("#chat_users").scrollTop($("#chat_users")[0].scrollHeight);
-			}
-	    }
+			$("#chat").html(chat);
+			$("#chat_users").scrollTop($("#chat_users")[0].scrollHeight);
+			
+		}
+	   }
 	});
 }
 
