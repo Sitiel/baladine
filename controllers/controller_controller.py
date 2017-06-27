@@ -21,7 +21,7 @@ def post_meteorology():
         db_session.add(m)
         db_session.add(j)
         db_session.commit()
-        kickPlayer()
+        #kickPlayer()
         return play_actions()
 
     return jsonify(json_model.meteoJsontoString)
