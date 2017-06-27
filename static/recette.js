@@ -37,7 +37,7 @@ function addIngr(id, nom, cout){
 
 function create(){
 	var nom = $("#nom_new_recette").val().replace(/ /g, "");
-	if(ingredients.length != 0 && nom == ""){
+	if(ingredients.length != 0 && nom != ""){
 		var new_recette = {};
 		new_recette['nom'] =  $("#nom_new_recette").val();
 		new_recette['ingredients'] = ingredients;
