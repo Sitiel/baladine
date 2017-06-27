@@ -1,4 +1,4 @@
-var begin_day   = 22;
+var begin_day   = 26;
 var begin_month = 6;
 var begin_year  = 2017;
 var pseudal     = "";
@@ -74,7 +74,58 @@ setInterval(function () {
 			$("#day").html(day + "/" + month + "/" + year
 			);
 		});
+	getMessageFromChat();
 }, 1000);
+
+var nbmsg = 0
+function getMessageFromChat() {
+	$.ajax({
+		type       : "GET",
+		url        : "/ValerianKang/Balady_API/1.0.0/chat",
+		contentType: "application/json; charset=utf-8",
+		dataType   : "json",
+		success    : function (data) {
+		var chat = "<br />";
+		if(nbmsg != data.length){
+			nbmsg = data.length;
+			for(var i = 0; i< data.length; i++){
+				var msg = data[i]["message"].replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				chat += "<strong>"+data[i]["sender"] + "</strong> : "+ msg + "<br />";
+			}
+			$("#chat").html(chat);
+			$("#chat_users").scrollTop($("#chat_users")[0].scrollHeight);
+			
+		}
+	   }
+	});
+}
+
+function sendMessage(){
+	var msgTest = $("#message_send").val().replace(/ /g, '');
+	if(msgTest != "" && $("#message_send").val().length < 25){
+		var msg = $("#message_send").val().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		postAChatMessage(msg);
+		$("#message_send").val("");
+
+	}
+}
+function postAChatMessage(message) {
+	if (pseudal === "") {
+		return;
+	}
+	$.ajax({
+		type       : "POST",
+		url        : "/ValerianKang/Balady_API/1.0.0/chat",
+		data       : JSON.stringify({
+			sender : pseudal,
+			message: message
+		}),
+		contentType: "application/json; charset=utf-8",
+		dataType   : "json",
+		success    : function (data) {
+		}
+	});
+}
 
 function getMap() {
 	if (pseudal === "") {
@@ -114,13 +165,4 @@ function getMap() {
 			}
 			$("#mes_recettes").append(tableau);
 		});
-}
-
-
-$("#recettes_en_ventes").html();
-
-for (var i = 1; i < 51; i++) {
-	var price = (Math.random() * (1.0 - 0.01) + 0.01);
-	var sales = Math.floor((Math.random() * 10) + 1);
-	$("#recettes_en_ventes").append("<li>Recette " + i + " => " + (price * sales).toFixed(2) + "€ (" + sales + " verres)</li>");
 }

@@ -11,7 +11,6 @@
         <meta charset="UTF-8">
         <title>Limonade.io</title>
         <link rel="stylesheet" href="style.css">
-		<link rel="stylesheet" type="text/css" href="icon.css" />
 		<link rel="stylesheet" type="text/css" href="component.css" />
     </head>
     <body>
@@ -94,12 +93,15 @@
 		   </div><!-- /choix_page-->
             <div id="menu_droite" class="col-sm-3">
                <input type="submit" class="btn btn-info" onclick="setPage('choix_page')" value="CHOIX">
-                <div id="ventes_actuelles">
-                    <strong>Ventes</strong>
-                    <ul id="recettes_en_ventes">
-                    </ul>
-                </div><!-- /ventes_actuelles -->
+                <div id="chat_users">
+                    <strong>Chat</strong>
+                    <span id="chat"></span>
+                </div><!-- /chat_users -->
                 <div class="row">
+					<form action="#" onsubmit="return false">
+						<input id="message_send" type="text" >
+						<input id="b_send_msg" type="submit" class="btn btn-info" value="Envoyer" onclick="sendMessage()">
+					</form>
                     <form class="col-sm-6" id="pub" action="#" onsubmit="return false">
                         <input id="pub_button" type="submit" class="btn btn-primary" value="Définir Publicité">
                     </form>

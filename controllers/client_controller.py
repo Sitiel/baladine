@@ -84,6 +84,10 @@ def join_game(playerJoinUsername):
 # curl -H "Content-Type: application/json" -X POST -d '{"name": "Suskiki"}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players
 
 def map_player_name_get(playerName):
+    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    #if joueurDB is None :
+     #   return "Error bad input", 400, {"Content-Type": "plain/text"}
+
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()
@@ -105,8 +109,6 @@ def map_player_name_get(playerName):
 
     final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer}
     drinksOffered = []
-    joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
-
     for r in joueurDB.recettes:
         isCold = False
         hasAlcohol = False
@@ -122,6 +124,10 @@ def map_player_name_get(playerName):
             "drinksOffered": drinksOffered}
     total = {'availablesIngredient': [i.toJson() for i in ingredients], 'map': final_map, "playerInfo": info}
     return total
+
+def ranking():
+    joueurs = joueur.query().all()
+
 
 
 def post_action(playerName, actions):
@@ -151,28 +157,34 @@ def chat_post(chatMessage):
 def quit_game(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
     productions = produit.query.filter(produit.joueur_id == joueurDB.joueur_id).all()
-    participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
+    participation = joueurDB.transactions
+    #participation = db_session.query(participe).filter(participe.joueur_id == joueurDB.joueur_id).all()
     zones = zone.query.filter(zone.joueur_id == joueurDB.joueur_id).all()
 
 
     # partie joueur
     for prod in productions :
         db_session.delete(prod)
-    for part in participation :
-        db_session.delete(part)
+        db_session.commit()
+    participation[:] = []
+    db_session.commit()
     for zon in zones :
         db_session.delete(zon)
+        db_session.commit()
 
     #partie recette liee au joueur
-    possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
-    for pos in possedes :
-        recet = recette.query.filter(pos.recette_id == recette.recette_id).first()
-        db_session.delete(pos)
-        composition = db_session.query(compose).query.filter(compose.recette_id == recet.recette_id).all()
-        for comp in composition :
-            db_session.delete(comp)
-        db_session.delete(recet)
+    #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
+    for pos in joueurDB.recettes :
+        if pos.recette_nom != 'Limonade' :
+            composition = pos.ingredients
+            composition[:] = []
+            db_session.commit()
+
+    joueurDB.recettes[:] = []
+    db_session.commit()
     db_session.delete(joueurDB)
     db_session.commit()
 
     return 'Success'
+
+#curl -X DELETE "http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/players/Coco"

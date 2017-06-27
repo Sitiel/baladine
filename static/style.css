@@ -1,3 +1,6 @@
+*{
+	margin-left : 2px;
+}
 #info_bar {
 	border-style : solid;
 	height       : 10vh;
@@ -35,13 +38,14 @@ html {
 	text-align : center;
 }
 
-#ventes_actuelles {
+#chat_users {
 	border-style : solid;
 	height       : 75vh;
 	overflow     : auto;
+	overflow-y   : scroll;
 }
 
-#recettes_en_ventes {
+#chat {
 	text-align : left;
 }
 
@@ -52,7 +56,7 @@ html {
 #ingredients {
 	text-align   : center;
 	border-style : solid;
-	height       : 70vh;
+	height       : 40vh;
 	overflow     : auto;
 }
 

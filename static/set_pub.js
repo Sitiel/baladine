@@ -122,37 +122,6 @@ function drawPub(ctx, _pubs) {
 }
 
 
-function getMessageFromChat() {
-	$.ajax({
-		type       : "GET",
-		url        : "/ValerianKang/Balady_API/1.0.0/chat",
-		contentType: "application/json; charset=utf-8",
-		dataType   : "json",
-		success    : function (data) {
-			console.log(data);
-		}
-	});
-}
-
-function postAChatMessage(message) {
-	if (pseudal === "") {
-		return;
-	}
-	$.ajax({
-		type       : "POST",
-		url        : "/ValerianKang/Balady_API/1.0.0/chat",
-		data       : JSON.stringify({
-			sender : pseudal,
-			message: message
-		}),
-		contentType: "application/json; charset=utf-8",
-		dataType   : "json",
-		success    : function (data) {
-		}
-	});
-}
-
-
 function sendActions() {
 	var actions = [];
 	for (var i in pubs) {
@@ -212,6 +181,7 @@ function sendActions() {
 		success    : function (data) {
 			new_recettes = [];
 			production   = [];
+			$("#file_attente").html("");
 		}
 	});
 }
