@@ -41,7 +41,7 @@ def play_actions():
                 # ajouter l'ajout de stand a la base de donnees
                 nameRec = action['recipe']['name']
                 composition = action['recipe']['ingredients']
-                coutDev = len(composition.ingredients)*len(composition.ingredients)
+                coutDev = len(composition)*len(composition)
                 if coutDev <= joueurDB.joueur_budget :
                     joueurDB.joueur_budget -= coutDev
                     ingredients_nom = []
