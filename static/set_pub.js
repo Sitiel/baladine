@@ -181,6 +181,7 @@ function sendActions() {
 		success    : function (data) {
 			new_recettes = [];
 			production   = [];
+			$("#file_attente").html("");
 		}
 	});
 }
