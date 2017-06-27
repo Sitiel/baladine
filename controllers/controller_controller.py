@@ -41,18 +41,21 @@ def play_actions():
                 # ajouter l'ajout de stand a la base de donnees
                 nameRec = action['recipe']['name']
                 composition = action['recipe']['ingredients']
-                ingredients_nom = []
-                # recuperations des id de chaque ingredients
-                for x in composition:
-                    ingredients_nom.append(x['name'])
-                ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
-                # ajout a la table possede des ingredients pour la recette
-                rec = recette(nameRec)
-                for x in ingredients:
-                    rec.ingredients.append(x)
-                joueurDB.recettes.append(rec)
-                db_session.add(rec)
-                db_session.commit()
+                coutDev = len(composition.ingredients)*len(composition.ingredients)
+                if coutDev <= joueurDB.joueur_budget :
+                    joueurDB.joueur_budget -= coutDev
+                    ingredients_nom = []
+                    # recuperations des id de chaque ingredients
+                    for x in composition:
+                        ingredients_nom.append(x['name'])
+                    ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
+                    # ajout a la table possede des ingredients pour la recette
+                    rec = recette(nameRec)
+                    for x in ingredients:
+                        rec.ingredients.append(x)
+                    joueurDB.recettes.append(rec)
+                    db_session.add(rec)
+                    db_session.commit()
 
             elif typeAction == "ad":
                 # ajouter l'ajout d'une pub a la base de donnees
@@ -78,7 +81,6 @@ def play_actions():
                     nomPrix = key
                     prix = act
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
-                coutProd = 0
                 hasAlcool = False
                 isCold = False
                 for ing in r.ingredients:
@@ -109,6 +111,7 @@ def play_actions():
                 joueurDB.journees_produit.append(prod)
                 db_session.add(prod)
                 db_session.commit()
+
     json_model.nbVentesPlayer = {}
     json_model.tomorrowActions = {}
     return "Success"
