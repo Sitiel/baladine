@@ -42,9 +42,9 @@ function create(){
 		new_recette['ingredients'] = ingredients;
 		alert("votre recette : ["+new_recette['nom']+"] sera bien créée demain");
 		new_recettes.push(new_recette);
-		afficherRecettesEnCours()
+		afficherRecettesEnCours();
 	}else{
-		alert("la recette ne comporte pas d'ingrédient";)
+		alert("la recette ne comporte pas d'ingrédient");
 	}
 }
 
