@@ -10,5 +10,4 @@ function savProd(){
 			production.push(produit);
 		}
 	}
-	sendActions();
 }

@@ -29,7 +29,6 @@ function sendActions() {
 			kind  : "recipe",
 			recipe: recipe
 		});
-		//alert(JSON.stringify(actions));
 	}
 
 	for (i in production) {

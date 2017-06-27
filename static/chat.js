@@ -30,6 +30,7 @@ function sendMessage(){
 
 	}
 }
+
 function postAChatMessage(message) {
 	if (pseudal === "") {
 		return;
