@@ -152,13 +152,24 @@ Cette route est utilise pour poster les actions qui seront faite le lendemain
 """
 def post_action(playerName, actions):
     
-    if !actions['simulated'] :
+    simulated = False
+
+    if 'simulated' not in actions :
+        
+        simulated = False
         json_model.tomorrowActions[playerName] = actions
         return "Success", 200, {'Content-Type': 'text/plain'}
     
-    else
-        totalCost = 0
+    else :
+        
+        simulated = actions['simulated']
     
+        if simulated == False :
+    
+            json_model.tomorrowActions[playerName] = actions
+            return "Success", 200, {'Content-Type': 'text/plain'}
+            
+        totalCost = 0    
         for playerName, actions in json_model.tomorrowActions.iteritems():
     
             for action in actions['actions']:
