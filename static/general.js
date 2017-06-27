@@ -51,8 +51,8 @@ setInterval(function () {
 				production   = [];
 				$("#file_attente").html("");
 				for (var i = 0; i< nb_produits ; i++) {
-					$("#prod_"+i).val() = "";
-					$("#prix_"+i).val() = "";
+					$("#prod_"+i).val("");
+					$("#prix_"+i).val("");
 				}
 			}
 			lastDay = day;
