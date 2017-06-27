@@ -63,7 +63,7 @@ function sendActions() {
 		dataType   : "json",
 		success    : function (data) {
 			alert("actions sauvegardées \r\n"+
-					recap_pub+"\r\n"
+					recap_pub+"\r\n"+
 					"Nouvelles recettes : "+recap_recettes+"\r\n"+
 					"Production : "+recap_prod);
 		}
