@@ -89,7 +89,7 @@ def map_player_name_get(playerName):
     region = {"center": {"latitude": 0, "longitude": 0},
               "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
     r = joueur.query.all()
-    rankedPlayer = joueur.query.order_by(joueur_budget.desc()).all()
+    rankedPlayer = joueur.query.order_by(joueur.joueur_budget.desc()).all()
     ranking = {"ranking": [i.getProp('joueur_pseudo') for i in rankedPlayer]}
     itemsByPlayer = {}
     for e_joueur in r:
