@@ -94,7 +94,7 @@ def map_player_name_get(playerName):
     region = {"center": {"latitude": 0, "longitude": 0},
               "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
     r = joueur.query.all()
-    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in r]}
+    ranking = {"ranking": [i.getProp('joueur_pseudo') for i in ranking()]}
     itemsByPlayer = {}
     for e_joueur in r:
         prop = []
@@ -126,9 +126,8 @@ def map_player_name_get(playerName):
     return total
 
 def ranking():
-    joueurs = joueur.query().all()
-
-
+    rankedPlayer = joueur.query().order_by(joueur_budget.desc()).all()
+    return rankedPlayer
 
 def post_action(playerName, actions):
     json_model.tomorrowActions[playerName] = actions
