@@ -42,6 +42,7 @@ html {
 	border-style : solid;
 	height       : 75vh;
 	overflow     : auto;
+	overflow-y   : scroll;
 }
 
 #chat {
