@@ -56,7 +56,7 @@ function sendActions() {
 		dataType   : "json",
 		success    : function (data) {
 			$("#send").attr("class", "btn btn-success");
-			alert("actions sauvegardées");
+			alert("actions sauvegardées <br/>\r\n onche");
 		}
 	});
 }

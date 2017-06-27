@@ -13,4 +13,5 @@ function savProd(){
 			$("#prix_"+i).attr('placeholder', 'last : '+$("#prix_"+i).val());
 		}
 	}
+	sendActions();
 }
