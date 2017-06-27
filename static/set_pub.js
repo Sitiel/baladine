@@ -80,6 +80,7 @@ canvas.onmousemove = function (e) {
 		ctx.closePath();
 	}
 };
+
 canvas.onmousedown = function (e) {
 	if (setpub) {
 		posX1   = (e.clientX * canvas.width) / $("#map").width();
@@ -103,7 +104,6 @@ canvas.onmouseup = function () {
 		rayon = 0;
 		posX1 = 0;
 		posY1 = 0;
-		//addCircle(posX1, posY1, rayon, 0, 200, 0, 0.3);
 	}
 };
 

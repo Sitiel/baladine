@@ -1,9 +1,8 @@
-var begin_day   = 26;
+var begin_day   = 27;
 var begin_month = 6;
 var begin_year  = 2017;
 var pseudal     = "";
-
-var page = 0;
+var page 		= 0;
 
 setPage("map_page");
 
@@ -46,9 +45,16 @@ setInterval(function () {
 				month = "0" + month
 			}
 
-
 			if (day !== lastDay) {
 				pubs = [];
+				new_recettes = [];
+				production   = [];
+				$("#file_attente").html("");
+				for (var i = 0; i< nb_produits ; i++) {
+					$("#prod_"+i).val("");
+					$("#prix_"+i).val("");
+					$("#send").attr("class", "btn btn-danger");
+				}
 			}
 			lastDay = day;
 
@@ -59,7 +65,7 @@ setInterval(function () {
 			);
 		});
 	getMessageFromChat();
-}, 1000);
+}, 5000);
 
 
 

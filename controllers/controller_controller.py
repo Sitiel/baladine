@@ -30,7 +30,7 @@ def post_meteorology():
 
 
 def play_actions():
-    json_model.actualRecettesNumberAndPrice = {}
+    json_model.actualRecettesNumberAndPrices.clear()
     for playerName, actions in json_model.tomorrowActions.iteritems():
         joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
 
@@ -41,18 +41,21 @@ def play_actions():
                 # ajouter l'ajout de stand a la base de donnees
                 nameRec = action['recipe']['name']
                 composition = action['recipe']['ingredients']
-                ingredients_nom = []
-                # recuperations des id de chaque ingredients
-                for x in composition:
-                    ingredients_nom.append(x['name'])
-                ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
-                # ajout a la table possede des ingredients pour la recette
-                rec = recette(nameRec)
-                for x in ingredients:
-                    rec.ingredients.append(x)
-                joueurDB.recettes.append(rec)
-                db_session.add(rec)
-                db_session.commit()
+                coutDev = len(composition.ingredients)*len(composition.ingredients)
+                if coutDev <= joueurDB.joueur_budget :
+                    joueurDB.joueur_budget -= coutDev
+                    ingredients_nom = []
+                    # recuperations des id de chaque ingredients
+                    for x in composition:
+                        ingredients_nom.append(x['name'])
+                    ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
+                    # ajout a la table possede des ingredients pour la recette
+                    rec = recette(nameRec)
+                    for x in ingredients:
+                        rec.ingredients.append(x)
+                    joueurDB.recettes.append(rec)
+                    db_session.add(rec)
+                    db_session.commit()
 
             elif typeAction == "ad":
                 # ajouter l'ajout d'une pub a la base de donnees
@@ -78,22 +81,29 @@ def play_actions():
                     nomPrix = key
                     prix = act
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
-                coutProd = 0
                 hasAlcool = False
                 isCold = False
+                coutProd = 0
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
+                    if ing.ing_froid:
+                        isCold = True
+                    if ing.ing_alcohol:
+                        hasAlcool = True
 
                 actualDate = datetime.now() + timedelta(days=json_model.currentDay)
                 jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
 
                 total_cout_prod = (coutProd * nbRecette)
+
                 if total_cout_prod > joueurDB.joueur_budget:
                     nbRecette = int(joueurDB.joueur_budget/coutProd)
                     total_cout_prod = nbRecette * coutProd
                 joueurDB.joueur_budget -= total_cout_prod
+
                 if joueurDB.joueur_pseudo not in json_model.actualRecettesNumberAndPrices:
                     json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo] = []
+
                 json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append({"name": nomRecette, "price": prix, "hasAlcohol": hasAlcool, "isCold": isCold})
                 # create parent, append a child via association
                 prod = produit(nombre_prod=nbRecette, prix_vente=prix)
@@ -103,6 +113,7 @@ def play_actions():
                 joueurDB.journees_produit.append(prod)
                 db_session.add(prod)
                 db_session.commit()
+
     json_model.nbVentesPlayer = {}
     json_model.tomorrowActions = {}
     return "Success"
