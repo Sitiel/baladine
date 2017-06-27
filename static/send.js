@@ -59,4 +59,6 @@ function sendActions() {
 			$("#file_attente").html("");
 		}
 	});
+	
+	alert("actions sauvegardées");
 }
