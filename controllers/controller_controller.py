@@ -83,6 +83,10 @@ def play_actions():
                 isCold = False
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
+                    if ing.ing_froid:
+                        isCold = True
+                    if ing.ing_alcohol:
+                        hasAlcool = True
 
                 actualDate = datetime.now() + timedelta(days=json_model.currentDay)
                 jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
@@ -94,6 +98,8 @@ def play_actions():
                 joueurDB.joueur_budget -= total_cout_prod
                 if joueurDB.joueur_pseudo not in json_model.actualRecettesNumberAndPrices:
                     json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo] = []
+
+
                 json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append({"name": nomRecette, "price": prix, "hasAlcohol": hasAlcool, "isCold": isCold})
                 # create parent, append a child via association
                 prod = produit(nombre_prod=nbRecette, prix_vente=prix)
