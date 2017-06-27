@@ -1,7 +1,12 @@
 function sendActions() {
+	var recap_pub 		= "aucune pub n'a été placée";
+	var recap_recettes 	= "";
+	var recap_prod		= "";
+
 	var actions = [];
 	console.log(new_recettes);;
 	for (var i in pubs) {
+		pub = "un total de "+(i+1)+" ont été placée(s)";
 		var l = {
 			latitude : pubs[i]["x"] / canvas.width * largeur_map,
 			longitude: pubs[i]["y"] / canvas.height * longueur_map
@@ -13,6 +18,7 @@ function sendActions() {
 		});
 	}
 	for (i in new_recettes) {
+		recap_recettes += "-->"+new_recettes[i]['nom'] + "\r\n"
 		var ingredients = [];
 		for (var ing_i in new_recettes[0]['ingredients']) {
 			ingredients.push({
@@ -33,6 +39,7 @@ function sendActions() {
 	}
 
 	for (i in production) {
+		recap_recettes += "-->"+production[i]['quantite'] + " " + production[i]['nom'] +" a " +production[i]['prix']+"€\r\n"
 		var drinkName         = production[i]['nom'];
 		var quantity          = production[i]['quantite'];
 		var price             = production[i]['prix'];
@@ -55,8 +62,10 @@ function sendActions() {
 		contentType: "application/json; charset=utf-8",
 		dataType   : "json",
 		success    : function (data) {
-			$("#send").attr("class", "btn btn-success");
-			alert("actions sauvegardées <br/>\r\n onche");
+			alert("actions sauvegardées \r\n"+
+					recap_pub+
+					"Nouvelles recettes : "+recap_recettes+"\r\n"+
+					"Production : "+recap_prod);
 		}
 	});
 }
