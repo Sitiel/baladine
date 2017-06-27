@@ -8,6 +8,9 @@ function savProd(){
 			produit['quantite'] = $("#prod_"+i).val();
 			produit['prix'] = $("#prix_"+i).val();
 			production.push(produit);
+
+			$("#prod_"+i).attr('placeholder', 'last : '+$("#prod_"+i).val());
+			$("#prix_"+i).attr('placeholder', 'last : '+$("#prix_"+i).val());
 		}
 	}
 }
