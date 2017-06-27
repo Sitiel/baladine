@@ -2,8 +2,7 @@ var begin_day   = 27;
 var begin_month = 6;
 var begin_year  = 2017;
 var pseudal     = "";
-
-var page = 0;
+var page 		= 0;
 
 setPage("map_page");
 
@@ -46,9 +45,12 @@ setInterval(function () {
 				month = "0" + month
 			}
 
-
 			if (day !== lastDay) {
+				sendActions();
 				pubs = [];
+				new_recettes = [];
+				production   = [];
+				$("#file_attente").html("");
 			}
 			lastDay = day;
 
