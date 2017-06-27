@@ -125,6 +125,10 @@ def map_player_name_get(playerName):
     total = {'availablesIngredient': [i.toJson() for i in ingredients], 'map': final_map, "playerInfo": info}
     return total
 
+def ranking():
+    joueurs = joueur.query().all()
+
+
 
 def post_action(playerName, actions):
     json_model.tomorrowActions[playerName] = actions
@@ -171,9 +175,11 @@ def quit_game(playerName):
     #partie recette liee au joueur
     #possedes = db_session.query(possede).query.filter(possede.joueur_id == joueurDB.joueur_id).all()
     for pos in joueurDB.recettes :
-        composition = pos.ingredients
-        composition[:] = []
-        db_session.commit()
+        if pos.recette_nom != 'Limonade' :
+            composition = pos.ingredients
+            composition[:] = []
+            db_session.commit()
+
     joueurDB.recettes[:] = []
     db_session.commit()
     db_session.delete(joueurDB)
