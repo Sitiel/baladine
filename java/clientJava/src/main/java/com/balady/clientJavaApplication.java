@@ -44,38 +44,37 @@ public class clientJavaApplication extends Application {
 	    }
 	 
 	    private void draw() {
-	      double width = getWidth();
-	      double height = getHeight();
+	      double width = getHeight();
+	      double height = getWidth();
 	 
 	      GraphicsContext gc = getGraphicsContext2D();
-	      gc.clearRect(0, 0, width, height);
+	      gc.clearRect(0, 0, height, width);
 	      if (game.getMeteo() != null) {
-				gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 				gc.setFill(new Color(1, 0.1, 0.1, 1));
 				for (Player p : game.getPlayers()) {
 					for (Zone z : p.getPubs()) {
 						Coordinates pos = z.getCoordinates();
-						float influence = (float) (z.getInfluence() / game.getEnd().getX() * canvas.getWidth());
-						gc.fillOval(pos.getY() / game.getEnd().getY() * canvas.getHeight(),
-								pos.getX() / game.getEnd().getX() * canvas.getWidth(), influence, influence);
+						float influence = (float) (z.getInfluence() / game.getEnd().getX() * width);
+						gc.fillOval(pos.getY() / game.getEnd().getY() * height,
+								pos.getX() / game.getEnd().getX() * width, influence, influence);
 					}
 				}
 
 				gc.setFill(new Color(0.1, 1, 0.1, 1));
 				for (Player p : game.getPlayers()) {
 					Coordinates pos = p.getStand().getCoordinates();
-					float influence = (float) (p.getStand().getInfluence() / game.getEnd().getX() * canvas.getWidth());
-					gc.fillOval(pos.getY() / game.getEnd().getY() * canvas.getHeight(),
-							pos.getX() / game.getEnd().getX() * canvas.getWidth(), influence, influence);
+					float influence = (float) (p.getStand().getInfluence() / game.getEnd().getX() * width);
+					gc.fillOval(pos.getY() / game.getEnd().getY() * height,
+							pos.getX() / game.getEnd().getX() * width, influence, influence);
 				}
 
 				gc.setFill(new Color(0.1, 0.1, 1, 1));
 				for (Consumer c : game.getConsumers()) {
 					Coordinates pos = c.getCoordinates();
-					float influence = 10;
-					gc.fillRect(pos.getY() / game.getEnd().getY() * canvas.getHeight(),
-							pos.getX() / game.getEnd().getX() * canvas.getWidth(), influence, influence);
+					float influence = (float) (5 / game.getEnd().getX() * width);
+					gc.fillRect(pos.getY() / game.getEnd().getY() * height,
+							pos.getX() / game.getEnd().getX() * width, influence, influence);
 				}
 					
 				Platform.runLater(() -> {
@@ -118,14 +117,6 @@ public class clientJavaApplication extends Application {
 		launch(args);
 	}
 
-	public void refreshDisplay() {
-		/*System.out.println("New size : " + (border.getWidth() - border.snappedLeftInset()));
-		canvas.setWidth(border.getCenter().getLayoutBounds().getWidth());
-		canvas.setHeight(border.getCenter().getLayoutBounds().getHeight());*/
-		
-
-	}
-
 	@Override
 	public void start(Stage primaryStage) {
 
@@ -147,7 +138,7 @@ public class clientJavaApplication extends Application {
 					game.sendSales();
 					current_hour = game.getHour();
 				}
-				refreshDisplay();
+				canvas.draw();
 			}
 		}, 1000, 1000);
 
@@ -168,9 +159,9 @@ public class clientJavaApplication extends Application {
                  border.heightProperty());
 
 		leftPanel = new VBox();
-		border.setLeft(leftPanel);
+		//border.setLeft(leftPanel);
 
-		refreshDisplay();
+		canvas.draw();
 
 		Scene s = new Scene(border, 300, 300, Color.WHITE);
 		primaryStage.setScene(s);
