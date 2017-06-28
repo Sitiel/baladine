@@ -44,11 +44,11 @@ public class clientJavaApplication extends Application {
 	    }
 	 
 	    private void draw() {
-	      double width = getHeight();
-	      double height = getWidth();
-	 
+	      double width = getWidth();
+	      double height = getHeight();
+	
 	      GraphicsContext gc = getGraphicsContext2D();
-	      gc.clearRect(0, 0, height, width);
+	      gc.clearRect(0, 0, width, height);
 	      if (game.getMeteo() != null) {
 
 				gc.setFill(new Color(1, 0.1, 0.1, 1));
@@ -56,8 +56,8 @@ public class clientJavaApplication extends Application {
 					for (Zone z : p.getPubs()) {
 						Coordinates pos = z.getCoordinates();
 						float influence = (float) (z.getInfluence() / game.getEnd().getX() * width);
-						gc.fillOval(pos.getY() / game.getEnd().getY() * height,
-								pos.getX() / game.getEnd().getX() * width, influence, influence);
+						gc.fillOval(pos.getX() / game.getEnd().getX() * width,
+								pos.getY() / game.getEnd().getY() * height, influence, influence);
 					}
 				}
 
@@ -65,16 +65,16 @@ public class clientJavaApplication extends Application {
 				for (Player p : game.getPlayers()) {
 					Coordinates pos = p.getStand().getCoordinates();
 					float influence = (float) (p.getStand().getInfluence() / game.getEnd().getX() * width);
-					gc.fillOval(pos.getY() / game.getEnd().getY() * height,
-							pos.getX() / game.getEnd().getX() * width, influence, influence);
+					gc.fillOval(pos.getX() / game.getEnd().getX() * width,
+							pos.getY() / game.getEnd().getY() * height, influence, influence);
 				}
 
 				gc.setFill(new Color(0.1, 0.1, 1, 1));
 				for (Consumer c : game.getConsumers()) {
 					Coordinates pos = c.getCoordinates();
 					float influence = (float) (5 / game.getEnd().getX() * width);
-					gc.fillRect(pos.getY() / game.getEnd().getY() * height,
-							pos.getX() / game.getEnd().getX() * width, influence, influence);
+					gc.fillRect(pos.getX() / game.getEnd().getX() * width,
+							pos.getY() / game.getEnd().getY() * height, influence, influence);
 				}
 					
 				Platform.runLater(() -> {
