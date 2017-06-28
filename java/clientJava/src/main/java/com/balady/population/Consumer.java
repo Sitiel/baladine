@@ -58,32 +58,39 @@ public class Consumer {
 		this.target = target;
 	}
 
+	/**
+	 * Choose the Drink to Customer
+	 * @param hour
+	 * @param meteo
+	 * @param drinks
+	 * @return Sale which contains the drink and the number selected by the customer
+	 */
 	public Sale chooseDrink(int hour, String meteo, List<Drink> drinks) {
 
 		List<Drink> possibleDrinks = new ArrayList<>();
-		Sale sale = null;
 
 		for (Drink d : drinks) {
 			if (d.getCost() <= this.budget) {
 
-				possibleDrinks.add(d);
+				if (!d.hasAlcholize())
+					possibleDrinks.add(d);
 
 				// if hot they want cold drinks
 				if (("SOLEIL".equals(meteo) || "CANICULE".equals(meteo)) && d.isCold()) {
 					possibleDrinks.add(d);
 				}
-
+				// else he want hot drink
 				else if (("PLUIE".equals(meteo) || "NUAGE".equals(meteo) || "ORAGE".equals(meteo)) && !d.isCold()) {
-					// else they want hot drink
 					possibleDrinks.add(d);
 				}
-
+				// if day he don't want alcholize drink
 				if ((hour > 6 && hour < 19) && !d.hasAlcholize()) {
-					// if day they don't want alcholize drink
 					possibleDrinks.add(d);
 				}
+				// if night they want alcholize drink
 				else if ((hour < 7 || hour > 19) && d.hasAlcholize()) {
-					// if night they want alcholize drink
+					possibleDrinks.add(d);
+					possibleDrinks.add(d);
 					possibleDrinks.add(d);
 				}
 			}
@@ -97,15 +104,22 @@ public class Consumer {
 		}
 	}
 
+	/**
+	 * Simulate the choice of drink to Customer
+	 * @param hour
+	 * @param meteo
+	 * @param drinks
+	 * @return drink choose
+	 */
 	public Drink chooseDrinkSimulate(int hour, String meteo, List<Drink> drinks) {
 
 		List<Drink> possibleDrinks = new ArrayList<>();
-		Sale sale = null;
 
 		for (Drink d : drinks) {
 			if (d.getCost() <= this.budget) {
 
-				possibleDrinks.add(d);
+				if (!d.hasAlcholize())
+					possibleDrinks.add(d);
 
 				// if hot they want cold drinks
 				if (("SOLEIL".equals(meteo) || "CANICULE".equals(meteo)) && d.isCold()) {
@@ -117,11 +131,12 @@ public class Consumer {
 				}
 				// if day he don't want alcholize drink
 				if ((hour > 6 && hour < 19) && !d.hasAlcholize()) {
-					
 					possibleDrinks.add(d);
 				}
 				// if night they want alcholize drink
 				else if ((hour < 7 || hour > 19) && d.hasAlcholize()) {
+					possibleDrinks.add(d);
+					possibleDrinks.add(d);
 					possibleDrinks.add(d);
 				}
 			}
@@ -134,6 +149,11 @@ public class Consumer {
 		}
 	}
 
+	/**
+	 * Make the choose of number of drinks buy
+	 * @param d
+	 * @return number of drinks order
+	 */
 	private int nbDrinksOrder(Drink d) {
 		int nb = 1;
 		while (ThreadLocalRandom.current().nextInt(1, nb + 2) == 1 && nb < 10 && budget >= (nb + 1) * d.getCost()) {
@@ -142,15 +162,12 @@ public class Consumer {
 		return nb;
 	}
 
+	/**
+	 * Choose the stand 
+	 * @param players
+	 */
 	public void findStand(List<Player> players) {
-		double distanceMin = 0;
-		for (Player p : players) {
-			double distance = calculDistance(this.getCoordinates(), p.getStand().getCoordinates());
-			if (target == null || distance < distanceMin) {
-				target = p.getStand();
-				distanceMin = distance;
-			}
-		}
+		target = players.get((int) Math.round( (Math.random() * (players.size()-1)))).getStand();
 	}
 
 	private static double calculDistance(Coordinates p1, Coordinates p2) {
