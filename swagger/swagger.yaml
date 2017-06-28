@@ -130,6 +130,48 @@ paths:
           description: "Bad input"
       x-tags:
       - tag: "controller"
+  /metrology:
+    get:
+      tags:
+      - "client"
+      summary: "Get the meteorology"
+      description: "Return a json object containing current time, current weather\
+        \ and next weather"
+      operationId: "controllers.client_controller.get_metrology"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Meteorology ( temps )"
+          schema:
+            $ref: "#/definitions/temps"
+      x-tags:
+      - tag: "client"
+    post:
+      tags:
+      - "controller"
+      summary: "Set the meteorology"
+      description: "Set the json object containing the time, weather and next weather"
+      operationId: "controllers.controller_controller.post_metrology"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Meteorology"
+        description: "Meteorology information to set"
+        required: true
+        schema:
+          $ref: "#/definitions/temps"
+      responses:
+        200:
+          description: "Sucess"
+        400:
+          description: "Bad input"
+      x-tags:
+      - tag: "controller"
   /sales:
     post:
       tags:

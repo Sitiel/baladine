@@ -22,6 +22,9 @@ def get_meteorology():
     # meteoJsontoString contient les infos recut par la carte arduino en json
     return jsonify(json_model.meteoJsontoString)
 
+#redirection
+def get_metrology():
+    get_meteorology()
 
 """
 Cette route est utilise par tous les clients(web et java)
@@ -47,7 +50,7 @@ def join_game(playerJoinUsername):
     jExist = joueur.query.filter(joueur.joueur_pseudo == name).first()
     if jExist is None:
         # Si le joueur n'existe pas on le creer et on l'ajoute a la BD
-        j = joueur(name, 1.0)
+        j = joueur(name, 1.0, 0.0, 0.0)
         c = db_session.query(carte).first()
         rayon = 10
         latitude = (random.random() * (c.carte_largeur - rayon) + rayon)
@@ -153,6 +156,8 @@ Cette route est utilise pour recuperer les informations du joueur pour la partie
 
 def map_player_name_get(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    if joueurDB is None :
+        return "Bad input", 400, {'Content-Type': 'text/plain'}
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()

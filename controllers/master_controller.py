@@ -100,7 +100,7 @@ def post_sales(sales):
         t.journee = jour
         j.transactions.append(t)
         j.joueur_budget += (quantity*total_cost)*0.85
-        j.joueur_ventes += (quantity)
+        j.joueur_ventes += quantity
         j.joueur_profit += (quantity*total_cost)*0.85
         db_session.add(t)
 

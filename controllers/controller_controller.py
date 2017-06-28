@@ -28,6 +28,9 @@ def post_meteorology():
     return jsonify(json_model.meteoJsontoString)
 
 
+def post_metrology():
+    post_meteorology()
+
 # curl -H "Content-Type: application/json" -X POST -d '{"timestamp": 1,"weather": [{"dfn": 0,"weather": "PLUIE"},{"dfn": 1,"weather": "CANICULE"}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/meteorology
 
 

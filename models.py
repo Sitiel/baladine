@@ -75,8 +75,8 @@ class joueur(Base, JsonModel):
     joueur_id = Column(Integer, primary_key=True)
     joueur_pseudo = Column(String(255))
     joueur_budget = Column(Float)
-    joueur_profit = Column(Float)
     joueur_ventes = Column(Float)
+    joueur_profit = Column(Float)
     recettes = relationship('recette', secondary=possede)  # relation vers recette
     # represente la carte sur laquelle se trouve le joueur
     carte_id = Column(Integer, ForeignKey('carte.carte_id'))
@@ -90,9 +90,11 @@ class joueur(Base, JsonModel):
     journees_produit = relationship('produit')
     recettes_produit = relationship('produit')
 
-    def __init__(self, pseudo, budget):
+    def __init__(self, pseudo, budget, profit, ventes):
         self.joueur_pseudo = pseudo
         self.joueur_budget = budget
+        self.joueur_ventes = ventes
+        self.joueur_profit = profit
 
 
 class zone(Base, JsonModel):
