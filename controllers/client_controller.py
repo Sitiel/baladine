@@ -50,7 +50,7 @@ def join_game(playerJoinUsername):
     jExist = joueur.query.filter(joueur.joueur_pseudo == name).first()
     if jExist is None:
         # Si le joueur n'existe pas on le creer et on l'ajoute a la BD
-        j = joueur(name, 1.0)
+        j = joueur(name, 1.0, 0.0, 0.0)
         c = db_session.query(carte).first()
         rayon = 10
         latitude = (random.random() * (c.carte_largeur - rayon) + rayon)
@@ -63,8 +63,8 @@ def join_game(playerJoinUsername):
         info = \
             {
                 "cash": 1,
-                "sales": 0,
-                "profit": 0,
+                "sales": 0.0,
+                "profit": 0.0,
                 "drinksOffered":
                     [
                         {
