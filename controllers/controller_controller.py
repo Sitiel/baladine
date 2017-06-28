@@ -8,25 +8,27 @@ from database import db_session
 from models import journee, meteo, joueur, recette, produit, ingredient, zone
 from client_controller import quit_game
 
+
 def post_meteorology():
     json_model.meteoJsontoString = request.get_json(force=True)
     json_model.currentHour = json_model.meteoJsontoString['timestamp']
-    if json_model.meteoJsontoString['timestamp']/24 != json_model.currentDay:
-        #It's a new day
-        m = json_model.get_or_create(db_session, meteo,  meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
-        json_model.currentDay = json_model.meteoJsontoString['timestamp']/24
+    if json_model.meteoJsontoString['timestamp'] / 24 != json_model.currentDay:
+        # It's a new day
+        m = json_model.get_or_create(db_session, meteo, meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
+        json_model.currentDay = json_model.meteoJsontoString['timestamp'] / 24
         newDay = datetime.now() + timedelta(days=json_model.currentDay)
         j = journee(newDay)
         m.journees.append(j)
         db_session.add(m)
         db_session.add(j)
         db_session.commit()
-        kickPlayer()
+        # kickPlayer()
         return play_actions()
 
     return jsonify(json_model.meteoJsontoString)
 
-#curl -H "Content-Type: application/json" -X POST -d '{"timestamp": 1,"weather": [{"dfn": 0,"weather": "PLUIE"},{"dfn": 1,"weather": "CANICULE"}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/meteorology
+
+# curl -H "Content-Type: application/json" -X POST -d '{"timestamp": 1,"weather": [{"dfn": 0,"weather": "PLUIE"},{"dfn": 1,"weather": "CANICULE"}]}' http://127.0.0.1:5000/ValerianKang/Balady_API/1.0.0/meteorology
 
 
 def play_actions():
@@ -41,13 +43,15 @@ def play_actions():
                 # ajouter l'ajout de stand a la base de donnees
                 nameRec = action['recipe']['name']
                 composition = action['recipe']['ingredients']
-                coutDev = len(composition.ingredients)*len(composition.ingredients)
-                if coutDev <= joueurDB.joueur_budget :
+                coutDev = len(composition) * len(composition)
+                if coutDev <= joueurDB.joueur_budget:
                     joueurDB.joueur_budget -= coutDev
                     ingredients_nom = []
+
                     # recuperations des id de chaque ingredients
                     for x in composition:
                         ingredients_nom.append(x['name'])
+
                     ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
                     # ajout a la table possede des ingredients pour la recette
                     rec = recette(nameRec)
@@ -63,6 +67,7 @@ def play_actions():
                 adY = action['location']['longitude']
                 adRayon = float(action['rayon'])
                 cost_ad = pow(adRayon, 1.8) / 2
+
                 if joueurDB.joueur_budget > cost_ad:
                     joueurDB.joueur_budget -= cost_ad
                     advertisement = zone(adX, adY, adRayon, "ad")
@@ -77,17 +82,21 @@ def play_actions():
                 for key, act in action['prepare'].iteritems():
                     nomRecette = key
                     nbRecette = int(act)
+
                 for key, act in action['price'].iteritems():
                     nomPrix = key
                     prix = act
+
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
                 hasAlcool = False
                 isCold = False
                 coutProd = 0
+
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
                     if ing.ing_froid:
                         isCold = True
+
                     if ing.ing_alcohol:
                         hasAlcool = True
 
@@ -97,14 +106,21 @@ def play_actions():
                 total_cout_prod = (coutProd * nbRecette)
 
                 if total_cout_prod > joueurDB.joueur_budget:
-                    nbRecette = int(joueurDB.joueur_budget/coutProd)
+                    nbRecette = int(joueurDB.joueur_budget / coutProd)
                     total_cout_prod = nbRecette * coutProd
                 joueurDB.joueur_budget -= total_cout_prod
 
                 if joueurDB.joueur_pseudo not in json_model.actualRecettesNumberAndPrices:
                     json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo] = []
 
-                json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append({"name": nomRecette, "price": prix, "hasAlcohol": hasAlcool, "isCold": isCold})
+                json_model.actualRecettesNumberAndPrices[joueurDB.joueur_pseudo].append(
+                    {
+                        "name": nomRecette,
+                        "price": prix,
+                        "hasAlcohol": hasAlcool,
+                        "isCold": isCold
+                    }
+                )
                 # create parent, append a child via association
                 prod = produit(nombre_prod=nbRecette, prix_vente=prix)
                 prod.recette = r
@@ -119,6 +135,7 @@ def play_actions():
     return "Success"
 
 
+"""
 def kickPlayer() :
     firstJoueur = joueur.query.first()
     if firstJoueur is not None : 
@@ -129,3 +146,4 @@ def kickPlayer() :
                     quit_game(j.joueur_pseudo)
             else :
                 quit_game(j.joueur_pseudo)
+"""

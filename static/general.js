@@ -85,9 +85,9 @@ function getMap() {
 				for (var mapItem in itemsByPlayer[pseudal_joueur]) {
 					var location = itemsByPlayer[pseudal_joueur][mapItem]['location'];
 					if (pseudal_joueur === pseudal) {
-						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / largeur_map * canvas.width, 0, 255, 0, 0.3);
+						addCircle(location['longitude'] / largeur_map * canvas.width, location['latitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / largeur_map * canvas.width, 0, 255, 0, 0.3);
 					} else {
-						addCircle(location['latitude'] / largeur_map * canvas.width, location['longitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / longueur_map * canvas.height, 255, 0, 0, 0.3);
+						addCircle(location['longitude'] / largeur_map * canvas.width, location['latitude'] / longueur_map * canvas.height, itemsByPlayer[pseudal_joueur][mapItem]['influence'] / longueur_map * canvas.height, 255, 0, 0, 0.3);
 					}
 				}
 			}

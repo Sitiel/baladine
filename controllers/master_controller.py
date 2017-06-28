@@ -9,7 +9,18 @@ import json_model
 
 def map_get():
     c = db_session.query(carte).first()
-    region = {"center": {"latitude": 0, "longitude": 0}, "span": {"latitudeSpan": c.carte_largeur, "longitudeSpan": c.carte_longueur}}
+    region = {
+        "center":
+            {
+                "latitude": 0,
+                "longitude": 0
+            },
+        "span":
+            {
+                "latitudeSpan": c.carte_largeur,
+                "longitudeSpan": c.carte_longueur
+            }
+    }
     r = joueur.query.all()
     rankedPlayer = joueur.query.order_by(joueur.joueur_budget.desc()).all()
     ranking = [i.getProp('joueur_pseudo') for i in rankedPlayer]
@@ -21,29 +32,60 @@ def map_get():
         prop = []
         zones = e_joueur.zones
         for zone in zones:
-            zone_location = {"latitude": zone.zone_posX, "longitude": zone.zone_posY}
-            prop.append({"kind": zone.zone_type, "owner": e_joueur.getProp('joueur_pseudo'), "influence": zone.zone_rayon, "location": zone_location})
+            zone_location = \
+                {
+                    "latitude": zone.zone_posX,
+                    "longitude": zone.zone_posY
+                }
+            prop.append(
+                {
+                    "kind": zone.zone_type,
+                    "owner": e_joueur.getProp('joueur_pseudo'),
+                    "influence": zone.zone_rayon,
+                    "location": zone_location
+                }
+            )
 
         itemsByPlayer[e_joueur.getProp('joueur_pseudo')] = prop
+
         if e_joueur.getProp('joueur_pseudo') not in json_model.actualRecettesNumberAndPrices:
             json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')] = []
-        propPlayerProperties = {"cash": e_joueur.joueur_budget, "sales": 0, "profit": 0, "drinksOffered": json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]}
+
+        propPlayerProperties = \
+            {
+                "cash": e_joueur.joueur_budget,
+                "sales": e_joueur.joueur_ventes,
+                "profit": e_joueur.joueur_profit,
+                "drinksOffered": json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]
+            }
+
+
         additionalPropPlayerInfo[e_joueur.getProp('joueur_pseudo')] = propPlayerProperties
         drinksByPlayer[e_joueur.getProp('joueur_pseudo')] = json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]
 
-    final_map = {"region": region, "ranking": ranking, "itemsByPlayer": itemsByPlayer, "playerInfo": additionalPropPlayerInfo, "drinksByPlayer": drinksByPlayer}
+    final_map = \
+        {
+            "region": region,
+            "ranking": ranking,
+            "itemsByPlayer": itemsByPlayer,
+            "playerInfo": additionalPropPlayerInfo,
+            "drinksByPlayer": drinksByPlayer
+        }
     return final_map
 
 
 def post_sales(sales):
     actualDate = datetime.now() + timedelta(days=json_model.currentDay)
     jour = journee.query.filter(extract('day', journee.jour_date) == actualDate.day).first()
+
     for s in sales['sales']:
         j = joueur.query.filter(joueur.joueur_pseudo == s['player']).first()
         r = recette.query.filter(recette.recette_nom == s['item']).first()
         r_produit = produit.query.filter(produit.recette_id == r.recette_id, produit.joueur_id == j.joueur_id, produit.jour_id == jour.jour_id).first()
+
         if r_produit is None:
             continue
+
         total_cost = r_produit.prix_vente
         quantity = s['quantity']
 
@@ -57,7 +99,9 @@ def post_sales(sales):
         t = transaction((quantity * total_cost ) * 0.85)
         t.journee = jour
         j.transactions.append(t)
-        j.joueur_budget += (quantity*total_cost)
+        j.joueur_budget += (quantity*total_cost)*0.85
+        j.joueur_ventes += (quantity)
+        j.joueur_profit += (quantity*total_cost)*0.85
         db_session.add(t)
 
     db_session.commit()
