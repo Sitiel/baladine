@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="58e7ae52-6532-45f3-8604-8bfe15da1538" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Arduino/serial_to_web/serial_to_web.xcodeproj/project.xcworkspace/xcuserdata/valerian.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="$PROJECT_DIR$/Arduino/serial_to_web/serial_to_web.xcodeproj/project.xcworkspace/xcuserdata/valerian.xcuserdatad/UserInterfaceState.xcuserstate" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/client_controller.py" afterPath="$PROJECT_DIR$/controllers/client_controller.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/controller_controller.py" afterPath="$PROJECT_DIR$/controllers/controller_controller.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/master_controller.py" afterPath="$PROJECT_DIR$/controllers/master_controller.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/.idea/workspace.xml" afterPath="$PROJECT_DIR$/static/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/general.js" afterPath="$PROJECT_DIR$/static/general.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/send.js" afterPath="$PROJECT_DIR$/static/send.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,8 +18,8 @@
       <file leaf-file-name="controller_controller.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state relative-caret-position="91">
+              <caret line="7" column="39" lean-forward="false" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -35,8 +28,8 @@
       <file leaf-file-name="master_controller.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1335">
-              <caret line="94" column="20" lean-forward="true" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
+            <state relative-caret-position="270">
+              <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -45,8 +38,8 @@
       <file leaf-file-name="client_controller.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/client_controller.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1186">
-              <caret line="164" column="33" lean-forward="false" selection-start-line="164" selection-start-column="33" selection-end-line="164" selection-end-column="33" />
+            <state relative-caret-position="975">
+              <caret line="235" column="19" lean-forward="true" selection-start-line="235" selection-start-column="19" selection-end-line="235" selection-end-column="19" />
               <folding>
                 <element signature="e#15#28#0" expanded="true" />
               </folding>
@@ -769,26 +762,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
+    <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state relative-caret-position="270">
+          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/master_controller.py">
+    <entry file="file://$PROJECT_DIR$/controllers/controller_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1335">
-          <caret line="94" column="20" lean-forward="true" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
+        <state relative-caret-position="91">
+          <caret line="7" column="39" lean-forward="false" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/client_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1186">
-          <caret line="164" column="33" lean-forward="false" selection-start-line="164" selection-start-column="33" selection-end-line="164" selection-end-column="33" />
+        <state relative-caret-position="975">
+          <caret line="235" column="19" lean-forward="true" selection-start-line="235" selection-start-column="19" selection-end-line="235" selection-end-column="19" />
           <folding>
             <element signature="e#15#28#0" expanded="true" />
           </folding>

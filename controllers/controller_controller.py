@@ -14,8 +14,7 @@ def post_meteorology():
     json_model.currentHour = json_model.meteoJsontoString['timestamp']
     if json_model.meteoJsontoString['timestamp'] / 24 != json_model.currentDay:
         # It's a new day
-        m = json_model.get_or_create(db_session, meteo,
-                                     meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
+        m = json_model.get_or_create(db_session, meteo, meteo_libelle=json_model.meteoJsontoString['weather'][0]['weather'])
         json_model.currentDay = json_model.meteoJsontoString['timestamp'] / 24
         newDay = datetime.now() + timedelta(days=json_model.currentDay)
         j = journee(newDay)
@@ -48,9 +47,11 @@ def play_actions():
                 if coutDev <= joueurDB.joueur_budget:
                     joueurDB.joueur_budget -= coutDev
                     ingredients_nom = []
+
                     # recuperations des id de chaque ingredients
                     for x in composition:
                         ingredients_nom.append(x['name'])
+
                     ingredients = ingredient.query.filter(ingredient.ing_nom.in_(ingredients_nom)).all()
                     # ajout a la table possede des ingredients pour la recette
                     rec = recette(nameRec)
@@ -66,6 +67,7 @@ def play_actions():
                 adY = action['location']['longitude']
                 adRayon = float(action['rayon'])
                 cost_ad = pow(adRayon, 1.8) / 2
+
                 if joueurDB.joueur_budget > cost_ad:
                     joueurDB.joueur_budget -= cost_ad
                     advertisement = zone(adX, adY, adRayon, "ad")
@@ -80,17 +82,21 @@ def play_actions():
                 for key, act in action['prepare'].iteritems():
                     nomRecette = key
                     nbRecette = int(act)
+
                 for key, act in action['price'].iteritems():
                     nomPrix = key
                     prix = act
+
                 r = recette.query.filter(recette.recette_nom == nomRecette).first()
                 hasAlcool = False
                 isCold = False
                 coutProd = 0
+
                 for ing in r.ingredients:
                     coutProd += ing.ing_cout
                     if ing.ing_froid:
                         isCold = True
+
                     if ing.ing_alcohol:
                         hasAlcool = True
 
