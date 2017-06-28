@@ -1,8 +1,6 @@
 package com.balady.population;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -11,7 +9,6 @@ import com.balady.data.Drink;
 import com.balady.data.Player;
 import com.balady.data.Sale;
 import com.balady.data.Zone;
-import com.balady.data.utils.Intersection;
 
 public class Consumer {
 
@@ -63,65 +60,83 @@ public class Consumer {
 
 	public Sale chooseDrink(int hour, String meteo, List<Drink> drinks) {
 
-		Drink chosenDrink = null;
+		List<Drink> possibleDrinks = new ArrayList<>();
 		Sale sale = null;
 
 		for (Drink d : drinks) {
 			if (d.getCost() <= this.budget) {
+
+				possibleDrinks.add(d);
+
 				// if hot they want cold drinks
 				if (("SOLEIL".equals(meteo) || "CANICULE".equals(meteo)) && d.isCold()) {
-					// if day they don't want alcholize drink
-					if ((hour > 6 && hour < 19) && d.hasAlcholize()) {
-					} else {
-						if (chosenDrink == null || chosenDrink.getCost() > d.getCost())
-							chosenDrink = d;
-					}
+					possibleDrinks.add(d);
 				}
-				// else they want hot drink
+
 				else if (("PLUIE".equals(meteo) || "NUAGE".equals(meteo) || "ORAGE".equals(meteo)) && !d.isCold()) {
+					// else they want hot drink
+					possibleDrinks.add(d);
+				}
+
+				if ((hour > 6 && hour < 19) && !d.hasAlcholize()) {
 					// if day they don't want alcholize drink
-					if ((hour > 7 && hour < 19) && d.hasAlcholize()) {
-					} else if (chosenDrink == null || chosenDrink.getCost() > d.getCost()) {
-						chosenDrink = d;
-					}
+					possibleDrinks.add(d);
+				}
+				else if ((hour < 7 || hour > 19) && d.hasAlcholize()) {
+					// if night they want alcholize drink
+					possibleDrinks.add(d);
 				}
 			}
 		}
-		if (chosenDrink != null) {
-			sale = new Sale(chosenDrink.getName(), nbDrinksOrder(chosenDrink));
+		if (possibleDrinks.isEmpty()) {
+			return null;
 		}
-		return sale;
+		else {
+			Drink selected = possibleDrinks.get((int)Math.round(Math.random()*(possibleDrinks.size()-1)));
+			return new Sale(selected.getName(),nbDrinksOrder(selected));
+		}
 	}
 
 	public Drink chooseDrinkSimulate(int hour, String meteo, List<Drink> drinks) {
 
-		Drink chosenDrink = null;
+		List<Drink> possibleDrinks = new ArrayList<>();
+		Sale sale = null;
 
 		for (Drink d : drinks) {
-			// if hot they want cold drinks
-			if (("SOLEIL".equals(meteo) || "CANICULE".equals(meteo)) && d.isCold()) {
-				// if day they don't want alcholize drink
-				if ((hour > 6 && hour < 19) && d.hasAlcholize()) {
-				} else {
-					if (chosenDrink == null || chosenDrink.getCost() > d.getCost())
-						chosenDrink = d;
+			if (d.getCost() <= this.budget) {
+
+				possibleDrinks.add(d);
+
+				// if hot they want cold drinks
+				if (("SOLEIL".equals(meteo) || "CANICULE".equals(meteo)) && d.isCold()) {
+					possibleDrinks.add(d);
 				}
-			}
-			// else they want hot drink
-			else if (("PLUIE".equals(meteo) || "NUAGE".equals(meteo) || "ORAGE".equals(meteo)) && !d.isCold()) {
-				// if day they don't want alcholize drink
-				if ((hour > 7 && hour < 19) && d.hasAlcholize()) {
-				} else if (chosenDrink == null || chosenDrink.getCost() > d.getCost()) {
-					chosenDrink = d;
+				// else he want hot drink
+				else if (("PLUIE".equals(meteo) || "NUAGE".equals(meteo) || "ORAGE".equals(meteo)) && !d.isCold()) {
+					possibleDrinks.add(d);
+				}
+				// if day he don't want alcholize drink
+				if ((hour > 6 && hour < 19) && !d.hasAlcholize()) {
+					
+					possibleDrinks.add(d);
+				}
+				// if night they want alcholize drink
+				else if ((hour < 7 || hour > 19) && d.hasAlcholize()) {
+					possibleDrinks.add(d);
 				}
 			}
 		}
-		return chosenDrink;
+		if (possibleDrinks.isEmpty()) {
+			return null;
+		}
+		else {
+			return possibleDrinks.get((int)Math.round(Math.random()*possibleDrinks.size()));
+		}
 	}
 
 	private int nbDrinksOrder(Drink d) {
 		int nb = 1;
-		while (ThreadLocalRandom.current().nextInt(1, nb + 2) == 1 && nb < 10 && budget >= (nb+1)*d.getCost()) {
+		while (ThreadLocalRandom.current().nextInt(1, nb + 2) == 1 && nb < 10 && budget >= (nb + 1) * d.getCost()) {
 			nb++;
 		}
 		return nb;
@@ -161,8 +176,8 @@ public class Consumer {
 		}
 		List<Player> playersInConflict = detectConflict(players);
 		if (!playersInConflict.isEmpty()) {
-			for (Player p: playersInConflict) {
-				if (conflictWinP2(hour,meteo,target.getOwner(),p)) {
+			for (Player p : playersInConflict) {
+				if (conflictWinP2(hour, meteo, target.getOwner(), p)) {
 					target = p.getStand();
 				}
 			}
@@ -171,8 +186,8 @@ public class Consumer {
 
 	private List<Player> detectConflict(List<Player> players) {
 		List<Player> res = new ArrayList<>();
-		for (Player p: players) {
-			for (Zone z: p.getPubs()) {
+		for (Player p : players) {
+			for (Zone z : p.getPubs()) {
 				if (!res.contains(p) && z.isInInfluence(this) && !pubSeen.contains(z)) {
 					res.add(p);
 					pubSeen.add(z);
@@ -185,8 +200,9 @@ public class Consumer {
 	private boolean conflictWinP2(int hour, String meteo, Player p1, Player p2) {
 		Drink d1 = this.chooseDrinkSimulate(hour, meteo, p1.getDrinks());
 		Drink d2 = this.chooseDrinkSimulate(hour, meteo, p2.getDrinks());
-			
-		if (d2 != null && (d1 == null && d2 != null || (d2.getCost() < d1.getCost() && Math.random() * (100) + 0 < getLuckChange(meteo))))
+
+		if (d2 != null && (d1 == null && d2 != null
+				|| (d2.getCost() < d1.getCost() && Math.random() * (100) + 0 < getLuckChange(meteo))))
 			return true;
 		else
 			return false;
