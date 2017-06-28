@@ -127,8 +127,8 @@ def join_game(playerJoinUsername):
 
             info = {
                 "cash": jExist.joueur_budget,
-                "sales": 0,
-                "profit": 0,
+                "sales": jExist.joueur_ventes,
+                "profit": jExist.joueur_profit,
                 "drinksOffered": drinksOffered
             }
 
@@ -233,8 +233,8 @@ def map_player_name_get(playerName):
 
     info = {
         "cash": joueurDB.joueur_budget,
-        "sales": 0,
-        "profit": 0,
+        "sales": joueurDB.joueur_ventes,
+        "profit": joueurDB.joueur_profit,
         "drinksOffered": drinksOffered
     }
 

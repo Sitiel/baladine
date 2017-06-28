@@ -54,8 +54,8 @@ def map_get():
         propPlayerProperties = \
             {
                 "cash": e_joueur.joueur_budget,
-                "sales": 0,
-                "profit": 0,
+                "sales": e_joueur.joueur_ventes,
+                "profit": e_joueur.joueur_profit,
                 "drinksOffered": json_model.actualRecettesNumberAndPrices[e_joueur.getProp('joueur_pseudo')]
             }
 
@@ -99,7 +99,9 @@ def post_sales(sales):
         t = transaction((quantity * total_cost ) * 0.85)
         t.journee = jour
         j.transactions.append(t)
-        j.joueur_budget += (quantity*total_cost)
+        j.joueur_budget += (quantity*total_cost)*0.85
+        j.joueur_ventes += (quantity)
+        j.joueur_profit += (quantity*total_cost)*0.85
         db_session.add(t)
 
     db_session.commit()
