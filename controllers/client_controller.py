@@ -156,6 +156,8 @@ Cette route est utilise pour recuperer les informations du joueur pour la partie
 
 def map_player_name_get(playerName):
     joueurDB = joueur.query.filter(joueur.joueur_pseudo == playerName).first()
+    if joueurDB is None :
+        return "Bad input", 400, {'Content-Type': 'text/plain'}
     json_model.lastInfoFromPlayer[playerName] = json_model.currentHour
     ingredients = ingredient.query.all()
     c = db_session.query(carte).first()
