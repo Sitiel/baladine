@@ -63,8 +63,8 @@ def join_game(playerJoinUsername):
         info = \
             {
                 "cash": 1,
-                "sales": 0.0,
-                "profit": 0.0,
+                "sales": 0,
+                "profit": 0,
                 "drinksOffered":
                     [
                         {
