@@ -22,6 +22,9 @@ def get_meteorology():
     # meteoJsontoString contient les infos recut par la carte arduino en json
     return jsonify(json_model.meteoJsontoString)
 
+#redirection
+def get_metrology():
+    get_meteorology()
 
 """
 Cette route est utilise par tous les clients(web et java)
