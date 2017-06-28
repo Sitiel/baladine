@@ -19,12 +19,14 @@ public class GameMap {
 
 	private String meteo;
 	private int hour;
+	private int day;
 	private List<Player> players;
 	private Coordinates start;
 	private Coordinates end;
 	private ClientRest rest;
 	private Map<String, Sale> sales;
 	private List<Consumer> consumers;
+	private int nbPop;
 
 	public GameMap(String url) {
 		sales = new HashMap<>();
@@ -32,9 +34,11 @@ public class GameMap {
 		refreshMap();
 		consumers = new ArrayList<>();
 		addConsumers();
+		nbPop = 10;
 	}
 
 	public GameMap() {
+		nbPop = 10;
 	}
 
 	/**
@@ -162,6 +166,7 @@ public class GameMap {
 			if (f.getDfn() == 0)
 				meteo = f.getWeather();
 		}
+		day = Math.round(time.getTimestamp() / 24);
 		hour = time.getTimestamp() % 24;
 		ReceiptObject receipt = rest.getData();
 
@@ -252,27 +257,31 @@ public class GameMap {
 	 * add new Customers depending on the meteo.
 	 */
 	public void addConsumers() {
-
-		int nbPop = 100;
+		int tmp = nbPop;
+		if (nbPop < 1000) {
+			tmp = (int) Math.round(nbPop*(1+(Math.random()/6)));
+			nbPop = tmp;
+		}
+		System.out.println(nbPop);
 
 		switch (meteo) {
 		case ("SOLEIL"):
-			nbPop *= 0.75;
+			tmp *= 0.75;
 			break;
 		case ("ORAGE"):
-			nbPop = 0;
+			tmp = 0;
 			break;
 		case ("NUAGE"):
-			nbPop *= 0.3;
+			tmp *= 0.3;
 			break;
 		case ("CANICULE"):
-			nbPop *= 1;
+			tmp *= 1;
 			break;
 		default:
-			nbPop *= 0.15;
+			tmp *= 0.15;
 			break;
 		}
-		for (int i = 0; i < nbPop; i++) {
+		for (int i = 0; i < tmp; i++) {
 			consumers.add(new Consumer(start.getX(), end.getX(), start.getY(), end.getY()));
 		}
 	}

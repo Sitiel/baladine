@@ -2,33 +2,24 @@ package com.balady;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import com.balady.data.Coordinates;
 import com.balady.data.GameMap;
 import com.balady.data.Player;
 import com.balady.data.Zone;
 import com.balady.population.Consumer;
-import com.balady.rest.ClientRest;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -130,6 +121,7 @@ public class clientJavaApplication extends Application {
 				game.refreshMap();
 
 				if (game.getHour() == 1 && game.getHour() != current_hour && !game.getPlayers().isEmpty()) {
+					game.clearConsumers();
 					game.addConsumers();
 				}
 				if (game.getHour() != current_hour && !game.getPlayers().isEmpty()) {
